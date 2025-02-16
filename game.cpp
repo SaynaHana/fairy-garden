@@ -62,7 +62,6 @@ void Game::SetupGameWorld(void)
     // Note that, in this specific implementation, the player object should always be the first object in the game object vector 
     game_objects_.push_back(new PlayerGameObject(glm::vec3(0.0f, 0.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_red_ship], tex_[tex_invincible_ship], 3, true));
     float pi_over_two = glm::pi<float>() / 2.0f;
-    game_objects_[0]->SetRotation(pi_over_two);
 
     // CHANGE: Removed rotation from enemies
     // Setup other objects
@@ -121,7 +120,7 @@ void Game::HandleControls(double delta_time)
     glm::vec3 curpos = player->GetPosition();
     float angle = player->GetRotation();
     // Compute current bearing direction
-    glm::vec3 dir = player->GetBearing();
+    glm::vec3 dir = glm::vec3(0.0, 0.0, 0.0);
     // Adjust motion increment and angle increment 
     // if translation or rotation is too slow
     float speed = delta_time*500.0;
@@ -132,17 +131,24 @@ void Game::HandleControls(double delta_time)
     // CHANGE: Prevent player from moving when dead
     if (!game_ending_) {
         if (glfwGetKey(window_, GLFW_KEY_W) == GLFW_PRESS) {
-            player->SetPosition(curpos + motion_increment*dir);
+            dir += glm::vec3(0.0, 1.0, 0.0);
         }
         if (glfwGetKey(window_, GLFW_KEY_S) == GLFW_PRESS) {
-            player->SetPosition(curpos - motion_increment*dir);
+            dir += glm::vec3(0.0, -1.0, 0.0);
         }
         if (glfwGetKey(window_, GLFW_KEY_D) == GLFW_PRESS) {
-            player->SetRotation(angle - angle_increment);
+            dir += glm::vec3(1.0, 0.0, 0.0);
         }
         if (glfwGetKey(window_, GLFW_KEY_A) == GLFW_PRESS) {
-            player->SetRotation(angle + angle_increment);
+            dir += glm::vec3(-1.0, 0.0, 0.0);
         }
+
+        // If dir is not unit length, then normalize it
+        if(glm::length(dir) > 1) {
+            dir = glm::normalize(dir);
+        }
+
+        player->SetPosition(curpos + motion_increment * dir);
     }
     if (glfwGetKey(window_, GLFW_KEY_Z) == GLFW_PRESS) {
         player->SetPosition(curpos - motion_increment*player->GetRight());

@@ -23,19 +23,15 @@ namespace game {
             bool CanCollide(GameObject& other) override;
 
 		private:
-    		enum {
-    			state_patrol = 0,
-    			state_intercept = 1
-    		};
-
     		int state_;
             float detection_range_;
 
     		void Detect(); // Changes the state of the enemy depending on distance to target
 
+			GameObject* target_;
+
             // Intercepting
             float intercept_speed_;
-            GameObject* intercept_target_;
     		glm::vec3 intercept_direction_;
     		Timer* intercept_timer_; // Checks if the enemy should update the target position
 
@@ -48,6 +44,9 @@ namespace game {
             float patrol_t_; // Keeps track of where we are in the parametric equation
 
             void Patrol(float t);
+
+			// Chase
+			void Chase();
     };
 }
 

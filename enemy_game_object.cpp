@@ -8,13 +8,14 @@ namespace game {
 		state_ = state_patrol;
 		detection_range_ = move_data.GetDetectionRange();
 		intercept_speed_ = move_data.GetSpeed();
-		intercept_target_ = move_data.GetTarget();
+		target_ = move_data.GetTarget();
 		intercept_direction_ = glm::vec3(0, 0, 0);
 		intercept_timer_ = new Timer();
 		patrol_width_ = patrol_data.GetWidth();
 		patrol_height_ = patrol_data.GetHeight();
 		patrol_center_point_ = patrol_data.GetCenterPoint();
 		patrol_t_ = 0;
+        speed_ = move_data.GetSpeed();
 	}
 
 	EnemyGameObject::~EnemyGameObject() {
@@ -29,13 +30,16 @@ namespace game {
 	void EnemyGameObject::Update(double delta_time) {
 		Detect();
 
-		if (state_ == state_intercept) {
+		if (state_ == EnemyMoveState::state_intercept) {
 			Intercept(delta_time);
 		}
-		else if (state_ == state_patrol) {
+		else if (state_ == EnemyMoveState::state_patrol) {
 			patrol_t_ += delta_time;
 			Patrol(patrol_t_);
 		}
+        else if(state_ == EnemyMoveState::state_chase) {
+            Chase();
+        }
 
 		GameObject::Update(delta_time);
 	}
@@ -49,26 +53,19 @@ namespace game {
 	}
 
 	void EnemyGameObject::Detect() {
-		if (intercept_target_ != nullptr) {
-			float distance = glm::length(intercept_target_->GetPosition() - GetPosition());
+        if(target_ == nullptr) return;
 
-			if (distance <= detection_range_) {
-				state_ = state_intercept;
-			}
-		}
-		else {
-			state_ = state_patrol;
-		}
+        state_ = EnemyMoveState::state_chase;
 	}
 
 
 	void EnemyGameObject::Intercept(double delta_time) {
-		if (intercept_target_ == nullptr) return;
+		if (target_ == nullptr) return;
 
 		// Check if it is time to update target position
 		if (intercept_timer_ != nullptr && intercept_timer_->Finished()) {
 			// Get vector between this enemy and target
-			intercept_direction_ = intercept_target_->GetPosition() - GetPosition();
+			intercept_direction_ = target_->GetPosition() - GetPosition();
 			glm::normalize(intercept_direction_);
 
 			intercept_timer_->Start(INTERCEPT_DIRECTION_INTERVAL);
@@ -85,6 +82,15 @@ namespace game {
 
 		SetPosition(glm::vec3(x, y, 0));
 	}
+
+    void EnemyGameObject::Chase() {
+        if(target_ == nullptr) return;
+
+        // Calculate acceleration
+        acceleration_ = target_->GetPosition() - GetPosition() - velocity_;
+
+        SetAcceleration(acceleration_);
+    }
 
 
 } // namespace game

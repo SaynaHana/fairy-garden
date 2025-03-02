@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.18)
 
 # Name of project
-set(PROJ_NAME Project)
+set(PROJ_NAME Assignment3)
 project(${PROJ_NAME})
 
 # Specify project files: header files and source files
@@ -13,12 +13,14 @@ set(HDRS
     explosion_game_object.h
     collectible_game_object.h
     enemy_game_object.h
+    projectile_game_object.h
     shader.h
     geometry.h
     sprite.h
     timer.h
     patrol_data.h
     move_data.h
+    Constants.h
 )
  
 set(SRCS
@@ -30,6 +32,7 @@ set(SRCS
     explosion_game_object.cpp
     collectible_game_object.cpp
     enemy_game_object.cpp
+    projectile_game_object.cpp
     shader.cpp
     sprite.cpp
     timer.cpp

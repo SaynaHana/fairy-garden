@@ -1,5 +1,6 @@
 #include "enemy_game_object.h"
 #include "player_game_object.h"
+#include "projectile_game_object.h"
 
 namespace game {
 	EnemyGameObject::EnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, int health, MoveData& move_data, PatrolData& patrol_data) 
@@ -40,10 +41,11 @@ namespace game {
 	}
 
 	bool EnemyGameObject::CanCollide(GameObject& other) {
-		// Enemy only collides with player
+		// Enemy only collides with player and projectiles
 		PlayerGameObject* player = dynamic_cast<PlayerGameObject*>(&other);
+        Projectile* projectile = dynamic_cast<Projectile*>(&other);
 
-		return player != nullptr;
+		return player != nullptr || projectile != nullptr;
 	}
 
 	void EnemyGameObject::Detect() {

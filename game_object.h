@@ -10,6 +10,8 @@
 
 #include "timer.h"
 
+#include "Constants.h"
+
 namespace game {
 
     /*
@@ -31,13 +33,14 @@ namespace game {
 
             // Getters
             inline glm::vec3 GetPosition(void) const { return position_; }
-            inline float GetScale(void) const { return scale_; }
+            inline glm::vec2 GetScale(void) const { return scale_; }
             inline float GetRotation(void) const { return angle_; }
             // CHANGE: Added getters for new properties
             inline bool IsCollisionOn(void) const { return collision_on_; }
             inline bool ShouldExplode(void) const { return should_explode_; }
             inline bool ShouldDestroy(void) const { return should_destroy_; }
             inline int GetDamage(void) const { return damage_; }
+            inline int GetCollisionType(void) const { return collision_type_; }
 
             // Get bearing direction (direction in which the game object
             // is facing)
@@ -48,8 +51,10 @@ namespace game {
 
             // Setters
             inline void SetPosition(const glm::vec3& position) { position_ = position; }
-            inline void SetScale(float scale) { scale_ = scale; }
+            inline void SetScale(glm::vec2 scale) { scale_ = scale; }
             void SetRotation(float angle);
+            // CHANGE: Added SetAcceleration function for physically based motion
+            inline void SetAcceleration(glm::vec3 acceleration) { acceleration_ = acceleration; };
 
             // CHANGE: Added function that gets called when this game object collides with another
             virtual void OnCollision(GameObject& other);
@@ -57,11 +62,16 @@ namespace game {
             // CHANGE: Added function to select which objects this game object can collide with
             virtual bool CanCollide(GameObject& other);
 
+
         protected:
             // Object's Transform Variables
             glm::vec3 position_;
-            float scale_;
+            // CHANGE: Changed scale_ from float to vec2
+            glm::vec2 scale_;
             float angle_;
+            glm::vec3 velocity_;
+            glm::vec3 acceleration_;
+            float speed_;
 
             // Geometry
             Geometry *geometry_;
@@ -80,6 +90,7 @@ namespace game {
             bool collision_on_;
             bool should_explode_;
             bool should_destroy_;
+            CollisionType collision_type_;
 
     }; // class GameObject
 

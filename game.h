@@ -8,6 +8,7 @@
 
 #include "shader.h"
 #include "game_object.h"
+#include "Constants.h"
 
 #define ENEMY_SPAWN_TIME 10
 #define GAME_OVER_TIME 5
@@ -45,6 +46,12 @@ namespace game {
             // Shader for rendering sprites in the scene
             Shader sprite_shader_;
 
+            // CHANGE: Sprite for background
+            Shader background_sprite_shader_;
+
+            // CHANGE: Sprite shader for player which has ghost mode
+            Shader ghost_sprite_shader_;
+
             // References to textures
             // This needs to be a pointer
             GLuint *tex_;
@@ -57,7 +64,8 @@ namespace game {
                 tex_orb = 4,
                 tex_explosion = 5,
                 tex_coin = 6,
-                tex_invincible_ship = 7
+                tex_invincible_ship = 7,
+                tex_projectile = 8
             };
 
             // List of game objects

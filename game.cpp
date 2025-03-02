@@ -1,7 +1,9 @@
+#include <cmath>
 #include <stdexcept>
 #include <string>
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp> 
+#include <glm/gtx/string_cast.hpp>
 #include <SOIL/SOIL.h>
 #include <iostream>
 
@@ -15,6 +17,7 @@
 #include "collectible_game_object.h"
 #include "explosion_game_object.h"
 #include "enemy_game_object.h"
+#include "projectile_game_object.h"
 
 namespace game {
 
@@ -22,7 +25,7 @@ namespace game {
 // They are written here as global variables, but ideally they should be loaded from a configuration file
 
 // Globals that define the OpenGL window and viewport
-const char *window_title_g = "Fairy Garden - COMP2501 Final Project";
+const char *window_title_g = "Assignment 3";
 const unsigned int window_width_g = 800;
 const unsigned int window_height_g = 600;
 const glm::vec3 viewport_background_color_g(0.0, 0.0, 1.0);
@@ -52,6 +55,7 @@ void Game::SetupGameWorld(void)
     textures.push_back("/textures/explosion.png");
     textures.push_back("/textures/coin.png");
     textures.push_back("/textures/invincible_smiley.png");
+    textures.push_back("/textures/bullet.png");
     // Load textures
     LoadTextures(textures);
 
@@ -62,6 +66,7 @@ void Game::SetupGameWorld(void)
     // Note that, in this specific implementation, the player object should always be the first object in the game object vector 
     game_objects_.push_back(new PlayerGameObject(glm::vec3(0.0f, 0.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_red_ship], tex_[tex_invincible_ship], 3, true));
     float pi_over_two = glm::pi<float>() / 2.0f;
+    game_objects_[0]->SetRotation(pi_over_two);
 
     // CHANGE: Removed rotation from enemies
     // Setup other objects
@@ -74,20 +79,27 @@ void Game::SetupGameWorld(void)
     game_objects_.push_back(new EnemyGameObject(glm::vec3(-3.0f, -0.5f, 0.0f), sprite_, &sprite_shader_, tex_[tex_blue_ship], 1, move_data, patrol_data));
 
     // CHANGE: Setup collectible items
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(2.0f, 2.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_coin]));
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(3.0f, 1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_coin]));
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(-2.0f, -2.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_coin]));
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(1.0f, -3.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_coin]));
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(-3.0f, 2.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_coin]));
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(3.0f, -2.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_coin]));
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(-3.0f, -2.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_coin]));
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(3.0f, 1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_coin]));
+    game_objects_.push_back(new CollectibleGameObject(glm::vec3(2.0f, 2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+    game_objects_.push_back(new CollectibleGameObject(glm::vec3(3.0f, 1.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+    game_objects_.push_back(new CollectibleGameObject(glm::vec3(-2.0f, -2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+    game_objects_.push_back(new CollectibleGameObject(glm::vec3(1.0f, -3.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+    game_objects_.push_back(new CollectibleGameObject(glm::vec3(-3.0f, 2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+    game_objects_.push_back(new CollectibleGameObject(glm::vec3(3.0f, -2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+    game_objects_.push_back(new CollectibleGameObject(glm::vec3(-3.0f, -2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+    game_objects_.push_back(new CollectibleGameObject(glm::vec3(3.0f, 1.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+
+    // Gameobject to show the vec2 scale
+    GameObject *scaled = new GameObject(glm::vec3(2.0f, -1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_invincible_ship], 1, false);
+    scaled->SetScale(glm::vec2(3.0f, 1.0f));
+    game_objects_.push_back(scaled);
 
     // Setup background
     // In this specific implementation, the background is always the
     // last object
-    GameObject *background = new GameObject(glm::vec3(0.0f, 0.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_stars], 1, true);
-    background->SetScale(12.0);
+    // CHANGE: Change shader of background to make it repeat more
+    GameObject *background = new GameObject(glm::vec3(0.0f, 0.0f, 0.0f), sprite_, &background_sprite_shader_, tex_[tex_stars], 1, true);
+    // CHANGE: Increase size of background
+    background->SetScale(glm::vec2(12 * 9, 12 * 9));
     game_objects_.push_back(background);
 
     // CHANGE: Enemy spawn timer setup
@@ -120,7 +132,7 @@ void Game::HandleControls(double delta_time)
     glm::vec3 curpos = player->GetPosition();
     float angle = player->GetRotation();
     // Compute current bearing direction
-    glm::vec3 dir = glm::vec3(0.0, 0.0, 0.0);
+    glm::vec3 dir = player->GetBearing();
     // Adjust motion increment and angle increment 
     // if translation or rotation is too slow
     float speed = delta_time*500.0;
@@ -130,25 +142,47 @@ void Game::HandleControls(double delta_time)
     // Check for player input and make changes accordingly
     // CHANGE: Prevent player from moving when dead
     if (!game_ending_) {
+        glm::vec3 acceleration = glm::vec3(0, 0, 0);
+
+        // Add acceleration based on which key is pressed
         if (glfwGetKey(window_, GLFW_KEY_W) == GLFW_PRESS) {
-            dir += glm::vec3(0.0, 1.0, 0.0);
+            acceleration += player->GetBearing() * 0.2f;
         }
         if (glfwGetKey(window_, GLFW_KEY_S) == GLFW_PRESS) {
-            dir += glm::vec3(0.0, -1.0, 0.0);
+            acceleration += player->GetBearing() * -0.2f;
+        }
+        if (glfwGetKey(window_, GLFW_KEY_Q) == GLFW_PRESS) {
+            acceleration += player->GetRight() * -0.2f;
+        }
+        if (glfwGetKey(window_, GLFW_KEY_E) == GLFW_PRESS) {
+            acceleration += player->GetRight() * 0.2f;
         }
         if (glfwGetKey(window_, GLFW_KEY_D) == GLFW_PRESS) {
-            dir += glm::vec3(1.0, 0.0, 0.0);
+            player->SetRotation(angle - angle_increment);
         }
         if (glfwGetKey(window_, GLFW_KEY_A) == GLFW_PRESS) {
-            dir += glm::vec3(-1.0, 0.0, 0.0);
+            player->SetRotation(angle + angle_increment);
         }
 
-        // If dir is not unit length, then normalize it
-        if(glm::length(dir) > 1) {
-            dir = glm::normalize(dir);
+        // Get unit vector of acceleration
+        if (glm::length(acceleration) > 0) {
+			acceleration = glm::normalize(acceleration);
         }
 
-        player->SetPosition(curpos + motion_increment * dir);
+        player->SetAcceleration(acceleration);
+
+        // CHANGE: Added spacebar for shooting
+        if (glfwGetKey(window_, GLFW_KEY_SPACE) == GLFW_PRESS) {
+            // Spawn projectile
+            glm::vec3 projectilePosition = player->GetPosition() + player->GetBearing() * 1.0f;
+            GameObject* projectile = ((PlayerGameObject*)player)->Shoot(projectilePosition, sprite_, &sprite_shader_, tex_[tex_projectile]);
+
+            // Insert game object right before the background
+            if(projectile != nullptr) {
+                game_objects_.insert(game_objects_.end() - 2, projectile);
+            }
+        }
+
     }
     if (glfwGetKey(window_, GLFW_KEY_Z) == GLFW_PRESS) {
         player->SetPosition(curpos - motion_increment*player->GetRight());
@@ -168,8 +202,8 @@ void Game::Update(double delta_time)
     if (spawn_timer_->Finished()) {
         // Spawn new enemy
         // Get random position
-        float random_x = ((double)rand() / RAND_MAX * 6.0) - 3.0;
-        float random_y = ((double)rand() / RAND_MAX * 6.0) - 3.0;
+        float random_x = ((double)rand() / RAND_MAX * 6.0 * 3) - 9.0;
+        float random_y = ((double)rand() / RAND_MAX * 6.0 * 3) - 9.0;
 
         MoveData move_data = MoveData(0.1, game_objects_[0], 2);
         PatrolData patrol_data = PatrolData(2, 1, glm::vec3(random_x, random_y, 0));
@@ -219,17 +253,68 @@ void Game::Update(double delta_time)
             // Skip distance check if one of the objects has collisions off
             if (!other_game_object->IsCollisionOn()) continue;
 
-            // Compute distance between object i and object j
-            float distance = glm::length(current_game_object->GetPosition() - other_game_object->GetPosition());
-            // If distance is below a threshold, we have a collision
-            if (distance < 1.0f) {
-                // CHANGE: Collision behaviour
-                // Check if objects can collide
-                if(!current_game_object->CanCollide(*other_game_object) || !other_game_object->CanCollide(*current_game_object))
-                    continue; 
+            // Check which type of colliders both objects are using
 
-                current_game_object->OnCollision(*other_game_object);
-                other_game_object->OnCollision(*current_game_object);
+            // Circle-to-circle
+            if(current_game_object->GetCollisionType() == CollisionType::circle_ &&
+                other_game_object->GetCollisionType() == CollisionType::circle_) {
+
+                // Compute distance between object i and object j
+                float distance = glm::length(current_game_object->GetPosition() - other_game_object->GetPosition());
+                // If distance is below a threshold, we have a collision
+                if (distance < 1.0f) {
+                    // CHANGE: Collision behaviour
+                    // Check if objects can collide
+                    if(!current_game_object->CanCollide(*other_game_object) || !other_game_object->CanCollide(*current_game_object))
+                        continue;
+
+                    current_game_object->OnCollision(*other_game_object);
+                    other_game_object->OnCollision(*current_game_object);
+                }
+            }
+            // Ray-to-circle
+            else if((current_game_object->GetCollisionType() == CollisionType::ray_ &&
+                    other_game_object->GetCollisionType() == CollisionType::circle_) ||
+                    (current_game_object->GetCollisionType() == CollisionType::circle_ &&
+                    other_game_object->GetCollisionType() == CollisionType::ray_)) {
+                if(!current_game_object->CanCollide(*other_game_object) || !other_game_object->CanCollide(*current_game_object))
+                    continue;
+
+                // Find the circle and the ray
+                GameObject* circle = nullptr;
+                GameObject* ray = nullptr;
+                if(current_game_object->GetCollisionType() == CollisionType::circle_) {
+                    circle = current_game_object;
+                    ray = other_game_object;
+                }
+                else {
+                    circle = other_game_object;
+                    ray = current_game_object;
+                }
+
+                // Calculate a, b and c for the quadratic equation
+                glm::vec3 direction = ray->GetBearing();
+                glm::vec3 point = ray->GetPosition();
+                glm::vec3 center = circle->GetPosition();
+                float a = glm::dot(direction, direction);
+                float b = glm::dot(2.0f * direction, point - center);
+                // Given radius of 0.5
+                float c = glm::dot(point - center, point - center) - 0.25f;
+
+                // Get the discriminant of the quadratic formula
+                float discriminant = b * b - (4 * a * c);
+
+                // If determinant is negative, no collision, else there is a collision
+                if(discriminant < 0) continue;
+
+                // Calculate t using quadratic formula
+                float t1 = (-b + std::sqrt(discriminant))/2 * a;
+                float t2 = (-b - std::sqrt(discriminant))/2 * a;
+
+                if(std::fmin(t1, t2) <= 1) {
+                    current_game_object->OnCollision(*other_game_object);
+                    other_game_object->OnCollision(*current_game_object);
+                }
             }
         }
     }
@@ -259,7 +344,11 @@ void Game::Render(void){
     // Set view to zoom out, centered by default at 0,0
     float camera_zoom = 0.25f;
     glm::mat4 camera_zoom_matrix = glm::scale(glm::mat4(1.0f), glm::vec3(camera_zoom, camera_zoom, camera_zoom));
-    glm::mat4 view_matrix = window_scale_matrix * camera_zoom_matrix;
+
+    // CHANGE: Make camera move with player
+    glm::mat4 transl_matrix = glm::translate(glm::mat4(1.0f), -game_objects_[0]->GetPosition());
+
+    glm::mat4 view_matrix = window_scale_matrix * camera_zoom_matrix * transl_matrix;
 
     // Render all game objects
     for (int i = 0; i < game_objects_.size(); i++) {
@@ -342,6 +431,12 @@ void Game::Init(void)
     // Initialize sprite shader
     sprite_shader_.Init((resources_directory_g+std::string("/sprite_vertex_shader.glsl")).c_str(), (resources_directory_g+std::string("/sprite_fragment_shader.glsl")).c_str());
 
+    // CHANGE: Initialize background sprite shader
+    background_sprite_shader_.Init((resources_directory_g+std::string("/sprite_vertex_shader.glsl")).c_str(), (resources_directory_g+std::string("/background_fragment_shader.glsl")).c_str());
+
+    // CHANGE: Initialize ghost sprite shader
+    ghost_sprite_shader_.Init((resources_directory_g+std::string("/ghost_vertex_shader.glsl")).c_str(), (resources_directory_g+std::string("/ghost_fragment_shader.glsl")).c_str());
+
     // Initialize time
     current_time_ = 0.0;
 }
@@ -384,8 +479,8 @@ void Game::SetTexture(GLuint w, const char *fname)
     SOIL_free_image_data(image);
 
     // Texture Wrapping
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     // Texture Filtering
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

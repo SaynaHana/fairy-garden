@@ -1,6 +1,8 @@
+#include <glm/ext/scalar_constants.hpp>
 #include "player_game_object.h"
 
 #include "collectible_game_object.h"
+#include "projectile_game_object.h"
 
 namespace game {
 	/*
@@ -16,6 +18,8 @@ namespace game {
 		invincible_timer_ = nullptr;
 		normal_texture_ = texture;
 		invincible_texture_ = invincibleTexture;
+		projectile_timer_ = nullptr;
+		can_shoot_ = true;
 	}
 
 	// Update function for moving the player object around
@@ -25,6 +29,12 @@ namespace game {
 		if (invincible_timer_ != nullptr) {
 			if (invincible_timer_->Finished()) {
 				SetInvincible(false);
+			}
+		}
+
+		if (projectile_timer_ != nullptr) {
+			if (projectile_timer_->Finished()) {
+				SetCanShoot(true);
 			}
 		}
 
@@ -54,6 +64,20 @@ namespace game {
 		GameObject::OnCollision(other);
 	}
 
+    GameObject* PlayerGameObject::Shoot(glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture) {
+        GameObject* projectile = nullptr;
+		if (can_shoot_) {
+            // Spawn projectile
+            projectile = new Projectile(position, geom, shader, texture, 10, 10);
+            projectile->SetRotation(this->GetRotation());
+            projectile->SetAcceleration(this->GetBearing() * 10.0f);
+
+			SetCanShoot(false);
+		}
+
+        return projectile;
+	}
+
 	void PlayerGameObject::SetInvincible(bool invincible) {
 		invincible_ = invincible;
 
@@ -72,6 +96,17 @@ namespace game {
 		}
 	}
 
+	void PlayerGameObject::SetCanShoot(bool can_shoot) {
+		can_shoot_ = can_shoot;
+
+		if (!can_shoot) {
+			projectile_timer_ = new Timer();
+			projectile_timer_->Start(SHOOT_COOLDOWN);
+		}
+		else {
+			projectile_timer_ = nullptr;
+		}
+	}
 
 
 } // namespace game

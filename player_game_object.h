@@ -6,6 +6,7 @@
 
 #define INVINCIBLE_ITEM_COUNT 5
 #define INVINCIBLE_DURATION 10
+#define SHOOT_COOLDOWN 0.4
 
 
 namespace game {
@@ -21,6 +22,8 @@ namespace game {
 
             void OnCollision(GameObject &other) override;
 
+            GameObject* Shoot(glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture);
+
         private:
             // CHANGE: Collectible items
             int itemCount_;
@@ -32,6 +35,10 @@ namespace game {
             GLuint normal_texture_;
             GLuint invincible_texture_;
 
+            // CHANGE: Projectiles
+            void SetCanShoot(bool can_shoot);
+            Timer* projectile_timer_;
+            bool can_shoot_;
 
     }; // class PlayerGameObject
 

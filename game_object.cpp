@@ -1,5 +1,6 @@
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include <iostream>
 
 #include "game_object.h"
@@ -11,7 +12,7 @@ GameObject::GameObject(const glm::vec3 &position, Geometry *geom, Shader *shader
 
     // Initialize all attributes
     position_ = position;
-    scale_ = 1.0;
+    scale_ = glm::vec2(1.0, 1.0);
     angle_ = 0.0;
     geometry_ = geom;
     shader_ = shader;
@@ -21,6 +22,10 @@ GameObject::GameObject(const glm::vec3 &position, Geometry *geom, Shader *shader
     should_explode_ = true;
     should_destroy_ = false;
     damage_ = 1;
+    velocity_ = glm::vec3(0, 0, 0);
+    acceleration_ = glm::vec3(0, 0, 0);
+    speed_ = 2;
+    collision_type_ = CollisionType::circle_;
 }
 
 glm::vec3 GameObject::GetBearing(void) const {
@@ -50,8 +55,16 @@ void GameObject::SetRotation(float angle){
     angle_ = angle;
 }
 
-
 void GameObject::Update(double delta_time) {
+    velocity_ = velocity_ + acceleration_ * (float)delta_time;
+
+    if(glm::length(velocity_) > speed_) {
+        velocity_ = speed_ * glm::normalize(velocity_);
+    }
+
+    if(glm::length(velocity_) > 0) {
+        SetPosition(position_ + velocity_ * (float)delta_time);
+    }
 }
 
 
@@ -64,7 +77,7 @@ void GameObject::Render(glm::mat4 view_matrix, double current_time){
     shader_->SetUniformMat4("view_matrix", view_matrix);
 
     // Setup the scaling matrix for the shader
-    glm::mat4 scaling_matrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale_, scale_, 1.0));
+    glm::mat4 scaling_matrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale_.x, scale_.y, 1.0));
 
     // Setup the rotation matrix for the shader
     glm::mat4 rotation_matrix = glm::rotate(glm::mat4(1.0f), angle_, glm::vec3(0.0, 0.0, 1.0));

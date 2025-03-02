@@ -1,7 +1,3 @@
-//
-// Created by Aerisia on 25/01/25.
-//
-
 #ifndef EXPLOSION_GAME_OBJECT_H
 #define EXPLOSION_GAME_OBJECT_H
 #include "game_object.h"

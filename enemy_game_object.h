@@ -47,6 +47,9 @@ namespace game {
 
 			// Chase
 			void Chase();
+
+			// Flee
+			void Flee();
     };
 }
 

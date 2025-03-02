@@ -11,7 +11,8 @@ enum CollisionType {
 enum EnemyMoveState {
     state_patrol = 0,
     state_intercept = 1,
-    state_chase = 2
+    state_chase = 2,
+    state_flee = 3
 };
 
 #endif

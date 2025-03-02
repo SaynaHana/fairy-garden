@@ -30,15 +30,11 @@ namespace game {
 	void EnemyGameObject::Update(double delta_time) {
 		Detect();
 
-		if (state_ == EnemyMoveState::state_intercept) {
-			Intercept(delta_time);
-		}
-		else if (state_ == EnemyMoveState::state_patrol) {
-			patrol_t_ += delta_time;
-			Patrol(patrol_t_);
-		}
-        else if(state_ == EnemyMoveState::state_chase) {
+        if(state_ == EnemyMoveState::state_chase) {
             Chase();
+        }
+        else if(state_ == EnemyMoveState::state_flee) {
+            Flee();
         }
 
 		GameObject::Update(delta_time);
@@ -55,7 +51,15 @@ namespace game {
 	void EnemyGameObject::Detect() {
         if(target_ == nullptr) return;
 
-        state_ = EnemyMoveState::state_chase;
+        // Calculate distance from target
+        float distance = glm::distance(target_->GetPosition(), GetPosition());
+
+        if(distance <= detection_range_) {
+            state_ = EnemyMoveState::state_flee;
+        }
+        else {
+            state_ = EnemyMoveState::state_chase;
+        }
 	}
 
 
@@ -88,6 +92,15 @@ namespace game {
 
         // Calculate acceleration
         acceleration_ = target_->GetPosition() - GetPosition() - velocity_;
+
+        SetAcceleration(acceleration_);
+    }
+
+    void EnemyGameObject::Flee() {
+        if(target_ == nullptr) return;
+
+        // Calculate acceleration
+        acceleration_ = GetPosition() - target_->GetPosition() - velocity_;
 
         SetAcceleration(acceleration_);
     }

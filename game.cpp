@@ -25,7 +25,7 @@ namespace game {
 // They are written here as global variables, but ideally they should be loaded from a configuration file
 
 // Globals that define the OpenGL window and viewport
-const char *window_title_g = "Assignment 3";
+const char *window_title_g = "COMP2501 Final Project - Aria Wong";
 const unsigned int window_width_g = 800;
 const unsigned int window_height_g = 600;
 const glm::vec3 viewport_background_color_g(0.0, 0.0, 1.0);
@@ -142,34 +142,28 @@ void Game::HandleControls(double delta_time)
     // Check for player input and make changes accordingly
     // CHANGE: Prevent player from moving when dead
     if (!game_ending_) {
-        glm::vec3 acceleration = glm::vec3(0, 0, 0);
+        glm::vec3 velocity = glm::vec3(0, 0, 0);
 
         // Add acceleration based on which key is pressed
         if (glfwGetKey(window_, GLFW_KEY_W) == GLFW_PRESS) {
-            acceleration += player->GetBearing() * 0.2f;
+            velocity += glm::vec3(0, 1, 0);
         }
         if (glfwGetKey(window_, GLFW_KEY_S) == GLFW_PRESS) {
-            acceleration += player->GetBearing() * -0.2f;
-        }
-        if (glfwGetKey(window_, GLFW_KEY_Q) == GLFW_PRESS) {
-            acceleration += player->GetRight() * -0.2f;
-        }
-        if (glfwGetKey(window_, GLFW_KEY_E) == GLFW_PRESS) {
-            acceleration += player->GetRight() * 0.2f;
+            velocity += glm::vec3(0, -1, 0);
         }
         if (glfwGetKey(window_, GLFW_KEY_D) == GLFW_PRESS) {
-            player->SetRotation(angle - angle_increment);
+            velocity += glm::vec3(1, 0, 0);
         }
         if (glfwGetKey(window_, GLFW_KEY_A) == GLFW_PRESS) {
-            player->SetRotation(angle + angle_increment);
+            velocity += glm::vec3(-1, 0, 0);
         }
 
         // Get unit vector of acceleration
-        if (glm::length(acceleration) > 0) {
-			acceleration = glm::normalize(acceleration);
+        if (glm::length(velocity) > 0) {
+			velocity = glm::normalize(velocity);
         }
 
-        player->SetAcceleration(acceleration);
+        player->SetVelocity(velocity);
 
         // CHANGE: Added spacebar for shooting
         if (glfwGetKey(window_, GLFW_KEY_SPACE) == GLFW_PRESS) {

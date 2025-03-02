@@ -54,6 +54,7 @@ namespace game {
             inline void SetScale(glm::vec2 scale) { scale_ = scale; }
             void SetRotation(float angle);
             // CHANGE: Added SetAcceleration function for physically based motion
+            inline void SetVelocity(glm::vec3 velocity) { velocity_ = velocity; }
             inline void SetAcceleration(glm::vec3 acceleration) { acceleration_ = acceleration; };
 
             // CHANGE: Added function that gets called when this game object collides with another

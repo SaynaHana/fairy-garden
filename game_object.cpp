@@ -9,7 +9,6 @@ namespace game {
 
 GameObject::GameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, bool collision_on)
 {
-
     // Initialize all attributes
     position_ = position;
     scale_ = glm::vec2(1.0, 1.0);
@@ -26,10 +25,10 @@ GameObject::GameObject(const glm::vec3 &position, Geometry *geom, Shader *shader
     acceleration_ = glm::vec3(0, 0, 0);
     speed_ = 2;
     collision_type_ = CollisionType::circle_;
+    tags.insert("GameObject");
 }
 
 glm::vec3 GameObject::GetBearing(void) const {
-
     glm::vec3 dir(cos(angle_), sin(angle_), 0.0);
     return dir;
 }

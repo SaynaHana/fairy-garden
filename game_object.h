@@ -12,6 +12,9 @@
 
 #include "Constants.h"
 
+#include <vector>
+#include <unordered_set>
+
 namespace game {
 
     /*
@@ -92,6 +95,9 @@ namespace game {
             bool should_explode_;
             bool should_destroy_;
             CollisionType collision_type_;
+
+            // Tags, used for identifying object types without having to cast them
+            std::unordered_set<std::string> tags;
 
     }; // class GameObject
 

@@ -9,7 +9,16 @@
 
 namespace game {
     class MagicMissileProjectile : public Projectile {
+        public:
+            MagicMissileProjectile();
 
+            void SetTarget(GameObject* target) { target_ = target; }
+
+        protected:
+            virtual void Move(double delta_time) override;
+
+        private:
+            GameObject* target_;
     };
 } // namespace game
 

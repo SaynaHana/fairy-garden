@@ -55,15 +55,7 @@ void GameObject::SetRotation(float angle){
 }
 
 void GameObject::Update(double delta_time) {
-    velocity_ = velocity_ + acceleration_ * (float)delta_time;
-
-    if(glm::length(velocity_) > speed_) {
-        velocity_ = speed_ * glm::normalize(velocity_);
-    }
-
-    if(glm::length(velocity_) > 0) {
-        SetPosition(position_ + velocity_ * (float)delta_time);
-    }
+    Move(delta_time);
 }
 
 
@@ -98,6 +90,18 @@ void GameObject::Render(glm::mat4 view_matrix, double current_time){
 
     // Draw the entity
     glDrawElements(GL_TRIANGLES, geometry_->GetSize(), GL_UNSIGNED_INT, 0);
+}
+
+void GameObject::Move(double delta_time) {
+    velocity_ = velocity_ + acceleration_ * (float)delta_time;
+
+    if(glm::length(velocity_) > speed_) {
+        velocity_ = speed_ * glm::normalize(velocity_);
+    }
+
+    if(glm::length(velocity_) > 0) {
+        SetPosition(position_ + velocity_ * (float)delta_time);
+    }
 }
 
 void GameObject::OnCollision(GameObject& other) {

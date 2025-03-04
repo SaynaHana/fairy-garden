@@ -101,6 +101,8 @@ namespace game {
             // Tags, used for identifying object types without having to cast them
             std::unordered_set<std::string> tags;
 
+            virtual void Move(double delta_time);
+
     }; // class GameObject
 
 } // namespace game

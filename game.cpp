@@ -305,7 +305,8 @@ void Game::Update(double delta_time)
                 float t1 = (-b + std::sqrt(discriminant))/2 * a;
                 float t2 = (-b - std::sqrt(discriminant))/2 * a;
 
-                if(std::fmin(t1, t2) <= 1) {
+                if((t1 > 0 && t1 <= 1) ||
+                   t2 > 0 && t2 <= 1) {
                     current_game_object->OnCollision(*other_game_object);
                     other_game_object->OnCollision(*current_game_object);
                 }

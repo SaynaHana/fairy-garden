@@ -68,7 +68,7 @@ namespace game {
         GameObject* projectile = nullptr;
 		if (can_shoot_) {
             // Spawn projectile
-            projectile = new Projectile(position, geom, shader, texture, 10, 10);
+            projectile = new Projectile(position, geom, shader, texture, 10);
             projectile->SetRotation(this->GetRotation());
             projectile->SetAcceleration(this->GetBearing() * 10.0f);
 

@@ -14,6 +14,7 @@ set(HDRS
     collectible_game_object.h
     enemy_game_object.h
     projectile_game_object.h
+    projectiles/magic_missile_projectile.h
     shader.h
     geometry.h
     sprite.h

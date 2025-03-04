@@ -18,6 +18,7 @@ namespace game {
 		patrol_center_point_ = patrol_data.GetCenterPoint();
 		patrol_t_ = 0;
         speed_ = move_data.GetSpeed();
+        tags.insert("EnemyGameObject");
 	}
 
 	EnemyGameObject::~EnemyGameObject() {

@@ -6,7 +6,9 @@ namespace game {
 	EnemyGameObject::EnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, int health, MoveData& move_data, PatrolData& patrol_data) 
 	: GameObject(position, geom, shader, texture, 1, true) {
 		state_ = state_patrol;
-		detection_range_ = move_data.GetDetectionRange();
+        idle_range_ = 3;
+        chase_range_ = 5;
+        flee_range_ = 2;
 		intercept_speed_ = move_data.GetSpeed();
 		target_ = move_data.GetTarget();
 		intercept_direction_ = glm::vec3(0, 0, 0);
@@ -54,10 +56,13 @@ namespace game {
         // Calculate distance from target
         float distance = glm::distance(target_->GetPosition(), GetPosition());
 
-        if(distance <= detection_range_) {
+        if(distance >= idle_range_ && distance < chase_range_) {
+            SetAcceleration(glm::vec3(0));
+            SetVelocity(glm::vec3(0));
+        } else if(distance <= flee_range_) {
             state_ = EnemyMoveState::state_flee;
         }
-        else {
+        else if(distance >= chase_range_){
             state_ = EnemyMoveState::state_chase;
         }
 	}

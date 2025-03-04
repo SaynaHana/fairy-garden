@@ -24,7 +24,9 @@ namespace game {
 
 		private:
     		int state_;
-            float detection_range_;
+            float chase_range_;
+            float idle_range_;
+            float flee_range_;
 
     		void Detect(); // Changes the state of the enemy depending on distance to target
 

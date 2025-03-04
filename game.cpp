@@ -73,7 +73,7 @@ void Game::SetupGameWorld(void)
     // game_objects_.push_back(new GameObject(glm::vec3(-1.0f, 1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_green_ship], 1, true));
     // game_objects_.push_back(new GameObject(glm::vec3(1.0f, -0.5f, 0.0f), sprite_, &sprite_shader_, tex_[tex_blue_ship], 1, true));
 
-    MoveData move_data = MoveData(0.5, game_objects_[0], 3);
+    MoveData move_data = MoveData(0.5, game_objects_[0]);
     PatrolData patrol_data = PatrolData(1, 2, glm::vec3(-3.0f, 0.5f, 0.0f));
 
     game_objects_.push_back(new EnemyGameObject(glm::vec3(-3.0f, -0.5f, 0.0f), sprite_, &sprite_shader_, tex_[tex_blue_ship], 1, move_data, patrol_data));
@@ -199,7 +199,7 @@ void Game::Update(double delta_time)
         float random_x = ((double)rand() / RAND_MAX * 6.0 * 3) - 9.0;
         float random_y = ((double)rand() / RAND_MAX * 6.0 * 3) - 9.0;
 
-        MoveData move_data = MoveData(0.1, game_objects_[0], 2);
+        MoveData move_data = MoveData(2, game_objects_[0]);
         PatrolData patrol_data = PatrolData(2, 1, glm::vec3(random_x, random_y, 0));
 
         game_objects_.insert(game_objects_.end() - 1, 

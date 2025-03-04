@@ -12,6 +12,8 @@
 
 #include "Constants.h"
 
+#include <string>
+
 #include <vector>
 #include <unordered_set>
 

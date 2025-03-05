@@ -10,7 +10,7 @@
 namespace game {
     class MagicMissileProjectile : public Projectile {
         public:
-            MagicMissileProjectile();
+			MagicMissileProjectile(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, float lifetime = 2.0f);
 
             void SetTarget(GameObject* target) { target_ = target; }
 

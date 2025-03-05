@@ -1,4 +1,3 @@
-#include <glm/ext/scalar_constants.hpp>
 #include "player_game_object.h"
 
 #include "collectible_game_object.h"

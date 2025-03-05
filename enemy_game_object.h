@@ -9,20 +9,27 @@
 #include "patrol_data.h"
 #include <iostream>
 #include "move_data.h"
+#include "attack_data.h"
 
 #define INTERCEPT_DIRECTION_INTERVAL 2 // How often the enemy changes their target position when intercepting
 
 namespace game {
     class EnemyGameObject : public GameObject {
 		public:
-            EnemyGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, MoveData& move_data, PatrolData& patrol_data);
+            EnemyGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, MoveData& move_data, PatrolData& patrol_data, AttackData& attack_data);
     		~EnemyGameObject();
 
             void Update(double delta_time) override;
 
             bool CanCollide(GameObject& other) override;
 
-		private:
+		protected:
+            // Attacking
+            virtual void Attack();
+            Timer* attack_timer_;
+            bool can_attack_;
+            float attack_interval_; // How often can the enemy attack?
+
     		int state_;
             float chase_range_;
             float idle_range_;

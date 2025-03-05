@@ -3,8 +3,11 @@
 #include "projectile_game_object.h"
 
 namespace game {
-	EnemyGameObject::EnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, int health, MoveData& move_data, PatrolData& patrol_data) 
+	EnemyGameObject::EnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, int health, MoveData& move_data, PatrolData& patrol_data, AttackData& attack_data) 
 	: GameObject(position, geom, shader, texture, 1, true) {
+		attack_timer_ = nullptr;
+		attack_interval_ = attack_data.GetAttackInterval();
+		can_attack_ = true;
 		state_ = state_patrol;
         idle_range_ = 3;
         chase_range_ = 5;

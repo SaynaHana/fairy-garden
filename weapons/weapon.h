@@ -12,13 +12,11 @@ namespace game {
         virtual ~Weapon();
 
         // What needs to happen to execute the attack
-        virtual void ExecuteAttack(double delta_time);
+        virtual void ExecuteAttack(double delta_time) = 0;
 
     protected:
-        virtual void Attack(double delta_time) = 0;
-
-    private:
         GameObject* target_;
+        WeaponBehaviour& behaviour_;
     };
 }
 

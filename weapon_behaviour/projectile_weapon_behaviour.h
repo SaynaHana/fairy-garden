@@ -1,0 +1,14 @@
+//
+// Created by aria on 3/8/25.
+//
+
+#ifndef COMP2501_FINAL_PROJECT_PROJECTILE_WEAPON_BEHAVIOUR_H
+#define COMP2501_FINAL_PROJECT_PROJECTILE_WEAPON_BEHAVIOUR_H
+
+
+class projectile_weapon_behaviour {
+
+};
+
+
+#endif //COMP2501_FINAL_PROJECT_PROJECTILE_WEAPON_BEHAVIOUR_H

@@ -23,6 +23,8 @@ set(HDRS
     move_data.h
     attack_data.h
     Constants.h
+    weapons/weapon.h
+    data/weapon_data.h
 )
  
 set(SRCS
@@ -43,6 +45,7 @@ set(SRCS
     attack_data.cpp
     sprite_vertex_shader.glsl
     sprite_fragment_shader.glsl
+    weapons/weapon.cpp
 )
 
 # Add path name to configuration file

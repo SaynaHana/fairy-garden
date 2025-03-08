@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #define GLEW_STATIC
 #include <GL/glew.h>
+#include "data/game_object_data.h"
 
 #include "shader.h"
 #include "geometry.h"
@@ -29,6 +30,7 @@ namespace game {
             // Constructor
             // CHANGE: Added health and collision_on parameters
             GameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, bool collision_on);
+            GameObject(GameObjectData& data, int health, bool collision_on);
 
             // Update the GameObject's state. Can be overriden in children
             virtual void Update(double delta_time);

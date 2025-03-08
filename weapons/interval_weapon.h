@@ -7,7 +7,7 @@
 namespace game {
     class IntervalWeapon : public Weapon {
     public:
-        IntervalWeapon(WeaponData& data);
+        IntervalWeapon(WeaponData& data, WeaponBehaviour& behaviour);
         virtual ~IntervalWeapon();
 
         virtual void ExecuteAttack(double delta_time) override;

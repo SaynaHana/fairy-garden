@@ -1,7 +1,7 @@
 #include "magic_missile_projectile.h"
 
 namespace game {
-	MagicMissileProjectile::MagicMissileProjectile(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, float lifetime = 2.0f) 
+	MagicMissileProjectile::MagicMissileProjectile(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, float lifetime)
 	: Projectile(position, geom, shader, texture, lifetime) {
 		tags.insert("CanDamagePlayer");
 	}

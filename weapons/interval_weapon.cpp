@@ -1,7 +1,7 @@
 #include "interval_weapon.h"
 
 namespace game {
-    IntervalWeapon::IntervalWeapon(game::WeaponData &data) : Weapon(data) {
+    IntervalWeapon::IntervalWeapon(WeaponData &data, WeaponBehaviour& behaviour) : Weapon(data, behaviour) {
         attack_interval_ = data.getAttackInterval();
         can_attack_ = true;
         attack_timer_ = new Timer();

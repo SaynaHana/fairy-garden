@@ -13,13 +13,6 @@ namespace game {
     }
 
     void Weapon::ExecuteAttack(double delta_time, glm::vec3 parent_position, glm::vec3 parent_bearing) {
-        if(target_) {
-            std::cout << "wtf" << std::endl;
-        }
-        if(target_) {
-            std::cout << "wtf2" << std::endl;
-        }
-
         parent_position_ = parent_position;
         parent_bearing_ = parent_bearing;
     }

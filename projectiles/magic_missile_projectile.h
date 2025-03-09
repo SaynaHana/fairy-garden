@@ -13,7 +13,7 @@ namespace game {
             void SetTarget(GameObject* target) { target_ = target; }
 
         protected:
-            virtual void Move(double delta_time) override;
+            void Move(double delta_time) override;
 
         private:
             GameObject* target_;

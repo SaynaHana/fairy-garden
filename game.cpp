@@ -97,9 +97,9 @@ void Game::SetupGameWorld(void)
     scaled->SetScale(glm::vec2(3.0f, 1.0f));
     game_objects_.push_back(scaled);
 
-    WeaponData weaponData = WeaponData(game_objects_[0], 2, 0.5f);
-    GameObjectData magicMissileData = GameObjectData(sprite_, &sprite_shader_, tex_[tex_projectile]);
-    MagicMissileWeapon* magicMissileWeapon = new MagicMissileWeapon(weaponData, magicMissileData);
+    WeaponData* weaponData = new WeaponData(game_objects_[0], 2, 0.5f);
+    GameObjectData* magicMissileData = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_projectile]);
+    MagicMissileWeapon* magicMissileWeapon = new MagicMissileWeapon(*weaponData, *magicMissileData);
     GameObjectData enemyData = GameObjectData(sprite_, &sprite_shader_, tex_[tex_green_ship]);
     game_objects_.push_back(new EnemyGameObject(glm::vec3(2.0, 1.0, 0.0), sprite_, &sprite_shader_, tex_[tex_green_ship], 2, move_data, magicMissileWeapon));
 
@@ -154,6 +154,7 @@ void Game::HandleControls(double delta_time)
     // CHANGE: Prevent player from moving when dead
     if (!game_ending_) {
         glm::vec3 velocity = glm::vec3(0, 0, 0);
+        player->SetSpeed(10);
 
         // Add acceleration based on which key is pressed
         if (glfwGetKey(window_, GLFW_KEY_W) == GLFW_PRESS) {

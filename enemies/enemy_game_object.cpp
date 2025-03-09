@@ -38,9 +38,7 @@ namespace game {
 
         // Weapon
         if(weapon_ != nullptr) {
-            //weapon_->Attack(delta_time);
             weapon_->ExecuteAttack(delta_time, GetPosition(), GetBearing());
-            //weapon_->hi();
         }
 
 		GameObject::Update(delta_time);

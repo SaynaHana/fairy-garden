@@ -15,13 +15,13 @@ namespace game {
     }
 
     void MagicMissileWeapon::Attack(double delta_time) {
-        std::cout << "WTF" << std::endl;
         if(target_ == nullptr || projectileData_ == nullptr) return;
 
         // Spawn projectile
         glm::vec3 spawnPosition = parent_bearing_ * 1.5f + parent_position_;
         MagicMissileProjectile* projectile = new MagicMissileProjectile(spawnPosition, *projectileData_);
         projectile->SetTarget(target_);
+        projectile->SetSpeed(5);
 
         Game::GetInstance()->SpawnGameObject(projectile);
     }

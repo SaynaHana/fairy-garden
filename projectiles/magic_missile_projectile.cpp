@@ -1,3 +1,4 @@
+#include <iostream>
 #include "magic_missile_projectile.h"
 
 namespace game {
@@ -18,11 +19,13 @@ namespace game {
 		// Move towards target
 		glm::vec3 diff = target_->GetPosition() - this->GetPosition();
 
-		if (glm::length(diff) != 0) {
+		if (glm::length(diff) > 0) {
 			diff = glm::normalize(diff);
 		}
 
-		SetVelocity(diff * speed_);
+        SetAcceleration(diff * speed_);
+
+        Projectile::Move(delta_time);
 	}
 
 }

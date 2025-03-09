@@ -34,9 +34,24 @@ namespace game {
             void DestroyGameWorld(void);
 
             // Run the game (keep the game active)
-            void MainLoop(void); 
+            void MainLoop(void);
+
+            // Spawns a game object
+            void SpawnGameObject(GameObject* gameObject);
+
+            // Singleton from: https://www.geeksforgeeks.org/implementation-of-singleton-class-in-cpp/
+            static Game* GetInstance() {
+                return gamePtr;
+            }
+
+            void SetInstance(Game* game) {
+                gamePtr = game;
+            }
 
         private:
+            // Singleton from: https://www.geeksforgeeks.org/implementation-of-singleton-class-in-cpp/
+            static Game* gamePtr;
+
             // Main window: pointer to the GLFW window structure
             GLFWwindow *window_;
 

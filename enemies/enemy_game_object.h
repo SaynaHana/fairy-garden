@@ -1,0 +1,47 @@
+#ifndef ENEMY_GAME_OBJECT_H
+#define ENEMY_GAME_OBJECT_H
+
+#include "../game_object.h"
+#include "../patrol_data.h"
+#include <iostream>
+#include "../move_data.h"
+#include "../attack_data.h"
+#include "../weapons/weapon.h"
+
+#define INTERCEPT_DIRECTION_INTERVAL 2 // How often the enemy changes their target position when intercepting
+
+namespace game {
+    class EnemyGameObject : public GameObject {
+		public:
+            EnemyGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, MoveData& move_data, Weapon& weapon);
+            EnemyGameObject(const glm::vec3& position, GameObjectData& data, int health, MoveData& move_data, Weapon& weapon);
+    		~EnemyGameObject();
+
+            void Update(double delta_time) override;
+
+            bool CanCollide(GameObject& other) override;
+
+		protected:
+    		int state_;
+            float chase_range_;
+            float idle_range_;
+            float flee_range_;
+
+            Weapon* weapon_;
+
+
+    		void Detect(); // Changes the state of the enemy depending on distance to target
+
+			GameObject* target_;
+
+			// Chase
+			void Chase();
+
+			// Flee
+			void Flee();
+    };
+}
+
+
+
+#endif //ENEMY_GAME_OBJECT_H

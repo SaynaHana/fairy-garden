@@ -1,5 +1,5 @@
 #ifndef GAME_OBJECT_DATA_H
-#define GAME_OBJECT_DATA
+#define GAME_OBJECT_DATA_H
 
 #include <glm/glm.hpp>
 #include "../geometry.h"
@@ -8,14 +8,12 @@
 namespace game {
     class GameObjectData {
     public:
-        GameObjectData(glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture) {
-            position_ = position;
+        GameObjectData(Geometry* geom, Shader* shader, GLuint texture) {
             geom_ = geom;
             shader_ = shader;
             texture_ = texture;
         }
 
-        glm::vec3 position_;
         Geometry* geom_;
         Shader* shader_;
         GLuint texture_;

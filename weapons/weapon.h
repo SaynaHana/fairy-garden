@@ -8,20 +8,20 @@
 namespace game {
     class Weapon {
     public:
-        Weapon(WeaponData& data, WeaponBehaviour& behaviour_);
+        Weapon(WeaponData& data);
 
         virtual ~Weapon();
 
-        // Setters
-        void setParentPosition(glm::vec3& parent_position) { parent_position_ = parent_position; }
-
         // What needs to happen to execute the attack
-        virtual void ExecuteAttack(double delta_time);
+        virtual void ExecuteAttack(double delta_time, glm::vec3 parent_position, glm::vec3 parent_bearing_);
+
+        virtual void Attack(double delta_time) = 0;
 
 
     protected:
-        WeaponBehaviour& behaviour_;
         glm::vec3 parent_position_;
+        glm::vec3 parent_bearing_;
+        GameObject* target_;
     };
 }
 

@@ -4,7 +4,13 @@ namespace game {
 	MagicMissileProjectile::MagicMissileProjectile(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, float lifetime)
 	: Projectile(position, geom, shader, texture, lifetime) {
 		tags.insert("CanDamagePlayer");
+        tags.erase("CanDamageEnemy");
 	}
+
+    MagicMissileProjectile::MagicMissileProjectile(const glm::vec3 &position, game::GameObjectData &data, float lifetime)
+    : MagicMissileProjectile(position, data.geom_, data.shader_, data.texture_, lifetime) {
+
+    }
 
 	void MagicMissileProjectile::Move(double delta_time) {
 		if (target_ == nullptr) return;

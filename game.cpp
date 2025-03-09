@@ -16,8 +16,10 @@
 
 #include "collectible_game_object.h"
 #include "explosion_game_object.h"
-#include "enemy_game_object.h"
+#include "enemies/enemy_game_object.h"
 #include "projectile_game_object.h"
+#include "weapons/interval_weapon.h"
+#include "weapons/magic_missile_weapon.h"
 
 namespace game {
 
@@ -75,6 +77,13 @@ void Game::SetupGameWorld(void)
 
     MoveData move_data = MoveData(0.5, game_objects_[0]);
     PatrolData patrol_data = PatrolData(1, 2, glm::vec3(-3.0f, 0.5f, 0.0f));
+
+    WeaponData* weaponData = new WeaponData(*game_objects_[0], 2, 0.5f);
+    GameObjectData* magicMissileData = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_projectile]);
+    Weapon* magicMissileWeapon = new MagicMissileWeapon(*weaponData, *magicMissileData);
+    GameObjectData enemyData = GameObjectData(sprite_, &sprite_shader_, tex_[tex_green_ship]);
+    EnemyGameObject* enemy = new EnemyGameObject(glm::vec3(2.0, 1.0, 0.0), enemyData, 2, move_data, *magicMissileWeapon);
+    SpawnGameObject(enemy);
 
     //game_objects_.push_back(new EnemyGameObject(glm::vec3(-3.0f, -0.5f, 0.0f), sprite_, &sprite_shader_, tex_[tex_blue_ship], 1, move_data, patrol_data));
 
@@ -202,8 +211,10 @@ void Game::Update(double delta_time)
         MoveData move_data = MoveData(2, game_objects_[0]);
         PatrolData patrol_data = PatrolData(2, 1, glm::vec3(random_x, random_y, 0));
 
+        /*
         game_objects_.insert(game_objects_.end() - 1, 
-							new EnemyGameObject(glm::vec3(random_x, random_y, 0), sprite_, &sprite_shader_, tex_[2], 1, move_data, patrol_data));
+							new EnemyGameObject(glm::vec3(random_x, random_y, 0), sprite_, &sprite_shader_, tex_[2], 1, move_data));
+         */
 
         spawn_timer_->Start(ENEMY_SPAWN_TIME);
     }
@@ -495,6 +506,13 @@ void Game::LoadTextures(std::vector<std::string> &textures)
     }
     // Set first texture in the array as default
     glBindTexture(GL_TEXTURE_2D, tex_[0]);
+}
+
+void Game::SpawnGameObject(GameObject* gameObject) {
+    // Insert game object right before the background
+    if(gameObject != nullptr) {
+        game_objects_.insert(game_objects_.end() - 2, gameObject);
+    }
 }
 
 void Game::DestroyObject(int index, bool shouldExplode) {

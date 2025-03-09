@@ -12,7 +12,7 @@ set(HDRS
     player_game_object.h
     explosion_game_object.h
     collectible_game_object.h
-    enemy_game_object.h
+    enemies/enemy_game_object.h
     projectile_game_object.h
     projectiles/magic_missile_projectile.h
     shader.h
@@ -26,7 +26,7 @@ set(HDRS
     weapons/weapon.h
     data/weapon_data.h
     weapons/interval_weapon.h
-    weapon_behaviour/weapon_behaviour.h
+    weapons/magic_missile_weapon.h
 )
  
 set(SRCS
@@ -37,7 +37,8 @@ set(SRCS
     player_game_object.cpp
     explosion_game_object.cpp
     collectible_game_object.cpp
-    enemy_game_object.cpp
+    enemies/enemy_game_object.cpp
+    projectiles/magic_missile_projectile.cpp
     projectile_game_object.cpp
     shader.cpp
     sprite.cpp
@@ -49,7 +50,7 @@ set(SRCS
     sprite_fragment_shader.glsl
     weapons/weapon.cpp
     weapons/interval_weapon.cpp
-    weapon_behaviour/weapon_behaviour.cpp
+    weapons/magic_missile_weapon.cpp
 )
 
 # Add path name to configuration file

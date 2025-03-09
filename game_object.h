@@ -30,7 +30,7 @@ namespace game {
             // Constructor
             // CHANGE: Added health and collision_on parameters
             GameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, bool collision_on);
-            GameObject(GameObjectData& data, int health, bool collision_on);
+            GameObject(const glm::vec3& position, GameObjectData& data, int health, bool collision_on);
 
             // Update the GameObject's state. Can be overriden in children
             virtual void Update(double delta_time);
@@ -63,6 +63,7 @@ namespace game {
             // CHANGE: Added SetAcceleration function for physically based motion
             inline void SetVelocity(glm::vec3 velocity) { velocity_ = velocity; }
             inline void SetAcceleration(glm::vec3 acceleration) { acceleration_ = acceleration; };
+            inline void SetSpeed(float speed) { speed_ = speed; }
 
             // CHANGE: Added function that gets called when this game object collides with another
             virtual void OnCollision(GameObject& other);

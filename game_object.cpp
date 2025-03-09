@@ -28,8 +28,8 @@ GameObject::GameObject(const glm::vec3 &position, Geometry *geom, Shader *shader
     tags.insert("GameObject");
 }
 
-GameObject::GameObject(game::GameObjectData &data, int health, bool collision_on)
-: GameObject(data.position_, data.geom_, data.shader_, data.texture_, health, collision_on) {
+GameObject::GameObject(const glm::vec3& position, GameObjectData &data, int health, bool collision_on)
+: GameObject(position, data.geom_, data.shader_, data.texture_, health, collision_on) {
 
 }
 

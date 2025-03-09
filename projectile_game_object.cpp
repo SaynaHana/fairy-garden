@@ -1,5 +1,5 @@
 #include "projectile_game_object.h"
-#include "enemy_game_object.h"
+#include "enemies/enemy_game_object.h"
 
 namespace game {
 	Projectile::Projectile(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, float lifetime)
@@ -9,7 +9,14 @@ namespace game {
         destroy_timer_->Start(lifetime);
         should_explode_ = false;
         collision_type_ = CollisionType::ray_;
+        tags.insert("CanDamageEnemy");
+        tags.insert("Projectile");
 	}
+
+    Projectile::Projectile(const glm::vec3 &position, game::GameObjectData &data, float lifetime)
+    : Projectile(position, data.geom_, data.shader_, data.texture_, lifetime) {
+
+    }
 
     void Projectile::Update(double delta_time) {
         GameObject::Update(delta_time);

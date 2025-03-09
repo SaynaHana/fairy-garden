@@ -2,27 +2,24 @@
 #define WEAPON_DATA_H
 
 #include "../game_object.h"
-#include "../weapon_behaviour/weapon_behaviour.h"
 
 namespace game {
     class WeaponData {
     public:
-        WeaponData(GameObject& target, WeaponBehaviour& behaviour, float attack_interval)
-        : behaviour_(behaviour) {
+        WeaponData(GameObject& target, float speed, float attack_interval) {
             target_ = &target;
+            speed_ = speed;
             attack_interval_ = attack_interval;
         }
 
         // Getters
-        GameObject* getTarget() const { return target_; }
-        WeaponBehaviour& getBehaviour() const { return behaviour_; }
-        float getAttackInterval() const { return attack_interval_; }
+        GameObject* GetTarget() const { return target_; }
+        float GetSpeed() const { return speed_; };
+        float GetAttackInterval() const { return attack_interval_; }
 
     private:
         GameObject* target_;
-
-        WeaponBehaviour& behaviour_;
-
+        float speed_;
         float attack_interval_;
     };
 }

@@ -8,14 +8,11 @@
 #include "../attack_data.h"
 #include "../weapons/weapon.h"
 
-#define INTERCEPT_DIRECTION_INTERVAL 2 // How often the enemy changes their target position when intercepting
-
 namespace game {
     class EnemyGameObject : public GameObject {
 		public:
-            EnemyGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, MoveData& move_data, Weapon& weapon);
-            EnemyGameObject(const glm::vec3& position, GameObjectData& data, int health, MoveData& move_data, Weapon& weapon);
-    		~EnemyGameObject();
+            EnemyGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, MoveData& move_data, Weapon* weapon);
+            //EnemyGameObject(const glm::vec3& position, GameObjectData& data, int health, MoveData& move_data, Weapon* weapon);
 
             void Update(double delta_time) override;
 

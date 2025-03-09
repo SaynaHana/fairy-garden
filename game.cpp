@@ -35,6 +35,7 @@ const glm::vec3 viewport_background_color_g(0.0, 0.0, 1.0);
 // Directory with game resources such as textures
 const std::string resources_directory_g = RESOURCES_DIRECTORY;
 
+Game* Game::gamePtr = nullptr;
 
 void Game::SetupGameWorld(void)
 {
@@ -78,12 +79,6 @@ void Game::SetupGameWorld(void)
     MoveData move_data = MoveData(0.5, game_objects_[0]);
     PatrolData patrol_data = PatrolData(1, 2, glm::vec3(-3.0f, 0.5f, 0.0f));
 
-    WeaponData* weaponData = new WeaponData(*game_objects_[0], 2, 0.5f);
-    GameObjectData* magicMissileData = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_projectile]);
-    Weapon* magicMissileWeapon = new MagicMissileWeapon(*weaponData, *magicMissileData);
-    GameObjectData enemyData = GameObjectData(sprite_, &sprite_shader_, tex_[tex_green_ship]);
-    EnemyGameObject* enemy = new EnemyGameObject(glm::vec3(2.0, 1.0, 0.0), enemyData, 2, move_data, *magicMissileWeapon);
-    SpawnGameObject(enemy);
 
     //game_objects_.push_back(new EnemyGameObject(glm::vec3(-3.0f, -0.5f, 0.0f), sprite_, &sprite_shader_, tex_[tex_blue_ship], 1, move_data, patrol_data));
 
@@ -102,6 +97,12 @@ void Game::SetupGameWorld(void)
     scaled->SetScale(glm::vec2(3.0f, 1.0f));
     game_objects_.push_back(scaled);
 
+    WeaponData weaponData = WeaponData(game_objects_[0], 2, 0.5f);
+    GameObjectData magicMissileData = GameObjectData(sprite_, &sprite_shader_, tex_[tex_projectile]);
+    MagicMissileWeapon* magicMissileWeapon = new MagicMissileWeapon(weaponData, magicMissileData);
+    GameObjectData enemyData = GameObjectData(sprite_, &sprite_shader_, tex_[tex_green_ship]);
+    game_objects_.push_back(new EnemyGameObject(glm::vec3(2.0, 1.0, 0.0), sprite_, &sprite_shader_, tex_[tex_green_ship], 2, move_data, magicMissileWeapon));
+
     // Setup background
     // In this specific implementation, the background is always the
     // last object
@@ -110,6 +111,7 @@ void Game::SetupGameWorld(void)
     // CHANGE: Increase size of background
     background->SetScale(glm::vec2(12 * 9, 12 * 9));
     game_objects_.push_back(background);
+
 
     // CHANGE: Enemy spawn timer setup
     spawn_timer_ = new Timer();
@@ -395,8 +397,10 @@ void Game::MainLoop(void)
 Game::Game(void)
 {
     // Don't do work in the constructor, leave it for the Init() function
+    gamePtr = this;
 }
 
+Game* Game::GetInstance() { return gamePtr; }
 
 void Game::Init(void)
 {

@@ -40,13 +40,7 @@ namespace game {
             void SpawnGameObject(GameObject* gameObject);
 
             // Singleton from: https://www.geeksforgeeks.org/implementation-of-singleton-class-in-cpp/
-            static Game* GetInstance() {
-                return gamePtr;
-            }
-
-            void SetInstance(Game* game) {
-                gamePtr = game;
-            }
+            static Game* GetInstance();
 
         private:
             // Singleton from: https://www.geeksforgeeks.org/implementation-of-singleton-class-in-cpp/

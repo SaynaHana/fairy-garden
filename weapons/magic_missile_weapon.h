@@ -8,6 +8,8 @@ namespace game {
     public:
         MagicMissileWeapon(WeaponData& data, GameObjectData& projectileData);
 
+        void ExecuteAttack(double delta_time, glm::vec3 parent_position, glm::vec3 parent_bearing) override;
+
         void Attack(double delta_time) override;
 
     private:

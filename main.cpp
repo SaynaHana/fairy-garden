@@ -25,7 +25,6 @@
 // Main function that builds and runs the game
 int main(void){
     game::Game the_game;
-    the_game.SetInstance(&the_game);
 
     try {
         // Initialize graphics libraries and main window

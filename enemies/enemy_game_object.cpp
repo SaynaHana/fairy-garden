@@ -3,8 +3,13 @@
 #include "../projectile_game_object.h"
 
 namespace game {
-	EnemyGameObject::EnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, int health, MoveData& move_data, Weapon& weapon)
-	: GameObject(position, geom, shader, texture, 1, true), weapon_(&weapon) {
+	EnemyGameObject::EnemyGameObject(const glm::vec3& position, Geometry* geom, Shader *shader, GLuint texture, int health, MoveData& move_data, Weapon* weapon)
+	: GameObject(position, geom, shader, texture, 1, true) {
+        weapon_ = weapon;
+
+        if(weapon_) {
+        }
+
 		state_ = state_patrol;
         idle_range_ = 3;
         chase_range_ = 5;
@@ -14,15 +19,12 @@ namespace game {
         tags.insert("EnemyGameObject");
 	}
 
-    EnemyGameObject::EnemyGameObject(const glm::vec3 &position, GameObjectData &data, int health, MoveData &move_data, Weapon& weapon)
+    /*
+    EnemyGameObject::EnemyGameObject(const glm::vec3 &position, GameObjectData &data, int health, MoveData &move_data, Weapon* weapon)
     : EnemyGameObject(position, data.geom_, data.shader_, data.texture_, health, move_data, weapon) {
 
     }
-
-	EnemyGameObject::~EnemyGameObject() {
-		GameObject::~GameObject();
-	}
-
+     */
 
 	void EnemyGameObject::Update(double delta_time) {
 		Detect();
@@ -35,8 +37,10 @@ namespace game {
         }
 
         // Weapon
-        if(weapon_) {
+        if(weapon_ != nullptr) {
+            //weapon_->Attack(delta_time);
             weapon_->ExecuteAttack(delta_time, GetPosition(), GetBearing());
+            //weapon_->hi();
         }
 
 		GameObject::Update(delta_time);

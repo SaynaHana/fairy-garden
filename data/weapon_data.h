@@ -6,8 +6,8 @@
 namespace game {
     class WeaponData {
     public:
-        WeaponData(GameObject& target, float speed, float attack_interval) {
-            target_ = &target;
+        WeaponData(GameObject* target, float speed, float attack_interval) {
+            target_ = target;
             speed_ = speed;
             attack_interval_ = attack_interval;
         }

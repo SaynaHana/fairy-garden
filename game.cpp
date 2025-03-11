@@ -20,6 +20,7 @@
 #include "projectile_game_object.h"
 #include "weapons/interval_weapon.h"
 #include "weapons/magic_missile_weapon.h"
+#include "weapons/water_wave_weapon.h"
 
 namespace game {
 
@@ -100,11 +101,18 @@ void Game::SetupGameWorld(void)
     scaled->SetScale(glm::vec2(3.0f, 1.0f));
     game_objects_.push_back(scaled);
 
-    WeaponData* weaponData = new WeaponData(game_objects_[0], 2, 1.75f);
-    GameObjectData* magicMissileData = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_enemy_projectile], 5);
-    MagicMissileWeapon* magicMissileWeapon = new MagicMissileWeapon(*weaponData, *magicMissileData);
-    GameObjectData enemyData = GameObjectData(sprite_, &sprite_shader_, tex_[tex_green_ship]);
-    game_objects_.push_back(new EnemyGameObject(glm::vec3(2.0, 1.0, 0.0), sprite_, &sprite_shader_, tex_[tex_green_ship], 2, move_data, magicMissileWeapon));
+    WeaponData* weapon_data = new WeaponData(game_objects_[0], 2, 1.75f);
+    GameObjectData* magic_missile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_enemy_projectile], 5);
+    MagicMissileWeapon* magic_missile_weapon = new MagicMissileWeapon(*weapon_data, *magic_missile_data);
+    GameObjectData enemy_data = GameObjectData(sprite_, &sprite_shader_, tex_[tex_green_ship]);
+    game_objects_.push_back(new EnemyGameObject(glm::vec3(2.0, 1.0, 0.0), enemy_data, 2, move_data, magic_missile_weapon));
+
+    WeaponData* water_weapon_data = new WeaponData(game_objects_[0], 5.0f, 5);
+    GameObjectData* water_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_enemy_projectile], 10);
+    WaterWaveWeapon* water_wave_weapon = new WaterWaveWeapon(*water_weapon_data, *water_projectile_data);
+    GameObjectData water_enemy_data = GameObjectData(sprite_, &sprite_shader_, tex_[tex_blue_ship]);
+    game_objects_.push_back(new EnemyGameObject(glm::vec3(-2.0f, 1.0f, 0.0f), water_enemy_data, 2, move_data, water_wave_weapon));
+
 
     // Setup background
     // In this specific implementation, the background is always the

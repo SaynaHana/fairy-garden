@@ -1,10 +1,11 @@
 #include "interval_weapon.h"
 
 namespace game {
-    IntervalWeapon::IntervalWeapon(WeaponData &data) : Weapon(data) {
+    IntervalWeapon::IntervalWeapon(WeaponData &data, bool can_attack) : Weapon(data) {
         attack_interval_ = data.GetAttackInterval();
-        can_attack_ = true;
+        can_attack_ = can_attack;
         attack_timer_ = new Timer();
+        attack_timer_->Start(attack_interval_);
     }
 
     IntervalWeapon::~IntervalWeapon() {

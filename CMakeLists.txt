@@ -15,18 +15,20 @@ set(HDRS
     enemies/enemy_game_object.h
     projectile_game_object.h
     projectiles/magic_missile_projectile.h
+    projectiles/water_wave_projectile.h
     shader.h
     geometry.h
     sprite.h
     timer.h
     patrol_data.h
-        data/move_data.h
+    data/move_data.h
     attack_data.h
     Constants.h
     weapons/weapon.h
     data/weapon_data.h
     weapons/interval_weapon.h
     weapons/magic_missile_weapon.h
+    weapons/water_wave_weapon.h
 )
  
 set(SRCS
@@ -39,18 +41,20 @@ set(SRCS
     collectible_game_object.cpp
     enemies/enemy_game_object.cpp
     projectiles/magic_missile_projectile.cpp
+    projectiles/water_wave_projectile.cpp
     projectile_game_object.cpp
     shader.cpp
     sprite.cpp
     timer.cpp
     patrol_data.cpp
-        data/move_data.cpp
+    data/move_data.cpp
     attack_data.cpp
     sprite_vertex_shader.glsl
     sprite_fragment_shader.glsl
     weapons/weapon.cpp
     weapons/interval_weapon.cpp
     weapons/magic_missile_weapon.cpp
+    weapons/water_wave_weapon.cpp
 )
 
 # Add path name to configuration file

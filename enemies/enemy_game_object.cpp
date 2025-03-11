@@ -20,12 +20,10 @@ namespace game {
         tags.insert("CanDamagePlayer");
 	}
 
-    /*
     EnemyGameObject::EnemyGameObject(const glm::vec3 &position, GameObjectData &data, int health, MoveData &move_data, Weapon* weapon)
     : EnemyGameObject(position, data.geom_, data.shader_, data.texture_, health, move_data, weapon) {
 
     }
-     */
 
 	void EnemyGameObject::Update(double delta_time) {
 		Detect();

@@ -7,14 +7,14 @@
 namespace game {
     class IntervalWeapon : public Weapon {
     public:
-        explicit IntervalWeapon(WeaponData& data);
+        explicit IntervalWeapon(WeaponData& data, bool can_attack = true);
         ~IntervalWeapon() override;
 
         void ExecuteAttack(double delta_time, glm::vec3 parent_position, glm::vec3 parent_bearing) override;
 
         void Attack(double delta_time) override = 0;
 
-    private:
+    protected:
         Timer* attack_timer_;
         float attack_interval_;
         bool can_attack_;

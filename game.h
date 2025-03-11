@@ -92,6 +92,8 @@ namespace game {
             Timer* game_over_timer_;
             bool game_ending_;
 
+            glm::mat4 view_matrix;
+
             // Handle user input
             void HandleControls(double delta_time);
 

@@ -367,7 +367,7 @@ void Game::Render(void){
     // CHANGE: Make camera move with player
     glm::mat4 transl_matrix = glm::translate(glm::mat4(1.0f), -game_objects_[0]->GetPosition());
 
-    glm::mat4 view_matrix = window_scale_matrix * camera_zoom_matrix * transl_matrix;
+    view_matrix = window_scale_matrix * camera_zoom_matrix * transl_matrix;
 
     // Render all game objects
     for (int i = 0; i < game_objects_.size(); i++) {

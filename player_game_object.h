@@ -3,6 +3,7 @@
 
 #include "game_object.h"
 #include "timer.h"
+#include "data/move_data.h"
 
 #define INVINCIBLE_ITEM_COUNT 5
 #define INVINCIBLE_DURATION 10
@@ -15,14 +16,18 @@ namespace game {
     class PlayerGameObject : public GameObject {
 
         public:
-            PlayerGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, GLuint invincible_texture, int health, bool collision_on);
+            PlayerGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, GLuint invincible_texture, MoveData& moveData, int health, bool collision_on);
+            PlayerGameObject(const glm::vec3 &position, GameObjectData& objData, GLuint invincible_texture, MoveData& moveData, int health, bool collision_on);
 
             // Update function for moving the player object around
             void Update(double delta_time) override;
 
             void OnCollision(GameObject &other) override;
 
+            bool CanCollide(GameObject& other) override;
+
             GameObject* Shoot(glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture);
+
 
         private:
             // CHANGE: Collectible items
@@ -39,6 +44,8 @@ namespace game {
             void SetCanShoot(bool can_shoot);
             Timer* projectile_timer_;
             bool can_shoot_;
+
+            void Move(double delta_time) override;
 
     }; // class PlayerGameObject
 

@@ -17,6 +17,7 @@ namespace game {
 		target_ = move_data.GetTarget();
         speed_ = move_data.GetSpeed();
         tags.insert("EnemyGameObject");
+        tags.insert("CanDamagePlayer");
 	}
 
     /*

@@ -12,6 +12,8 @@ namespace game {
 
             void SetTarget(GameObject* target) { target_ = target; }
 
+            bool CanCollide(GameObject& other) override;
+
         protected:
             void Move(double delta_time) override;
 

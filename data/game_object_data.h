@@ -8,15 +8,17 @@
 namespace game {
     class GameObjectData {
     public:
-        GameObjectData(Geometry* geom, Shader* shader, GLuint texture) {
+        GameObjectData(Geometry* geom, Shader* shader, GLuint texture, float lifetime = 2.0f) {
             geom_ = geom;
             shader_ = shader;
             texture_ = texture;
+            lifetime_ = lifetime;
         }
 
         Geometry* geom_;
         Shader* shader_;
         GLuint texture_;
+        float lifetime_;
     };
 }
 

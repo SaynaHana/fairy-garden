@@ -14,6 +14,7 @@ namespace game {
 
     private:
         GameObjectData* projectileData_;
+        float speed_;
     };
 }
 

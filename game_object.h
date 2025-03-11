@@ -48,6 +48,7 @@ namespace game {
             inline bool ShouldDestroy(void) const { return should_destroy_; }
             inline int GetDamage(void) const { return damage_; }
             inline int GetCollisionType(void) const { return collision_type_; }
+            inline const std::unordered_set<std::string> GetTags() const { return tags; }
 
             // Get bearing direction (direction in which the game object
             // is facing)

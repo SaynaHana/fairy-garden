@@ -1,4 +1,4 @@
-#include "game_object.h"
+#include "../game_object.h"
 #ifndef MOVE_DATA_H
 #define MOVE_DATA_H
 

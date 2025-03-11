@@ -4,7 +4,7 @@
 #include "../game_object.h"
 #include "../patrol_data.h"
 #include <iostream>
-#include "../move_data.h"
+#include "../data/move_data.h"
 #include "../attack_data.h"
 #include "../weapons/weapon.h"
 

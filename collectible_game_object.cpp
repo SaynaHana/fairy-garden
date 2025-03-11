@@ -7,6 +7,7 @@ namespace game {
         should_explode_ = false;
         damage_ = 0;
         collected = false;
+        tags.insert("Collectible");
     }
 
     void CollectibleGameObject::Update(double delta_time) {

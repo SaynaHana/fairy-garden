@@ -20,7 +20,7 @@ set(HDRS
     sprite.h
     timer.h
     patrol_data.h
-    move_data.h
+        data/move_data.h
     attack_data.h
     Constants.h
     weapons/weapon.h
@@ -44,7 +44,7 @@ set(SRCS
     sprite.cpp
     timer.cpp
     patrol_data.cpp
-    move_data.cpp
+        data/move_data.cpp
     attack_data.cpp
     sprite_vertex_shader.glsl
     sprite_fragment_shader.glsl

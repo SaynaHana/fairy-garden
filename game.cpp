@@ -59,6 +59,7 @@ void Game::SetupGameWorld(void)
     textures.push_back("/textures/coin.png");
     textures.push_back("/textures/invincible_smiley.png");
     textures.push_back("/textures/bullet.png");
+    textures.push_back("/textures/tex_enemy_projectile.png");
     // Load textures
     LoadTextures(textures);
 
@@ -66,8 +67,10 @@ void Game::SetupGameWorld(void)
     // **** Setup all the game objects in the world
 
     // Setup the player object (position, texture, vertex count)
-    // Note that, in this specific implementation, the player object should always be the first object in the game object vector 
-    game_objects_.push_back(new PlayerGameObject(glm::vec3(0.0f, 0.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_red_ship], tex_[tex_invincible_ship], 3, true));
+    // Note that, in this specific implementation, the player object should always be the first object in the game object vector
+    MoveData player_move_data = MoveData(2, nullptr);
+    GameObjectData player_obj_data = GameObjectData(sprite_, &sprite_shader_, tex_[tex_red_ship]);
+    game_objects_.push_back(new PlayerGameObject(glm::vec3(0.0f, 0.0f, 0.0f), player_obj_data, tex_[tex_invincible_ship], player_move_data, 3, true));
     float pi_over_two = glm::pi<float>() / 2.0f;
     game_objects_[0]->SetRotation(pi_over_two);
 
@@ -97,8 +100,8 @@ void Game::SetupGameWorld(void)
     scaled->SetScale(glm::vec2(3.0f, 1.0f));
     game_objects_.push_back(scaled);
 
-    WeaponData* weaponData = new WeaponData(game_objects_[0], 2, 0.5f);
-    GameObjectData* magicMissileData = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_projectile]);
+    WeaponData* weaponData = new WeaponData(game_objects_[0], 2, 1.75f);
+    GameObjectData* magicMissileData = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_enemy_projectile], 5);
     MagicMissileWeapon* magicMissileWeapon = new MagicMissileWeapon(*weaponData, *magicMissileData);
     GameObjectData enemyData = GameObjectData(sprite_, &sprite_shader_, tex_[tex_green_ship]);
     game_objects_.push_back(new EnemyGameObject(glm::vec3(2.0, 1.0, 0.0), sprite_, &sprite_shader_, tex_[tex_green_ship], 2, move_data, magicMissileWeapon));
@@ -154,7 +157,6 @@ void Game::HandleControls(double delta_time)
     // CHANGE: Prevent player from moving when dead
     if (!game_ending_) {
         glm::vec3 velocity = glm::vec3(0, 0, 0);
-        player->SetSpeed(10);
 
         // Add acceleration based on which key is pressed
         if (glfwGetKey(window_, GLFW_KEY_W) == GLFW_PRESS) {

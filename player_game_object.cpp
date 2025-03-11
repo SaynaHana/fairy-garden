@@ -9,7 +9,7 @@ namespace game {
 		It overrides GameObject's update method, so that you can check for input to change the velocity of the player
 	*/
 
-	PlayerGameObject::PlayerGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, GLuint invincibleTexture, int health, bool collision_on)
+	PlayerGameObject::PlayerGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, GLuint invincibleTexture, MoveData& move_data, int health, bool collision_on)
 		: GameObject(position, geom, shader, texture, health, collision_on) {
 		damage_ = 1;
 		itemCount_ = 0;
@@ -19,7 +19,17 @@ namespace game {
 		invincible_texture_ = invincibleTexture;
 		projectile_timer_ = nullptr;
 		can_shoot_ = true;
+        speed_ = move_data.GetSpeed();
+        tags.insert("PlayerGameObject");
 	}
+
+    PlayerGameObject::PlayerGameObject(const glm::vec3 &position, game::GameObjectData &obj_data,
+                                       GLuint invincible_texture, game::MoveData &move_data, int health,
+                                       bool collision_on)
+                                       : PlayerGameObject(position, obj_data.geom_, obj_data.shader_, obj_data.texture_,
+                                                          invincible_texture, move_data, health, collision_on) {
+
+    }
 
 	// Update function for moving the player object around
 	void PlayerGameObject::Update(double delta_time) {
@@ -40,6 +50,10 @@ namespace game {
 		// Call the parent's update method to move the object in standard way, if desired
 		GameObject::Update(delta_time);
 	}
+
+    void PlayerGameObject::Move(double delta_time) {
+        SetPosition(velocity_ * speed_ * (float)delta_time + GetPosition());
+    }
 
 	void PlayerGameObject::OnCollision(GameObject &other) {
 		// If the other game object is a collectible
@@ -94,6 +108,13 @@ namespace game {
 			texture_ = normal_texture_;
 		}
 	}
+
+    bool PlayerGameObject::CanCollide(game::GameObject &other) {
+        if(other.GetTags().find("CanDamagePlayer") != other.GetTags().end()) return true;
+        if(other.GetTags().find("Collectible") != other.GetTags().end()) return true;
+
+        return false;
+    }
 
 	void PlayerGameObject::SetCanShoot(bool can_shoot) {
 		can_shoot_ = can_shoot;

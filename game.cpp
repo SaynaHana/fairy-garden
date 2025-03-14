@@ -187,30 +187,28 @@ void Game::HandleControls(double delta_time)
 
         player->SetVelocity(velocity);
 
-        // CHANGE: Added spacebar for shooting
-        if (glfwGetKey(window_, GLFW_KEY_SPACE) == GLFW_PRESS) {
-            // Spawn projectile
-            glm::vec3 projectilePosition = player->GetPosition() + player->GetBearing() * 1.0f;
-            GameObject* projectile = ((PlayerGameObject*)player)->Shoot(projectilePosition, sprite_, &sprite_shader_, tex_[tex_projectile]);
+        // Get player mouse position if left mouse button is down
+        if(glfwGetMouseButton(window_, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+            double mouse_x, mouse_y;
 
-            // Insert game object right before the background
-            if(projectile != nullptr) {
-                game_objects_.insert(game_objects_.end() - 2, projectile);
-            }
+            glfwGetCursorPos(window_, &mouse_x, &mouse_y);
+            ((PlayerGameObject*)player)->Shoot(glm::vec3((float)mouse_x, (float)mouse_y, 0), delta_time);
         }
-
     }
+
     if (glfwGetKey(window_, GLFW_KEY_Z) == GLFW_PRESS) {
         player->SetPosition(curpos - motion_increment*player->GetRight());
     }
     if (glfwGetKey(window_, GLFW_KEY_C) == GLFW_PRESS) {
         player->SetPosition(curpos + motion_increment*player->GetRight());
     }
+
+
+
     if (glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window_, true);
     }
 }
-
 
 void Game::Update(double delta_time)
 {

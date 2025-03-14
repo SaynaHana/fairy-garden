@@ -4,11 +4,11 @@
 #include "game_object.h"
 #include "timer.h"
 #include "data/move_data.h"
+#include "weapons/weapon.h"
 
 #define INVINCIBLE_ITEM_COUNT 5
 #define INVINCIBLE_DURATION 10
 #define SHOOT_COOLDOWN 0.4
-
 
 namespace game {
 
@@ -26,7 +26,7 @@ namespace game {
 
             bool CanCollide(GameObject& other) override;
 
-            GameObject* Shoot(glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture);
+            void Shoot(const glm::vec3& mouse_pos, double delta_time);
 
 
         private:
@@ -44,6 +44,8 @@ namespace game {
             void SetCanShoot(bool can_shoot);
             Timer* projectile_timer_;
             bool can_shoot_;
+
+            Weapon* primary_weapon_;
 
             void Move(double delta_time) override;
 

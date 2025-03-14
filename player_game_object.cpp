@@ -77,18 +77,14 @@ namespace game {
 		GameObject::OnCollision(other);
 	}
 
-    GameObject* PlayerGameObject::Shoot(glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture) {
-        GameObject* projectile = nullptr;
-		if (can_shoot_) {
-            // Spawn projectile
-            projectile = new Projectile(position, geom, shader, texture, 10);
-            projectile->SetRotation(this->GetRotation());
-            projectile->SetAcceleration(this->GetBearing() * 10.0f);
+    void PlayerGameObject::Shoot(const glm::vec3& mouse_pos, double delta_time) {
+        if(primary_weapon_ == nullptr) return;
 
-			SetCanShoot(false);
-		}
+        // Get bearing from mouse_pos
+        float theta = std::atan(mouse_pos.y / mouse_pos.x);
+        glm::vec3 shoot_dir = glm::vec3(std::cos(theta), std::sin(theta), 0);
 
-        return projectile;
+        primary_weapon_->ExecuteAttack(delta_time, position_, shoot_dir);
 	}
 
 	void PlayerGameObject::SetInvincible(bool invincible) {

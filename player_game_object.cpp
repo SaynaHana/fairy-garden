@@ -9,7 +9,8 @@ namespace game {
 		It overrides GameObject's update method, so that you can check for input to change the velocity of the player
 	*/
 
-	PlayerGameObject::PlayerGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, GLuint invincibleTexture, MoveData& move_data, int health, bool collision_on)
+	PlayerGameObject::PlayerGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture,
+                                       GLuint invincibleTexture, MoveData& move_data, int health, bool collision_on)
 		: GameObject(position, geom, shader, texture, health, collision_on) {
 		damage_ = 1;
 		itemCount_ = 0;

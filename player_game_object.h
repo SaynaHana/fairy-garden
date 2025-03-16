@@ -16,8 +16,10 @@ namespace game {
     class PlayerGameObject : public GameObject {
 
         public:
-            PlayerGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, GLuint invincible_texture, MoveData& moveData, int health, bool collision_on);
-            PlayerGameObject(const glm::vec3 &position, GameObjectData& objData, GLuint invincible_texture, MoveData& moveData, int health, bool collision_on);
+            PlayerGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture,
+                             GLuint invincible_texture, MoveData& moveData, Weapon* weapon, int health, bool collision_on);
+            PlayerGameObject(const glm::vec3 &position, GameObjectData& objData, GLuint invincible_texture,
+                             MoveData& moveData, Weapon* weapon, int health, bool collision_on);
 
             // Update function for moving the player object around
             void Update(double delta_time) override;

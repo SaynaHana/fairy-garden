@@ -16,6 +16,7 @@ set(HDRS
     projectile_game_object.h
     projectiles/magic_missile_projectile.h
     projectiles/water_wave_projectile.h
+    projectiles/player_projectile.h
     shader.h
     geometry.h
     sprite.h
@@ -29,6 +30,7 @@ set(HDRS
     weapons/interval_weapon.h
     weapons/magic_missile_weapon.h
     weapons/water_wave_weapon.h
+    weapons/default_player_weapon.h
 )
  
 set(SRCS
@@ -42,6 +44,7 @@ set(SRCS
     enemies/enemy_game_object.cpp
     projectiles/magic_missile_projectile.cpp
     projectiles/water_wave_projectile.cpp
+    projectiles/player_projectile.cpp
     projectile_game_object.cpp
     shader.cpp
     sprite.cpp
@@ -55,6 +58,7 @@ set(SRCS
     weapons/interval_weapon.cpp
     weapons/magic_missile_weapon.cpp
     weapons/water_wave_weapon.cpp
+    weapons/default_player_weapon.cpp
 )
 
 # Add path name to configuration file

@@ -10,7 +10,8 @@ namespace game {
 	*/
 
 	PlayerGameObject::PlayerGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture,
-                                       GLuint invincibleTexture, MoveData& move_data, int health, bool collision_on)
+                                       GLuint invincibleTexture, MoveData& move_data, Weapon* weapon,
+                                       int health, bool collision_on)
 		: GameObject(position, geom, shader, texture, health, collision_on) {
 		damage_ = 1;
 		itemCount_ = 0;
@@ -22,13 +23,14 @@ namespace game {
 		can_shoot_ = true;
         speed_ = move_data.GetSpeed();
         tags.insert("PlayerGameObject");
+        primary_weapon_ = weapon;
 	}
 
-    PlayerGameObject::PlayerGameObject(const glm::vec3 &position, game::GameObjectData &obj_data,
-                                       GLuint invincible_texture, game::MoveData &move_data, int health,
+    PlayerGameObject::PlayerGameObject(const glm::vec3 &position, GameObjectData &obj_data,
+                                       GLuint invincible_texture, MoveData &move_data, Weapon* weapon, int health,
                                        bool collision_on)
                                        : PlayerGameObject(position, obj_data.geom_, obj_data.shader_, obj_data.texture_,
-                                                          invincible_texture, move_data, health, collision_on) {
+                                                          invincible_texture, move_data, weapon, health, collision_on) {
 
     }
 
@@ -83,6 +85,7 @@ namespace game {
 
         // Get bearing from mouse_pos
         float theta = std::atan(mouse_pos.y / mouse_pos.x);
+        std::cout << theta << std::endl;
         glm::vec3 shoot_dir = glm::vec3(std::cos(theta), std::sin(theta), 0);
 
         primary_weapon_->ExecuteAttack(delta_time, position_, shoot_dir);

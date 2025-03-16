@@ -21,6 +21,7 @@
 #include "weapons/interval_weapon.h"
 #include "weapons/magic_missile_weapon.h"
 #include "weapons/water_wave_weapon.h"
+#include "weapons/default_player_weapon.h"
 
 namespace game {
 
@@ -71,7 +72,14 @@ void Game::SetupGameWorld(void)
     // Note that, in this specific implementation, the player object should always be the first object in the game object vector
     MoveData player_move_data = MoveData(2, nullptr);
     GameObjectData player_obj_data = GameObjectData(sprite_, &sprite_shader_, tex_[tex_red_ship]);
-    game_objects_.push_back(new PlayerGameObject(glm::vec3(0.0f, 0.0f, 0.0f), player_obj_data, tex_[tex_invincible_ship], player_move_data, 3, true));
+
+    // Create player weapon
+    WeaponData* primary_weapon_data = new WeaponData(nullptr, 10, 0.25f);
+    GameObjectData* primary_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_enemy_projectile]);
+    DefaultPlayerWeapon* primary_player_weapon = new DefaultPlayerWeapon(*primary_weapon_data, *primary_projectile_data);
+    game_objects_.push_back(new PlayerGameObject(glm::vec3(0.0f, 0.0f, 0.0f), player_obj_data,
+                                                 tex_[tex_invincible_ship], player_move_data,
+                                                 primary_player_weapon, 3, true));
     float pi_over_two = glm::pi<float>() / 2.0f;
     game_objects_[0]->SetRotation(pi_over_two);
 

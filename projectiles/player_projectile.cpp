@@ -15,7 +15,8 @@ namespace game {
 
     bool PlayerProjectile::CanCollide(GameObject& other) {
         if (!Projectile::CanCollide(other)) return false;
-        if (other.GetTags().find("EnemyGameObject") != other.GetTags().end()) return false;
-        return true;
+        if (other.HasTag("EnemyGameObject")) return true;
+
+        return false;
     }
 }

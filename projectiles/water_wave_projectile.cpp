@@ -32,4 +32,10 @@ namespace game {
         SetPosition(position_ + diff_ * (float)delta_time + (pos * (float)delta_time * 3.0f));
     }
 
+    bool WaterWaveProjectile::CanCollide(GameObject& other) {
+		if (!Projectile::CanCollide(other)) return false;
+		if (other.HasTag("EnemyGameObject")) return true;
+		return false;
+    }
+
 }

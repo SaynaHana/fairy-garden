@@ -110,8 +110,9 @@ namespace game {
 	}
 
     bool PlayerGameObject::CanCollide(game::GameObject &other) {
-        if(other.GetTags().find("CanDamagePlayer") != other.GetTags().end()) return true;
-        if(other.GetTags().find("Collectible") != other.GetTags().end()) return true;
+		if (!GameObject::CanCollide(other)) return false;
+		if (other.HasTag("CanDamagePlayer")) return true;
+		if (other.HasTag("Collectible")) return true;
 
         return false;
     }

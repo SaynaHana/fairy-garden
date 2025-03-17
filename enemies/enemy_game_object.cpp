@@ -44,10 +44,11 @@ namespace game {
 	}
 
 	bool EnemyGameObject::CanCollide(GameObject& other) {
-		// Enemy only collides with player and projectiles
-		PlayerGameObject* player = dynamic_cast<PlayerGameObject*>(&other);
+        if(!GameObject::CanCollide(other)) return false;
+        if (other.HasTag("CanDamageEnemy")) return true;
+        if (other.HasTag("PlayerGameObject")) return true;
 
-		return player != nullptr || (tags.find("CanDamageEnemy") != tags.end());
+        return false;
 	}
 
 	void EnemyGameObject::Detect() {

@@ -16,7 +16,8 @@ namespace game {
     }
 
     bool MagicMissileProjectile::CanCollide(game::GameObject &other) {
-        if(other.GetTags().find("PlayerGameObject") != other.GetTags().end()) return true;
+        if (!Projectile::CanCollide(other)) return false;
+        if (other.HasTag("PlayerGameObject")) return true;
 
         return false;
     }

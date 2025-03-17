@@ -48,7 +48,6 @@ namespace game {
             inline bool ShouldDestroy(void) const { return should_destroy_; }
             inline int GetDamage(void) const { return damage_; }
             inline int GetCollisionType(void) const { return collision_type_; }
-            inline const std::unordered_set<std::string> GetTags() const { return tags; }
 
             // Get bearing direction (direction in which the game object
             // is facing)
@@ -56,6 +55,10 @@ namespace game {
 
             // Get vector pointing to the right side of the game object
             glm::vec3 GetRight(void) const;
+
+            bool HasTag(const std::string& tag) const {
+                return tags.find(tag) != tags.end();
+            }
 
             // Setters
             inline void SetPosition(const glm::vec3& position) { position_ = position; }

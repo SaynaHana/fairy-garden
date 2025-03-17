@@ -30,10 +30,9 @@ namespace game {
 
 
     bool CollectibleGameObject::CanCollide(game::GameObject &other) {
-        // Can only collide with player
-        PlayerGameObject* player = dynamic_cast<PlayerGameObject*>(&other);
-
-        return player != nullptr;
+        if(!GameObject::CanCollide(other)) return false;
+        if (other.HasTag("PlayerGameObject")) return true;
+        return false;
     }
 
     void CollectibleGameObject::OnCollision(GameObject& other) {

@@ -13,10 +13,7 @@ namespace game {
 
         void SetTarget(GameObject* target) { target_ = target; }
 
-        bool CanCollide(GameObject& other) override {
-            if(other.GetTags().find("PlayerGameObject") != other.GetTags().end()) return true;
-            return false;
-        }
+        bool CanCollide(GameObject& other) override;
 
     private:
         glm::vec3 parent_bearing_;

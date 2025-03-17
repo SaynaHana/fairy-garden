@@ -30,10 +30,7 @@ namespace game {
     }
 
     bool Projectile::CanCollide(game::GameObject &other) {
-        // Only collides with enemies
-        EnemyGameObject* enemy = dynamic_cast<EnemyGameObject*>(&other);
-
-        return enemy != nullptr;
+        return GameObject::CanCollide(other);
     }
 
 } // namespace game

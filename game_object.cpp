@@ -119,7 +119,7 @@ void GameObject::OnCollision(GameObject& other) {
 }
 
 bool GameObject::CanCollide(GameObject& other) {
-    return collision_on_;
+    return collision_on_ && !other.ShouldDestroy();
 }
 
 } // namespace game

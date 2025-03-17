@@ -12,4 +12,10 @@ namespace game {
         // Move in direction
         SetPosition(position_ + direction_ * (float)delta_time * speed_);
     }
+
+    bool PlayerProjectile::CanCollide(GameObject& other) {
+        if (!Projectile::CanCollide(other)) return false;
+        if (other.GetTags().find("EnemyGameObject") != other.GetTags().end()) return false;
+        return true;
+    }
 }

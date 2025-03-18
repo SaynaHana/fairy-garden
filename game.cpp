@@ -196,11 +196,29 @@ void Game::HandleControls(double delta_time)
         player->SetVelocity(velocity);
 
         // Get player mouse position if left mouse button is down
+        // Most of this code is from assignment 4
         if(glfwGetMouseButton(window_, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
             double mouse_x, mouse_y;
 
             glfwGetCursorPos(window_, &mouse_x, &mouse_y);
-            ((PlayerGameObject*)player)->Shoot(glm::vec3((float)mouse_x, (float)mouse_y, 0), delta_time);
+
+            float w = window_width_g;
+            float h = window_height_g;
+            float cursor_x_pos = 0.0;
+            float cursor_y_pos = 0.0;
+
+            if(w > h) {
+                float aspect_ratio = w/h;
+                cursor_x_pos = ((2.0f * mouse_x - w) * aspect_ratio) / w;
+                cursor_y_pos = (-2.0f * mouse_y + h) / h;
+            }
+            else {
+                float aspect_ratio  = h/w;
+                cursor_x_pos = (2.0f * mouse_x - w) / w;
+                cursor_y_pos = ((-2.0f * mouse_y + h) * aspect_ratio) / h;
+            }
+
+            ((PlayerGameObject*)player)->Shoot(glm::vec3((float)cursor_x_pos, (float)cursor_y_pos, 0), delta_time);
         }
     }
 

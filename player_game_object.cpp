@@ -1,3 +1,4 @@
+#include <glm/gtx/string_cast.hpp>
 #include "player_game_object.h"
 
 #include "collectible_game_object.h"
@@ -83,12 +84,14 @@ namespace game {
     void PlayerGameObject::Shoot(const glm::vec3& mouse_pos, double delta_time) {
         if(primary_weapon_ == nullptr) return;
 
-        // Get bearing from mouse_pos
-        float theta = std::atan(mouse_pos.y / mouse_pos.x);
-        std::cout << theta << std::endl;
-        glm::vec3 shoot_dir = glm::vec3(std::cos(theta), std::sin(theta), 0);
+        // Get direction from mouse
+        glm::vec3 diff = mouse_pos;
 
-        primary_weapon_->ExecuteAttack(delta_time, position_, shoot_dir);
+        if(glm::length(diff) != 0) {
+            diff = glm::normalize(diff);
+        }
+
+        primary_weapon_->ExecuteAttack(delta_time, position_, diff);
 	}
 
 	void PlayerGameObject::SetInvincible(bool invincible) {

@@ -62,6 +62,7 @@ void Game::SetupGameWorld(void)
     textures.push_back("/textures/invincible_smiley.png");
     textures.push_back("/textures/bullet.png");
     textures.push_back("/textures/tex_enemy_projectile.png");
+    textures.push_back("/textures/tex_player_projectile.png");
     // Load textures
     LoadTextures(textures);
 
@@ -75,7 +76,7 @@ void Game::SetupGameWorld(void)
 
     // Create player weapon
     WeaponData* primary_weapon_data = new WeaponData(nullptr, 10, 0.25f);
-    GameObjectData* primary_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_enemy_projectile]);
+    GameObjectData* primary_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_player_projectile]);
     DefaultPlayerWeapon* primary_player_weapon = new DefaultPlayerWeapon(*primary_weapon_data, *primary_projectile_data);
     game_objects_.push_back(new PlayerGameObject(glm::vec3(0.0f, 0.0f, 0.0f), player_obj_data,
                                                  tex_[tex_invincible_ship], player_move_data,

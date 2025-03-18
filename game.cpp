@@ -22,6 +22,7 @@
 #include "weapons/magic_missile_weapon.h"
 #include "weapons/water_wave_weapon.h"
 #include "weapons/default_player_weapon.h"
+#include "weapons/shotgun_player_weapon.h"
 
 namespace game {
 
@@ -77,7 +78,7 @@ void Game::SetupGameWorld(void)
     // Create player weapon
     WeaponData* primary_weapon_data = new WeaponData(nullptr, 10, 0.25f);
     GameObjectData* primary_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_player_projectile]);
-    DefaultPlayerWeapon* primary_player_weapon = new DefaultPlayerWeapon(*primary_weapon_data, *primary_projectile_data);
+    auto* primary_player_weapon = new ShotgunWeapon(*primary_weapon_data, *primary_projectile_data);
     game_objects_.push_back(new PlayerGameObject(glm::vec3(0.0f, 0.0f, 0.0f), player_obj_data,
                                                  tex_[tex_invincible_ship], player_move_data,
                                                  primary_player_weapon, 3, true));

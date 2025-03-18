@@ -31,6 +31,7 @@ set(HDRS
     weapons/magic_missile_weapon.h
     weapons/water_wave_weapon.h
     weapons/default_player_weapon.h
+    weapons/shotgun_player_weapon.h
 )
  
 set(SRCS
@@ -59,6 +60,7 @@ set(SRCS
     weapons/magic_missile_weapon.cpp
     weapons/water_wave_weapon.cpp
     weapons/default_player_weapon.cpp
+    weapons/shotgun_player_weapon.cpp
 )
 
 # Add path name to configuration file

@@ -10,7 +10,6 @@ namespace game {
 
     void PlayerProjectile::Move(double delta_time) {
         // Move in direction
-        std::cout << glm::to_string(direction_) << std::endl;
         SetPosition(position_ + direction_ * (float)delta_time * speed_);
     }
 

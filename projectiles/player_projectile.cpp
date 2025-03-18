@@ -1,15 +1,16 @@
 #include "player_projectile.h"
+#include <iostream>
+#include <glm/gtx/string_cast.hpp>
 
 namespace game {
     PlayerProjectile::PlayerProjectile(const glm::vec3 &position, GameObjectData &data, float lifetime, const glm::vec3& direction)
         : Projectile(position, data, lifetime) {
-        if(glm::length(direction_) != 0) {
-            direction_ = glm::normalize(direction);
-        }
+        direction_ = direction;
     }
 
     void PlayerProjectile::Move(double delta_time) {
         // Move in direction
+        std::cout << glm::to_string(direction_) << std::endl;
         SetPosition(position_ + direction_ * (float)delta_time * speed_);
     }
 

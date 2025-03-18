@@ -30,8 +30,8 @@ namespace game {
 
 // Globals that define the OpenGL window and viewport
 const char *window_title_g = "COMP2501 Final Project - Aria Wong";
-const unsigned int window_width_g = 800;
-const unsigned int window_height_g = 600;
+unsigned int window_width_g = 800;
+unsigned int window_height_g = 600;
 const glm::vec3 viewport_background_color_g(0.0, 0.0, 1.0);
 
 // Directory with game resources such as textures
@@ -506,6 +506,8 @@ void Game::ResizeCallback(GLFWwindow* window, int width, int height)
 
     // Set OpenGL viewport based on framebuffer width and height
     glViewport(0, 0, width, height);
+    window_width_g = width;
+    window_height_g = height;
 }
 
 

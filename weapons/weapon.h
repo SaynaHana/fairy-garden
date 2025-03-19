@@ -18,7 +18,6 @@ namespace game {
 
         virtual void Attack(double delta_time) = 0;
 
-
     protected:
         glm::vec3 parent_position_{};
         glm::vec3 parent_bearing_{};

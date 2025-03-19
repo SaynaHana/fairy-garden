@@ -76,7 +76,8 @@ namespace game {
                 tex_invincible_ship = 7,
                 tex_projectile = 8,
                 tex_enemy_projectile = 9,
-                tex_player_projectile = 10
+                tex_player_projectile = 10,
+                tex_water_projectile = 11
             };
 
             // List of game objects

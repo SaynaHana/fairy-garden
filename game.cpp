@@ -64,6 +64,7 @@ void Game::SetupGameWorld(void)
     textures.push_back("/textures/bullet.png");
     textures.push_back("/textures/tex_enemy_projectile.png");
     textures.push_back("/textures/tex_player_projectile.png");
+    textures.push_back("/textures/tex_water_projectile.png");
     // Load textures
     LoadTextures(textures);
 
@@ -130,10 +131,11 @@ void Game::SetupGameWorld(void)
     game_objects_.push_back(new EnemyGameObject(glm::vec3(2.0, 1.0, 0.0), enemy_data, 2, move_data, magic_missile_weapon));
 
     WeaponData* water_weapon_data = new WeaponData(game_objects_[0], 5.0f, 5);
-    GameObjectData* water_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_enemy_projectile], 10);
+    GameObjectData* water_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_water_projectile], 10);
     WaterWaveWeapon* water_wave_weapon = new WaterWaveWeapon(*water_weapon_data, *water_projectile_data);
     GameObjectData water_enemy_data = GameObjectData(sprite_, &sprite_shader_, tex_[tex_blue_ship]);
     game_objects_.push_back(new EnemyGameObject(glm::vec3(-2.0f, 1.0f, 0.0f), water_enemy_data, 2, move_data, water_wave_weapon));
+    game_objects_.push_back(new EnemyGameObject(glm::vec3(-5.0f, 1.0f, 0.0f), water_enemy_data, 2, move_data, new WaterWaveWeapon(*water_weapon_data, *water_projectile_data)));
 
 
     // Setup background

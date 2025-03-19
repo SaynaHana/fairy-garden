@@ -42,6 +42,25 @@ namespace game {
             // Singleton from: https://www.geeksforgeeks.org/implementation-of-singleton-class-in-cpp/
             static Game* GetInstance();
 
+            GLuint getTexture(int index) {
+                return tex_[index];
+            }
+
+            static enum {
+                tex_red_ship = 0,
+                tex_green_ship = 1,
+                tex_blue_ship = 2,
+                tex_stars = 3,
+                tex_orb = 4,
+                tex_explosion = 5,
+                tex_coin = 6,
+                tex_invincible_ship = 7,
+                tex_projectile = 8,
+                tex_enemy_projectile = 9,
+                tex_player_projectile = 10,
+                tex_water_projectile = 11
+            };
+
         private:
             // Singleton from: https://www.geeksforgeeks.org/implementation-of-singleton-class-in-cpp/
             static Game* gamePtr;
@@ -65,20 +84,6 @@ namespace game {
             // This needs to be a pointer
             GLuint *tex_;
 
-            enum {
-                tex_red_ship = 0,
-                tex_green_ship = 1,
-                tex_blue_ship = 2,
-                tex_stars = 3,
-                tex_orb = 4,
-                tex_explosion = 5,
-                tex_coin = 6,
-                tex_invincible_ship = 7,
-                tex_projectile = 8,
-                tex_enemy_projectile = 9,
-                tex_player_projectile = 10,
-                tex_water_projectile = 11
-            };
 
             // List of game objects
             std::vector<GameObject*> game_objects_;

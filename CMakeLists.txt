@@ -13,6 +13,7 @@ set(HDRS
     explosion_game_object.h
     collectible_game_object.h
     enemies/enemy_game_object.h
+    enemies/enemy_spawner.h
     projectile_game_object.h
     projectiles/magic_missile_projectile.h
     projectiles/water_wave_projectile.h
@@ -43,6 +44,7 @@ set(SRCS
     explosion_game_object.cpp
     collectible_game_object.cpp
     enemies/enemy_game_object.cpp
+    enemies/enemy_spawner.cpp
     projectiles/magic_missile_projectile.cpp
     projectiles/water_wave_projectile.cpp
     projectiles/player_projectile.cpp

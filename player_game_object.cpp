@@ -11,7 +11,7 @@ namespace game {
 	*/
 
 	PlayerGameObject::PlayerGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture,
-                                       GLuint invincibleTexture, MoveData& move_data, Weapon* weapon,
+                                       GLuint invincibleTexture, MoveData& move_data, std::vector<Weapon*> weapons,
                                        int health, bool collision_on)
 		: GameObject(position, geom, shader, texture, health, collision_on) {
 		damage_ = 1;
@@ -24,14 +24,16 @@ namespace game {
 		can_shoot_ = true;
         speed_ = move_data.GetSpeed();
         tags.insert("PlayerGameObject");
-        primary_weapon_ = weapon;
+		weapons_ = weapons;
+		weapon_ = nullptr;
+		SwitchWeapons(0);
 	}
 
     PlayerGameObject::PlayerGameObject(const glm::vec3 &position, GameObjectData &obj_data,
-                                       GLuint invincible_texture, MoveData &move_data, Weapon* weapon, int health,
+                                       GLuint invincible_texture, MoveData &move_data, std::vector<Weapon*> weapons, int health,
                                        bool collision_on)
                                        : PlayerGameObject(position, obj_data.geom_, obj_data.shader_, obj_data.texture_,
-                                                          invincible_texture, move_data, weapon, health, collision_on) {
+                                                          invincible_texture, move_data, weapons, health, collision_on) {
 
     }
 
@@ -82,7 +84,7 @@ namespace game {
 	}
 
     void PlayerGameObject::Shoot(const glm::vec3& mouse_pos, double delta_time) {
-        if(primary_weapon_ == nullptr) return;
+        if(weapon_ == nullptr) return;
 
         // Get direction from mouse
         glm::vec3 diff = mouse_pos;
@@ -91,7 +93,13 @@ namespace game {
             diff = glm::normalize(diff);
         }
 
-        primary_weapon_->ExecuteAttack(delta_time, position_, diff);
+        weapon_->ExecuteAttack(delta_time, position_, diff);
+	}
+
+	bool PlayerGameObject::SwitchWeapons(int index) {
+		if (index < 0 || index >= weapons_.size()) return false;
+
+		weapon_ = weapons_[index];
 	}
 
 	void PlayerGameObject::SetInvincible(bool invincible) {

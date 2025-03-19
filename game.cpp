@@ -76,20 +76,24 @@ void Game::SetupGameWorld(void)
     GameObjectData player_obj_data = GameObjectData(sprite_, &sprite_shader_, tex_[tex_red_ship]);
 
     // Create player weapons
+    std::vector<Weapon*> weapons;
+
     // Default
     WeaponData* primary_weapon_data = new WeaponData(nullptr, 10, 0.25f);
     GameObjectData* primary_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_player_projectile]);
     auto* primary_player_weapon = new DefaultPlayerWeapon(*primary_weapon_data, *primary_projectile_data);
+    weapons.push_back(primary_player_weapon);
 
 
     // Shotgun
     WeaponData* secondary_weapon_data = new WeaponData(nullptr, 10, 1.0f);
     GameObjectData* secondary_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_player_projectile], 0.25f);
     auto* secondary_player_weapon = new ShotgunWeapon(*secondary_weapon_data, *secondary_projectile_data);
+    weapons.push_back(secondary_player_weapon);
 
     game_objects_.push_back(new PlayerGameObject(glm::vec3(0.0f, 0.0f, 0.0f), player_obj_data,
                                                  tex_[tex_invincible_ship], player_move_data,
-                                                 secondary_player_weapon, 3, true));
+                                                 weapons, 3, true));
     float pi_over_two = glm::pi<float>() / 2.0f;
     game_objects_[0]->SetRotation(pi_over_two);
 
@@ -229,6 +233,14 @@ void Game::HandleControls(double delta_time)
             }
 
             ((PlayerGameObject*)player)->Shoot(glm::vec3((float)cursor_x_pos, (float)cursor_y_pos, 0), delta_time);
+        }
+
+        // Switch weapons with number keys
+        if (glfwGetKey(window_, GLFW_KEY_1) == GLFW_PRESS) {
+            ((PlayerGameObject*)player)->SwitchWeapons(0);
+        }
+        else if (glfwGetKey(window_, GLFW_KEY_2) == GLFW_PRESS) {
+            ((PlayerGameObject*)player)->SwitchWeapons(1);
         }
     }
 

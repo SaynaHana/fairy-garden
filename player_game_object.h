@@ -17,9 +17,9 @@ namespace game {
 
         public:
             PlayerGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture,
-                             GLuint invincible_texture, MoveData& moveData, Weapon* weapon, int health, bool collision_on);
+                             GLuint invincible_texture, MoveData& moveData, std::vector<Weapon*> weapons, int health, bool collision_on);
             PlayerGameObject(const glm::vec3 &position, GameObjectData& objData, GLuint invincible_texture,
-                             MoveData& moveData, Weapon* weapon, int health, bool collision_on);
+                             MoveData& moveData, std::vector<Weapon*> weapons, int health, bool collision_on);
 
             // Update function for moving the player object around
             void Update(double delta_time) override;
@@ -30,6 +30,7 @@ namespace game {
 
             void Shoot(const glm::vec3& mouse_pos, double delta_time);
 
+            bool SwitchWeapons(int index);
 
         private:
             // CHANGE: Collectible items
@@ -47,7 +48,8 @@ namespace game {
             Timer* projectile_timer_;
             bool can_shoot_;
 
-            Weapon* primary_weapon_;
+            std::vector<Weapon*> weapons_;
+            Weapon* weapon_;
 
             void Move(double delta_time) override;
 

@@ -14,6 +14,8 @@ namespace game {
             EnemyGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, MoveData& move_data, Weapon* weapon);
             EnemyGameObject(const glm::vec3& position, GameObjectData& data, int health, MoveData& move_data, Weapon* weapon);
 
+            virtual ~EnemyGameObject();
+
             void Update(double delta_time) override;
 
             bool CanCollide(GameObject& other) override;

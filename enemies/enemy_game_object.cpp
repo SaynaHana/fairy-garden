@@ -25,6 +25,12 @@ namespace game {
 
     }
 
+    EnemyGameObject::~EnemyGameObject() {
+        if (weapon_ != nullptr) {
+            delete weapon_;
+        }
+    }
+
 	void EnemyGameObject::Update(double delta_time) {
 		Detect();
 

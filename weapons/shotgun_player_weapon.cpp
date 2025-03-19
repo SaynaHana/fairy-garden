@@ -37,8 +37,6 @@ namespace game {
             angle += 3.14f;
         }
 
-        //std::cout << angle << std::endl;
-
         for(int i = 1; i <= half_num_projectiles_ * 2; i++) {
             float new_angle = angle;
             if(i <= half_num_projectiles_) {
@@ -47,8 +45,6 @@ namespace game {
             else {
                 new_angle = angle + (angle_increment_ * (3.14f / 180) * (i % half_num_projectiles_));
             }
-
-            std::cout << angle << std::endl;
 
             glm::vec3 direction = glm::vec3(std::cos(new_angle), std::sin(new_angle), 0);
 

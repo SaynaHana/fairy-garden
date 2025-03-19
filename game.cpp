@@ -75,13 +75,21 @@ void Game::SetupGameWorld(void)
     MoveData player_move_data = MoveData(2, nullptr);
     GameObjectData player_obj_data = GameObjectData(sprite_, &sprite_shader_, tex_[tex_red_ship]);
 
-    // Create player weapon
+    // Create player weapons
+    // Default
     WeaponData* primary_weapon_data = new WeaponData(nullptr, 10, 0.25f);
     GameObjectData* primary_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_player_projectile]);
-    auto* primary_player_weapon = new ShotgunWeapon(*primary_weapon_data, *primary_projectile_data);
+    auto* primary_player_weapon = new DefaultPlayerWeapon(*primary_weapon_data, *primary_projectile_data);
+
+
+    // Shotgun
+    WeaponData* secondary_weapon_data = new WeaponData(nullptr, 10, 1.0f);
+    GameObjectData* secondary_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_player_projectile], 0.25f);
+    auto* secondary_player_weapon = new ShotgunWeapon(*secondary_weapon_data, *secondary_projectile_data);
+
     game_objects_.push_back(new PlayerGameObject(glm::vec3(0.0f, 0.0f, 0.0f), player_obj_data,
                                                  tex_[tex_invincible_ship], player_move_data,
-                                                 primary_player_weapon, 3, true));
+                                                 secondary_player_weapon, 3, true));
     float pi_over_two = glm::pi<float>() / 2.0f;
     game_objects_[0]->SetRotation(pi_over_two);
 

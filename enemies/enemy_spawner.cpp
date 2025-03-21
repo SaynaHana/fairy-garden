@@ -14,6 +14,7 @@ namespace game {
         minSpawnDist = 1;
 
         enemy_costs_.insert({ 1, "MagicMissileEnemy" });
+        enemy_costs_.insert({2, "WaterWaveEnemy"});
 	}
 
     bool EnemySpawner::Start() {
@@ -66,18 +67,31 @@ namespace game {
         MoveData move_data = MoveData(0.5, player_);
         Game* game = Game::GetInstance();
         EnemyGameObject* enemy = nullptr;
+        WeaponData* weapon_data = nullptr;
+        GameObjectData* projectile_data = nullptr;
+        Weapon* weapon = nullptr;
+        GameObjectData* enemy_data = nullptr;
+
 
         if(name == "MagicMissileEnemy") {
-            WeaponData* weapon_data = new WeaponData(player_, 2, 1.75f);
-            GameObjectData* magic_missile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_enemy_projectile), 5);
-            MagicMissileWeapon* magic_missile_weapon = new MagicMissileWeapon(*weapon_data, *magic_missile_data);
-            GameObjectData enemy_data = GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_green_ship));
-            auto* magic_missile_enemy = new EnemyGameObject(GetLocationAroundPlayer(), enemy_data, 2, move_data, magic_missile_weapon);
-            enemy = magic_missile_enemy;
-            game->SpawnGameObject(magic_missile_enemy);
+            weapon_data = new WeaponData(player_, 2, 1.75f);
+            projectile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_enemy_projectile), 5);
+            weapon = new MagicMissileWeapon(*weapon_data, *projectile_data);
+            enemy_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_green_ship));
+        }
+        else if(name == "WaterWaveEnemy") {
+            weapon_data = new WeaponData(player_, 2, 1.75f);
+            projectile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_enemy_projectile), 5);
+            weapon = new WaterWaveWeapon(*weapon_data, *projectile_data);
+            enemy_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_green_ship));
+        }
+
+        if(enemy_data) {
+            enemy = new EnemyGameObject(GetLocationAroundPlayer(), *enemy_data, 2, move_data, weapon);
         }
 
         if(enemy) {
+            game->SpawnGameObject(enemy);
             enemy_count_++;
         }
     }

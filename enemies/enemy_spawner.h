@@ -27,9 +27,11 @@ namespace game {
         bool started_;
         int round_count_;
         int enemy_count_; // How many enemies are currently alive
+        float minSpawnDist;
 
         void SpawnEnemy(const std::string& name);
         void NextRound(); // Start next round
+        glm::vec3 GetLocationAroundPlayer();
 	};
 }
 

@@ -11,7 +11,7 @@ namespace game {
         round_count_ = 0;
         enemy_count_ = 0;
 
-		// Create enemy types
+        minSpawnDist = 1;
 
         enemy_costs_.insert({ 1, "MagicMissileEnemy" });
 	}
@@ -72,7 +72,7 @@ namespace game {
             GameObjectData* magic_missile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_enemy_projectile), 5);
             MagicMissileWeapon* magic_missile_weapon = new MagicMissileWeapon(*weapon_data, *magic_missile_data);
             GameObjectData enemy_data = GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_green_ship));
-            auto* magic_missile_enemy = new EnemyGameObject(glm::vec3(2.0, 0.0, 0.0), enemy_data, 2, move_data, magic_missile_weapon);
+            auto* magic_missile_enemy = new EnemyGameObject(GetLocationAroundPlayer(), enemy_data, 2, move_data, magic_missile_weapon);
             enemy = magic_missile_enemy;
             game->SpawnGameObject(magic_missile_enemy);
         }
@@ -82,5 +82,20 @@ namespace game {
         }
     }
 
+    glm::vec3 EnemySpawner::GetLocationAroundPlayer() {
+        if(player_ == nullptr) return {0, 0, 0};
+
+        glm::vec3 pos = player_->GetPosition();
+
+        while(glm::length(pos - player_->GetPosition()) < minSpawnDist) {
+            // Get random location around player
+            float randX = ((float)rand() / RAND_MAX) * 10 - 5;
+            float randY = ((float)rand() / RAND_MAX) * 10 - 5;
+
+            pos = glm::vec3(randX, randY, 0) + player_->GetPosition();
+        }
+
+        return pos;
+    }
 	
 }

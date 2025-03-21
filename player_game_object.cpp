@@ -100,6 +100,7 @@ namespace game {
 		if (index < 0 || index >= weapons_.size()) return false;
 
 		weapon_ = weapons_[index];
+        return true;
 	}
 
 	void PlayerGameObject::SetInvincible(bool invincible) {

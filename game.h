@@ -9,6 +9,7 @@
 #include "shader.h"
 #include "game_object.h"
 #include "Constants.h"
+#include "enemies/enemy_spawner.h"
 
 #define ENEMY_SPAWN_TIME 10
 #define GAME_OVER_TIME 5
@@ -46,7 +47,7 @@ namespace game {
                 return tex_[index];
             }
 
-            static enum {
+            enum {
                 tex_red_ship = 0,
                 tex_green_ship = 1,
                 tex_blue_ship = 2,
@@ -92,8 +93,7 @@ namespace game {
             double current_time_;
 
             // CHANGE: Enemy spawning
-            float spawn_interval_;
-            Timer* spawn_timer_;
+            EnemySpawner* enemy_spawner;
 
             // CHANGE: Game over
             Timer* game_over_timer_;

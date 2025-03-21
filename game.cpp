@@ -23,6 +23,7 @@
 #include "weapons/water_wave_weapon.h"
 #include "weapons/default_player_weapon.h"
 #include "weapons/shotgun_player_weapon.h"
+#include "enemies/enemy_spawner.h"
 
 namespace game {
 
@@ -124,18 +125,14 @@ void Game::SetupGameWorld(void)
     scaled->SetScale(glm::vec2(3.0f, 1.0f));
     game_objects_.push_back(scaled);
 
-    WeaponData* weapon_data = new WeaponData(game_objects_[0], 2, 1.75f);
-    GameObjectData* magic_missile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_enemy_projectile], 5);
-    MagicMissileWeapon* magic_missile_weapon = new MagicMissileWeapon(*weapon_data, *magic_missile_data);
-    GameObjectData enemy_data = GameObjectData(sprite_, &sprite_shader_, tex_[tex_green_ship]);
-    game_objects_.push_back(new EnemyGameObject(glm::vec3(2.0, 1.0, 0.0), enemy_data, 2, move_data, magic_missile_weapon));
-
+    /*
     WeaponData* water_weapon_data = new WeaponData(game_objects_[0], 5.0f, 5);
     GameObjectData* water_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_water_projectile], 10);
     WaterWaveWeapon* water_wave_weapon = new WaterWaveWeapon(*water_weapon_data, *water_projectile_data);
     GameObjectData water_enemy_data = GameObjectData(sprite_, &sprite_shader_, tex_[tex_blue_ship]);
     game_objects_.push_back(new EnemyGameObject(glm::vec3(-2.0f, 1.0f, 0.0f), water_enemy_data, 2, move_data, water_wave_weapon));
     game_objects_.push_back(new EnemyGameObject(glm::vec3(-5.0f, 1.0f, 0.0f), water_enemy_data, 2, move_data, new WaterWaveWeapon(*water_weapon_data, *water_projectile_data)));
+     */
 
 
     // Setup background
@@ -149,11 +146,13 @@ void Game::SetupGameWorld(void)
 
 
     // CHANGE: Enemy spawn timer setup
-    spawn_timer_ = new Timer();
-    spawn_timer_->Start(ENEMY_SPAWN_TIME);
+    GameObjectData* enemy_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_blue_ship]);
+    enemy_spawner = new EnemySpawner(1, 3, game_objects_[0], enemy_data);
+    enemy_spawner->Start();
 
     game_over_timer_ = nullptr;
     game_ending_ = false;
+
 }
 
 
@@ -165,8 +164,7 @@ void Game::DestroyGameWorld(void)
         delete game_objects_[i];
     }
 
-    // Free memory for timer
-    delete spawn_timer_;
+    delete enemy_spawner;
 }
 
 
@@ -263,21 +261,8 @@ void Game::HandleControls(double delta_time)
 void Game::Update(double delta_time)
 {
     // CHANGE: Check if a new enemy should be spawned
-    if (spawn_timer_->Finished()) {
-        // Spawn new enemy
-        // Get random position
-        float random_x = ((double)rand() / RAND_MAX * 6.0 * 3) - 9.0;
-        float random_y = ((double)rand() / RAND_MAX * 6.0 * 3) - 9.0;
-
-        MoveData move_data = MoveData(2, game_objects_[0]);
-        PatrolData patrol_data = PatrolData(2, 1, glm::vec3(random_x, random_y, 0));
-
-        /*
-        game_objects_.insert(game_objects_.end() - 1, 
-							new EnemyGameObject(glm::vec3(random_x, random_y, 0), sprite_, &sprite_shader_, tex_[2], 1, move_data));
-         */
-
-        spawn_timer_->Start(ENEMY_SPAWN_TIME);
+    if(!game_ending_) {
+        enemy_spawner->Update(delta_time);
     }
 
     // CHANGE: Check if it is time for the game to end
@@ -582,6 +567,10 @@ void Game::SpawnGameObject(GameObject* gameObject) {
 
 void Game::DestroyObject(int index, bool shouldExplode) {
     GameObject* obj = game_objects_[index];
+
+    if(obj->HasTag("EnemyGameObject")) {
+        enemy_spawner->OnEnemyDeath();
+    }
 
     // Check if the object that is exploding is the player
     // If it is, then start a timer to end the game

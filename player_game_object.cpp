@@ -12,8 +12,8 @@ namespace game {
 
 	PlayerGameObject::PlayerGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture,
                                        GLuint invincibleTexture, MoveData& move_data, std::vector<Weapon*> weapons,
-                                       int health, bool collision_on)
-		: GameObject(position, geom, shader, texture, health, collision_on) {
+                                       int health, bool collision_on, float collider_radius)
+		: GameObject(position, geom, shader, texture, health, collision_on, collider_radius) {
 		damage_ = 1;
 		itemCount_ = 0;
 		invincible_ = false;
@@ -33,7 +33,7 @@ namespace game {
                                        GLuint invincible_texture, MoveData &move_data, std::vector<Weapon*> weapons, int health,
                                        bool collision_on)
                                        : PlayerGameObject(position, obj_data.geom_, obj_data.shader_, obj_data.texture_,
-                                                          invincible_texture, move_data, weapons, health, collision_on) {
+                                                          invincible_texture, move_data, weapons, health, collision_on, obj_data.collider_radius_) {
 
     }
 

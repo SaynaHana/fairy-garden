@@ -75,7 +75,7 @@ void Game::SetupGameWorld(void)
     // Setup the player object (position, texture, vertex count)
     // Note that, in this specific implementation, the player object should always be the first object in the game object vector
     MoveData player_move_data = MoveData(2, nullptr);
-    GameObjectData player_obj_data = GameObjectData(sprite_, &sprite_shader_, tex_[tex_red_ship]);
+    GameObjectData player_obj_data = GameObjectData(sprite_, &sprite_shader_, tex_[tex_red_ship], 2.0f, 0.1f);
 
     // Create player weapons
     std::vector<Weapon*> weapons;
@@ -313,7 +313,7 @@ void Game::Update(double delta_time)
                 // Compute distance between object i and object j
                 float distance = glm::length(current_game_object->GetPosition() - other_game_object->GetPosition());
                 // If distance is below a threshold, we have a collision
-                if (distance < 1.0f) {
+                if (distance < (current_game_object->GetColliderRadius() + other_game_object->GetColliderRadius())) {
                     // CHANGE: Collision behaviour
                     // Check if objects can collide
                     if(!current_game_object->CanCollide(*other_game_object) || !other_game_object->CanCollide(*current_game_object))

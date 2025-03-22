@@ -17,7 +17,8 @@ namespace game {
 
         public:
             PlayerGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture,
-                             GLuint invincible_texture, MoveData& moveData, std::vector<Weapon*> weapons, int health, bool collision_on);
+                             GLuint invincible_texture, MoveData& moveData, std::vector<Weapon*> weapons, int health,
+                             bool collision_on, float collider_radius);
             PlayerGameObject(const glm::vec3 &position, GameObjectData& objData, GLuint invincible_texture,
                              MoveData& moveData, std::vector<Weapon*> weapons, int health, bool collision_on);
 

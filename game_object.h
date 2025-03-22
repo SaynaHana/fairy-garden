@@ -29,7 +29,7 @@ namespace game {
         public:
             // Constructor
             // CHANGE: Added health and collision_on parameters
-            GameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, bool collision_on);
+            GameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, bool collision_on, float collider_radius = 0.5f);
             GameObject(const glm::vec3& position, GameObjectData& data, int health, bool collision_on);
 
             // Update the GameObject's state. Can be overriden in children
@@ -48,6 +48,7 @@ namespace game {
             inline bool ShouldDestroy(void) const { return should_destroy_; }
             inline int GetDamage(void) const { return damage_; }
             inline int GetCollisionType(void) const { return collision_type_; }
+            inline float GetColliderRadius(void) const { return collider_radius_; }
 
             // Get bearing direction (direction in which the game object
             // is facing)
@@ -104,6 +105,7 @@ namespace game {
             bool should_explode_;
             bool should_destroy_;
             CollisionType collision_type_;
+            float collider_radius_;
 
             // Tags, used for identifying object types without having to cast them
             std::unordered_set<std::string> tags;

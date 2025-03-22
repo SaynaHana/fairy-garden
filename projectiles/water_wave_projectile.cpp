@@ -34,7 +34,7 @@ namespace game {
 
     bool WaterWaveProjectile::CanCollide(GameObject& other) {
 		if (!Projectile::CanCollide(other)) return false;
-		if (other.HasTag("EnemyGameObject")) return true;
+		if (other.HasTag("PlayerGameObject")) return true;
 		return false;
     }
 

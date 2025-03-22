@@ -11,7 +11,12 @@ namespace game {
         round_count_ = 0;
         enemy_count_ = 0;
 
-        minSpawnDist = 1;
+        min_spawn_dist_ = 1;
+
+        spawn_interval_ = 1;
+        can_spawn_ = false;
+        spawn_timer_ = new Timer();
+        spawn_timer_->Start(spawn_interval_);
 
         enemy_costs_.insert({ 1, "MagicMissileEnemy" });
         enemy_costs_.insert({2, "WaterWaveEnemy"});
@@ -36,6 +41,25 @@ namespace game {
 
             NextRound();
         }
+        else {
+            if(!spawn_queue_.empty()) {
+                if(can_spawn_) {
+                    SpawnEnemy(spawn_queue_.front());
+                    spawn_queue_.pop();
+                    can_spawn_ = false;
+
+                    if(!spawn_timer_) return;
+                    spawn_timer_->Start(spawn_interval_);
+                }
+                else {
+                    if(spawn_timer_) {
+                        if(spawn_timer_->Finished()) {
+                            can_spawn_ = true;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     void EnemySpawner::OnEnemyDeath() {
@@ -58,7 +82,8 @@ namespace game {
 
                 counter -= i;
 
-                SpawnEnemy(enemy_costs_[i]);
+                spawn_queue_.push(enemy_costs_[i]);
+                enemy_count_++;
             }
         }
     }
@@ -74,13 +99,13 @@ namespace game {
 
 
         if(name == "MagicMissileEnemy") {
-            weapon_data = new WeaponData(player_, 2, 1.75f);
+            weapon_data = new WeaponData(player_, 2, 3.0f);
             projectile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_enemy_projectile), 5);
             weapon = new MagicMissileWeapon(*weapon_data, *projectile_data);
             enemy_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_green_ship));
         }
         else if(name == "WaterWaveEnemy") {
-            weapon_data = new WeaponData(player_, 2, 1.75f);
+            weapon_data = new WeaponData(player_, 2, 5.0f);
             projectile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_enemy_projectile), 5);
             weapon = new WaterWaveWeapon(*weapon_data, *projectile_data);
             enemy_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_green_ship));
@@ -92,7 +117,6 @@ namespace game {
 
         if(enemy) {
             game->SpawnGameObject(enemy);
-            enemy_count_++;
         }
     }
 
@@ -101,10 +125,10 @@ namespace game {
 
         glm::vec3 pos = player_->GetPosition();
 
-        while(glm::length(pos - player_->GetPosition()) < minSpawnDist) {
+        while(glm::length(pos - player_->GetPosition()) < min_spawn_dist_) {
             // Get random location around player
-            float randX = ((float)rand() / RAND_MAX) * 10 - 5;
-            float randY = ((float)rand() / RAND_MAX) * 10 - 5;
+            float randX = ((float)rand() / RAND_MAX) * 20 - 10;
+            float randY = ((float)rand() / RAND_MAX) * 20 - 10;
 
             pos = glm::vec3(randX, randY, 0) + player_->GetPosition();
         }

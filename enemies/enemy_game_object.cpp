@@ -10,9 +10,9 @@ namespace game {
         if(weapon_) {
         }
 
-		state_ = state_patrol;
-        idle_range_ = 3;
-        chase_range_ = 5;
+		state_ = state_chase;
+        idle_range_ = 2;
+        chase_range_ = 3;
         flee_range_ = 2;
 		target_ = move_data.GetTarget();
         speed_ = move_data.GetSpeed();
@@ -63,6 +63,9 @@ namespace game {
         // Calculate distance from target
         float distance = glm::distance(target_->GetPosition(), GetPosition());
 
+        if(distance <= flee_range_) {
+
+        }
         if(distance >= idle_range_ && distance < chase_range_) {
             SetAcceleration(glm::vec3(0));
             SetVelocity(glm::vec3(0));

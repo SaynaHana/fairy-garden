@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <string>
+#include <queue>
 #include "enemy_game_object.h"
 #include "../weapons/magic_missile_weapon.h"
 #include "../projectiles/magic_missile_projectile.h"
@@ -27,7 +28,11 @@ namespace game {
         bool started_;
         int round_count_;
         int enemy_count_; // How many enemies are currently alive
-        float minSpawnDist;
+        float min_spawn_dist_;
+        float spawn_interval_;
+        bool can_spawn_;
+        Timer* spawn_timer_;
+        std::queue<std::string> spawn_queue_;
 
         void SpawnEnemy(const std::string& name);
         void NextRound(); // Start next round

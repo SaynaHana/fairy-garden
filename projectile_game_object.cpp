@@ -7,7 +7,7 @@ namespace game {
         destroy_timer_ = new Timer();
         lifetime_ = lifetime;
         destroy_timer_->Start(lifetime);
-        should_explode_ = true;
+        should_explode_ = false;
         collision_type_ = CollisionType::ray_;
         tags.insert("CanDamageEnemy");
         tags.insert("Projectile");

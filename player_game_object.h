@@ -34,9 +34,6 @@ namespace game {
             bool SwitchWeapons(int index);
 
         private:
-            // CHANGE: Collectible items
-            int itemCount_;
-
             // CHANGE: Makes the player not take damage for 10 seconds
             void SetInvincible(bool invincible);
             bool invincible_;

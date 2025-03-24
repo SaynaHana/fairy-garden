@@ -111,14 +111,16 @@ void Game::SetupGameWorld(void)
     //game_objects_.push_back(new EnemyGameObject(glm::vec3(-3.0f, -0.5f, 0.0f), sprite_, &sprite_shader_, tex_[tex_blue_ship], 1, move_data, patrol_data));
 
     // CHANGE: Setup collectible items
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(2.0f, 2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(3.0f, 1.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(-2.0f, -2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(1.0f, -3.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(-3.0f, 2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(3.0f, -2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(-3.0f, -2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(3.0f, 1.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+    /*
+		game_objects_.push_back(new CollectibleGameObject(glm::vec3(2.0f, 2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+		game_objects_.push_back(new CollectibleGameObject(glm::vec3(3.0f, 1.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+		game_objects_.push_back(new CollectibleGameObject(glm::vec3(-2.0f, -2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+		game_objects_.push_back(new CollectibleGameObject(glm::vec3(1.0f, -3.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+		game_objects_.push_back(new CollectibleGameObject(glm::vec3(-3.0f, 2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+		game_objects_.push_back(new CollectibleGameObject(glm::vec3(3.0f, -2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+		game_objects_.push_back(new CollectibleGameObject(glm::vec3(-3.0f, -2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+		game_objects_.push_back(new CollectibleGameObject(glm::vec3(3.0f, 1.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
+    */
 
     // Gameobject to show the vec2 scale
     GameObject *scaled = new GameObject(glm::vec3(2.0f, -1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_invincible_ship], 1, false);

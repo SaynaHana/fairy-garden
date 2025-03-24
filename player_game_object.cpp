@@ -15,7 +15,6 @@ namespace game {
                                        int health, bool collision_on, float collider_radius)
 		: GameObject(position, geom, shader, texture, health, collision_on, collider_radius) {
 		damage_ = 1;
-		itemCount_ = 0;
 		invincible_ = false;
 		invincible_timer_ = nullptr;
 		normal_texture_ = texture;
@@ -62,24 +61,6 @@ namespace game {
     }
 
 	void PlayerGameObject::OnCollision(GameObject &other) {
-		// If the other game object is a collectible
-		CollectibleGameObject* collectible = dynamic_cast<CollectibleGameObject*>(&other);
-
-		if (collectible != nullptr) {
-			// Means that other is a collectible
-			itemCount_++;
-
-			if (itemCount_ >= INVINCIBLE_ITEM_COUNT) {
-				itemCount_ = 0;
-				SetInvincible(true);
-			}
-		}
-
-		// If invincible, negate damage
-		if (invincible_) {
-			health_ += other.GetDamage();
-		}
-
 		GameObject::OnCollision(other);
 	}
 

@@ -11,9 +11,9 @@
 #include "../projectiles/water_wave_projectile.h"
 
 namespace game {
-	class EnemySpawner {
+	class Spawner {
 	public:
-		EnemySpawner(int initial_cost = 1, int cost_increment_ = 3, GameObject* player = nullptr, GameObjectData* data = nullptr);
+		Spawner(int initial_cost = 1, int cost_increment_ = 3, GameObject* player = nullptr, GameObjectData* data = nullptr);
 
         bool Start();
         void Update(double delta_time);

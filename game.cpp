@@ -23,7 +23,7 @@
 #include "weapons/water_wave_weapon.h"
 #include "weapons/default_player_weapon.h"
 #include "weapons/shotgun_player_weapon.h"
-#include "enemies/enemy_spawner.h"
+#include "enemies/spawner.h"
 
 namespace game {
 
@@ -149,8 +149,8 @@ void Game::SetupGameWorld(void)
 
     // CHANGE: Enemy spawn timer setup
     GameObjectData* enemy_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_blue_ship]);
-    enemy_spawner = new EnemySpawner(1, 3, game_objects_[0], enemy_data);
-    enemy_spawner->Start();
+    spawner_ = new Spawner(1, 3, game_objects_[0], enemy_data);
+    spawner_->Start();
 
     game_over_timer_ = nullptr;
     game_ending_ = false;
@@ -166,7 +166,7 @@ void Game::DestroyGameWorld(void)
         delete game_objects_[i];
     }
 
-    delete enemy_spawner;
+    delete spawner_;
 }
 
 
@@ -264,7 +264,7 @@ void Game::Update(double delta_time)
 {
     // CHANGE: Check if a new enemy should be spawned
     if(!game_ending_) {
-        enemy_spawner->Update(delta_time);
+        spawner_->Update(delta_time);
     }
 
     // CHANGE: Check if it is time for the game to end
@@ -571,7 +571,7 @@ void Game::DestroyObject(int index, bool shouldExplode) {
     GameObject* obj = game_objects_[index];
 
     if(obj->HasTag("EnemyGameObject")) {
-        enemy_spawner->OnEnemyDeath();
+        spawner_->OnEnemyDeath();
     }
 
     // Check if the object that is exploding is the player

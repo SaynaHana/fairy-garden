@@ -1,8 +1,8 @@
-#include "enemy_spawner.h"
+#include "spawner.h"
 #include "../game.h"
 
 namespace game {
-	EnemySpawner::EnemySpawner(int initial_cost, int cost_increment, GameObject* player, GameObjectData* obj_data) {
+	Spawner::Spawner(int initial_cost, int cost_increment, GameObject* player, GameObjectData* obj_data) {
         data_ = obj_data;
         player_ = player;
 		cost_ = initial_cost;
@@ -22,7 +22,7 @@ namespace game {
         enemy_costs_.insert({2, "WaterWaveEnemy"});
 	}
 
-    bool EnemySpawner::Start() {
+    bool Spawner::Start() {
         if(started_) return false;
 
         NextRound();
@@ -31,7 +31,7 @@ namespace game {
         return true;
     }
 
-    void EnemySpawner::Update(double delta_time) {
+    void Spawner::Update(double delta_time) {
         if(!started_) return;
 
         // Check if there are any enemies left
@@ -62,11 +62,12 @@ namespace game {
         }
     }
 
-    void EnemySpawner::OnEnemyDeath() {
+    void Spawner::OnEnemyDeath() {
         enemy_count_--;
     }
 
-    void EnemySpawner::NextRound() {
+    void Spawner::NextRound() {
+        std::cout << "Wave: " << round_count_ << std::endl;
         int counter = cost_ + cost_increment_;
 
         if(round_count_ == 0) {
@@ -88,7 +89,7 @@ namespace game {
         }
     }
 
-    void EnemySpawner::SpawnEnemy(const std::string &name) {
+    void Spawner::SpawnEnemy(const std::string &name) {
         MoveData move_data = MoveData(0.5, player_);
         Game* game = Game::GetInstance();
         EnemyGameObject* enemy = nullptr;
@@ -120,7 +121,7 @@ namespace game {
         }
     }
 
-    glm::vec3 EnemySpawner::GetLocationAroundPlayer() {
+    glm::vec3 Spawner::GetLocationAroundPlayer() {
         if(player_ == nullptr) return {0, 0, 0};
 
         glm::vec3 pos = player_->GetPosition();

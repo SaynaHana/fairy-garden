@@ -7,7 +7,7 @@
 namespace game {
     class CollectibleGameObject : public GameObject {
         public:
-            CollectibleGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture);
+            CollectibleGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, float duration = 5.0f);
 
             void Update(double delta_time) override;
 
@@ -17,9 +17,16 @@ namespace game {
 
             bool CanCollide(game::GameObject &other) override;
 
+            // Getters
+            float GetDuration() const { return duration_; }
+
+            virtual void OnConsumed(GameObject& player) = 0;
+
         private:
             // CHANGE: Added collected flag to set ghost shader
             bool collected;
+
+            float duration_;
     };
 } // namespace game
 

@@ -5,6 +5,7 @@
 #include "timer.h"
 #include "data/move_data.h"
 #include "weapons/weapon.h"
+#include "collectible_game_object.h"
 
 #define INVINCIBLE_ITEM_COUNT 5
 #define INVINCIBLE_DURATION 10
@@ -33,6 +34,10 @@ namespace game {
 
             bool SwitchWeapons(int index);
 
+            void UseCollectible(CollectibleGameObject* collectible);
+            void ResetStats();
+            void SetAttackSpeedMultiplier(float multiplier) { attack_speed_multiplier = multiplier; }
+
         private:
             // CHANGE: Makes the player not take damage for 10 seconds
             void SetInvincible(bool invincible);
@@ -48,6 +53,9 @@ namespace game {
 
             std::vector<Weapon*> weapons_;
             Weapon* weapon_;
+            float attack_speed_multiplier = 1;
+            Timer* collectible_timer_;
+            bool collectible_active_ = false;
 
             void Move(double delta_time) override;
 

@@ -12,8 +12,9 @@ set(HDRS
     player_game_object.h
     explosion_game_object.h
     collectible_game_object.h
+    collectibles/fairy_dust_collectible.h
     enemies/enemy_game_object.h
-    enemies/enemy_spawner.h
+    enemies/spawner.h
     projectile_game_object.h
     projectiles/magic_missile_projectile.h
     projectiles/water_wave_projectile.h
@@ -43,8 +44,9 @@ set(SRCS
     player_game_object.cpp
     explosion_game_object.cpp
     collectible_game_object.cpp
+    collectibles/fairy_dust_collectible.cpp
     enemies/enemy_game_object.cpp
-    enemies/enemy_spawner.cpp
+    enemies/spawner.cpp
     projectiles/magic_missile_projectile.cpp
     projectiles/water_wave_projectile.cpp
     projectiles/player_projectile.cpp

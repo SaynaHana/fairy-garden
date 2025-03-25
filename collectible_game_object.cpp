@@ -2,11 +2,12 @@
 #include "player_game_object.h"
 
 namespace game {
-    CollectibleGameObject::CollectibleGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture)
+    CollectibleGameObject::CollectibleGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, float duration)
     : GameObject(position, geom, shader, texture, 0, true) {
         should_explode_ = false;
         damage_ = 0;
         collected = false;
+        duration_ = duration;
         tags.insert("Collectible");
     }
 
@@ -39,6 +40,5 @@ namespace game {
         collision_on_ = false;
         collected = true;
     }
-
 
 } // namespace game

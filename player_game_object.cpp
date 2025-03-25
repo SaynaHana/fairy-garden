@@ -26,6 +26,8 @@ namespace game {
 		weapons_ = weapons;
 		weapon_ = nullptr;
 		SwitchWeapons(0);
+        collectible_timer_ = new Timer();
+        collectible_active_ = false;
 	}
 
     PlayerGameObject::PlayerGameObject(const glm::vec3 &position, GameObjectData &obj_data,
@@ -52,6 +54,12 @@ namespace game {
 			}
 		}
 
+        if(collectible_active_) {
+            if(collectible_timer_->Finished()) {
+                ResetStats();
+            }
+        }
+
 		// Call the parent's update method to move the object in standard way, if desired
 		GameObject::Update(delta_time);
 	}
@@ -62,6 +70,14 @@ namespace game {
 
 	void PlayerGameObject::OnCollision(GameObject &other) {
 		GameObject::OnCollision(other);
+
+        if(other.HasTag("Collectible")) {
+            CollectibleGameObject* collectible = dynamic_cast<CollectibleGameObject*>(&other);
+
+            if(collectible) {
+                UseCollectible(collectible);
+            }
+        }
 	}
 
     void PlayerGameObject::Shoot(const glm::vec3& mouse_pos, double delta_time) {
@@ -102,6 +118,18 @@ namespace game {
 		}
 	}
 
+    void PlayerGameObject::UseCollectible(game::CollectibleGameObject *collectible) {
+        if(!collectible) return;
+
+        collectible->OnConsumed(*this);
+        collectible_timer_->Start(collectible->GetDuration());
+        collectible_active_ = true;
+    }
+
+    void PlayerGameObject::ResetStats() {
+        attack_speed_multiplier = 1;
+    }
+
     bool PlayerGameObject::CanCollide(game::GameObject &other) {
 		if (!GameObject::CanCollide(other)) return false;
 		if (other.HasTag("CanDamagePlayer")) return true;
@@ -115,7 +143,7 @@ namespace game {
 
 		if (!can_shoot) {
 			projectile_timer_ = new Timer();
-			projectile_timer_->Start(SHOOT_COOLDOWN);
+			projectile_timer_->Start(SHOOT_COOLDOWN / attack_speed_multiplier);
 		}
 		else {
 			projectile_timer_ = nullptr;

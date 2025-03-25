@@ -9,7 +9,7 @@
 #include "shader.h"
 #include "game_object.h"
 #include "Constants.h"
-#include "enemies/enemy_spawner.h"
+#include "enemies/spawner.h"
 
 #define ENEMY_SPAWN_TIME 10
 #define GAME_OVER_TIME 5
@@ -93,7 +93,7 @@ namespace game {
             double current_time_;
 
             // CHANGE: Enemy spawning
-            EnemySpawner* enemy_spawner;
+            Spawner* spawner_;
 
             // CHANGE: Game over
             Timer* game_over_timer_;

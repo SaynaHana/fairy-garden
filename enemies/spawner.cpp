@@ -1,5 +1,7 @@
 #include "spawner.h"
 #include "../game.h"
+#include "../collectible_game_object.h"
+#include "../collectibles/fairy_dust_collectible.h"
 
 namespace game {
 	Spawner::Spawner(int initial_cost, int cost_increment, GameObject* player, GameObjectData* obj_data) {
@@ -20,6 +22,9 @@ namespace game {
 
         enemy_costs_.insert({ 1, "MagicMissileEnemy" });
         enemy_costs_.insert({2, "WaterWaveEnemy"});
+
+        collectible_spawn_interval_ = 15.0f;
+        collectible_spawn_timer_ = new Timer();
 	}
 
     bool Spawner::Start() {
@@ -58,6 +63,14 @@ namespace game {
                         }
                     }
                 }
+            }
+        }
+
+        // Collectibles
+        if(collectible_spawn_timer_) {
+            if(collectible_spawn_timer_->Finished()) {
+                collectible_spawn_timer_->Start(collectible_spawn_interval_);
+                SpawnCollectible();
             }
         }
     }
@@ -107,7 +120,7 @@ namespace game {
         }
         else if(name == "WaterWaveEnemy") {
             weapon_data = new WeaponData(player_, 2, 5.0f);
-            projectile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_enemy_projectile), 5);
+            projectile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_water_projectile), 5);
             weapon = new WaterWaveWeapon(*weapon_data, *projectile_data);
             enemy_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_green_ship));
         }
@@ -118,6 +131,19 @@ namespace game {
 
         if(enemy) {
             game->SpawnGameObject(enemy);
+        }
+    }
+
+    void Spawner::SpawnCollectible() {
+        CollectibleGameObject* collectible = nullptr;
+        Game* game = Game::GetInstance();
+
+        collectible = new FairyDustCollectible(GetLocationAroundPlayer(), data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_fairy_dust), 5.0f);
+        if(collectible_count % 3) {
+        }
+
+        if(collectible) {
+            game->SpawnGameObject(collectible);
         }
     }
 

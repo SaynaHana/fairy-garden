@@ -5,6 +5,7 @@ namespace game {
         attack_interval_ = data.GetAttackInterval();
         can_attack_ = can_attack;
         attack_timer_ = new Timer();
+        attack_speed_multiplier_ = 1;
         attack_timer_->Start(attack_interval_);
     }
 
@@ -20,7 +21,7 @@ namespace game {
             can_attack_ = false;
 
             if(!attack_timer_) return;
-            attack_timer_->Start(attack_interval_);
+            attack_timer_->Start(attack_interval_ / attack_speed_multiplier_);
         }
         else {
             if(attack_timer_) {

@@ -66,6 +66,7 @@ void Game::SetupGameWorld(void)
     textures.push_back("/textures/tex_enemy_projectile.png");
     textures.push_back("/textures/tex_player_projectile.png");
     textures.push_back("/textures/tex_water_projectile.png");
+    textures.push_back("/textures/tex_fairy_dust.png");
     // Load textures
     LoadTextures(textures);
 

@@ -14,9 +14,13 @@ namespace game {
 
         void Attack(double delta_time) override = 0;
 
+        // Setters
+        void SetAttackSpeedMultiplier(float multiplier) { attack_speed_multiplier_ = multiplier; }
+
     protected:
         Timer* attack_timer_;
         float attack_interval_;
+        float attack_speed_multiplier_;
         bool can_attack_;
     };
 }

@@ -38,6 +38,7 @@ namespace game {
 
     void CollectibleGameObject::OnCollision(GameObject& other) {
         collision_on_ = false;
+        should_destroy_ = true;
         collected = true;
     }
 

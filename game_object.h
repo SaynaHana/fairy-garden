@@ -49,6 +49,7 @@ namespace game {
             inline int GetDamage(void) const { return damage_; }
             inline int GetCollisionType(void) const { return collision_type_; }
             inline float GetColliderRadius(void) const { return collider_radius_; }
+            int GetHealth() const { return health_; }
 
             // Get bearing direction (direction in which the game object
             // is facing)
@@ -69,6 +70,11 @@ namespace game {
             inline void SetVelocity(glm::vec3 velocity) { velocity_ = velocity; }
             inline void SetAcceleration(glm::vec3 acceleration) { acceleration_ = acceleration; };
             inline void SetSpeed(float speed) { speed_ = speed; }
+            void SetHealth(int health) {
+                if(health >= 5) return;
+
+                health_ = health;
+            }
 
             // CHANGE: Added function that gets called when this game object collides with another
             virtual void OnCollision(GameObject& other);

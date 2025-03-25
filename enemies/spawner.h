@@ -20,6 +20,7 @@ namespace game {
         void OnEnemyDeath();
 
 	private:
+        // Enemies
 		std::unordered_map<int, std::string> enemy_costs_; // Stores how much each enemy costs to spawn
         GameObjectData* data_;
         GameObject* player_;
@@ -35,6 +36,15 @@ namespace game {
         std::queue<std::string> spawn_queue_;
 
         void SpawnEnemy(const std::string& name);
+
+        // Collectibles
+        float collectible_spawn_interval_;
+        Timer* collectible_spawn_timer_;
+        int collectible_count = 1;
+
+        void SpawnCollectible();
+
+        // Utility
         void NextRound(); // Start next round
         glm::vec3 GetLocationAroundPlayer();
 	};

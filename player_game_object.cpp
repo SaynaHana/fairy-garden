@@ -3,6 +3,7 @@
 
 #include "collectible_game_object.h"
 #include "projectile_game_object.h"
+#include "weapons/interval_weapon.h"
 
 namespace game {
 	/*
@@ -88,6 +89,12 @@ namespace game {
 
         if(glm::length(diff) != 0) {
             diff = glm::normalize(diff);
+        }
+
+        IntervalWeapon* interval = dynamic_cast<IntervalWeapon*>(weapon_);
+
+        if(interval) {
+            interval->SetAttackSpeedMultiplier(attack_speed_multiplier);
         }
 
         weapon_->ExecuteAttack(delta_time, position_, diff);

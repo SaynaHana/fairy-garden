@@ -70,6 +70,10 @@ namespace game {
     }
 
 	void PlayerGameObject::OnCollision(GameObject &other) {
+        if(invincible_) {
+            health_++;
+        }
+
 		GameObject::OnCollision(other);
 
         if(other.HasTag("Collectible")) {
@@ -109,20 +113,6 @@ namespace game {
 
 	void PlayerGameObject::SetInvincible(bool invincible) {
 		invincible_ = invincible;
-
-		if (invincible) {
-			invincible_timer_ = new Timer();
-			invincible_timer_->Start(INVINCIBLE_DURATION);
-
-			// Change texture to invincible texture
-			texture_ = invincible_texture_;
-		}
-		else {
-			invincible_timer_ = nullptr;
-
-			// Change texture to normal texture
-			texture_ = normal_texture_;
-		}
 	}
 
     void PlayerGameObject::UseCollectible(game::CollectibleGameObject *collectible) {
@@ -135,6 +125,8 @@ namespace game {
 
     void PlayerGameObject::ResetStats() {
         attack_speed_multiplier = 1;
+        SetInvincible(false);
+        speed_ = 2;
     }
 
     bool PlayerGameObject::CanCollide(game::GameObject &other) {

@@ -37,14 +37,16 @@ namespace game {
             void UseCollectible(CollectibleGameObject* collectible);
             void ResetStats();
             void SetAttackSpeedMultiplier(float multiplier) { attack_speed_multiplier = multiplier; }
+            void SetInvincible(bool invincible);
+            void SetMovementSpeed(int speed) { speed_ = speed; }
 
         private:
             // CHANGE: Makes the player not take damage for 10 seconds
-            void SetInvincible(bool invincible);
             bool invincible_;
             Timer* invincible_timer_;
             GLuint normal_texture_;
             GLuint invincible_texture_;
+            float init_speed_;
 
             // CHANGE: Projectiles
             void SetCanShoot(bool can_shoot);

@@ -2,6 +2,7 @@
 #include "../game.h"
 #include "../collectible_game_object.h"
 #include "../collectibles/fairy_dust_collectible.h"
+#include "../collectibles/rainbow_fairy_dust_collectible.h"
 
 namespace game {
 	Spawner::Spawner(int initial_cost, int cost_increment, GameObject* player, GameObjectData* obj_data) {
@@ -138,13 +139,18 @@ namespace game {
         CollectibleGameObject* collectible = nullptr;
         Game* game = Game::GetInstance();
 
-        collectible = new FairyDustCollectible(GetLocationAroundPlayer(), data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_fairy_dust), 5.0f);
-        if(collectible_count % 3) {
+        if(collectible_count % 3 == 0) {
+            collectible = new RainbowFairyDustCollectible(GetLocationAroundPlayer(), data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_rainbow_fairy_dust), 10.0f);
+        }
+        else {
+            collectible = new FairyDustCollectible(GetLocationAroundPlayer(), data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_fairy_dust), 5.0f);
         }
 
         if(collectible) {
             game->SpawnGameObject(collectible);
         }
+
+        collectible_count++;
     }
 
     glm::vec3 Spawner::GetLocationAroundPlayer() {

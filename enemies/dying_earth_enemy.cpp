@@ -9,6 +9,8 @@ namespace game {
     DyingEarthEnemy::DyingEarthEnemy(const glm::vec3 &position, game::Geometry *geom, game::Shader *shader,
                                      GLuint texture, int health, game::MoveData &move_data, game::Weapon *weapon)
                                      : EnemyGameObject(position, geom, shader, texture, health, move_data, weapon) {
+        swing_angle_ = 0;
+        reverse_swing_ = false;
         SetupLinks();
     }
 
@@ -21,8 +23,31 @@ namespace game {
     void DyingEarthEnemy::Update(double delta_time) {
         EnemyGameObject::Update(delta_time);
 
+        // Rotate the enemy
+        if(!reverse_swing_) {
+            swing_angle_ += delta_time;
+        }
+        else {
+            swing_angle_ -= delta_time;
+        }
+
+        if(swing_angle_ > 3.14f) {
+            reverse_swing_ = true;
+        }
+        else if(swing_angle_ < 0) {
+            reverse_swing_ = false;
+        }
+
+        std::cout << swing_angle_ << std::endl;
+
+        glm::mat4 translate = glm::mat4(1);
+        translate = glm::translate(translate, position_);
+        glm::mat4 rotate = glm::mat4(1);
+        rotate = glm::rotate(rotate, swing_angle_ + 3.14f, glm::vec3(0, 0, 1));
+
         glm::mat4 transformation = glm::mat4(1);
-        transformation = glm::translate(transformation, position_);
+        transformation = translate * rotate;
+
 
         for(int i = 0; i < children_.size(); i++) {
             ((DyingEarthEnemyLink*)children_[i])->Move(transformation);

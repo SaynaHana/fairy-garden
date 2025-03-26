@@ -13,6 +13,9 @@ namespace game {
 
         private:
             void SetupLinks();
+
+            float swing_angle_;
+            bool reverse_swing_; // If enemy should swing in opposite direction
     };
 }
 

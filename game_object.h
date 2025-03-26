@@ -76,6 +76,8 @@ namespace game {
                 health_ = health;
             }
             void SetColliderRadius(float size) { collider_radius_ = size; }
+            void SetParent(GameObject* parent) { parent_ = parent; }
+            void AddChild(GameObject* child) { children_.push_back(child); }
 
             // CHANGE: Added function that gets called when this game object collides with another
             virtual void OnCollision(GameObject& other);
@@ -93,6 +95,9 @@ namespace game {
             glm::vec3 velocity_;
             glm::vec3 acceleration_;
             float speed_;
+
+            std::vector<GameObject*> children_;
+            GameObject* parent_ = nullptr;
 
             // Geometry
             Geometry *geometry_;

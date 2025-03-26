@@ -16,6 +16,8 @@ set(HDRS
     collectibles/rainbow_fairy_dust_collectible.h
     collectibles/dark_fairy_dust_collectible.h
     enemies/enemy_game_object.h
+    enemies/dying_earth_enemy.h
+    enemies/dying_earth_enemy_link.h
     enemies/spawner.h
     projectile_game_object.h
     projectiles/magic_missile_projectile.h
@@ -50,6 +52,8 @@ set(SRCS
     collectibles/rainbow_fairy_dust_collectible.cpp
     collectibles/dark_fairy_dust_collectible.cpp
     enemies/enemy_game_object.cpp
+    enemies/dying_earth_enemy.cpp
+    enemies/dying_earth_enemy_link.cpp
     enemies/spawner.cpp
     projectiles/magic_missile_projectile.cpp
     projectiles/water_wave_projectile.cpp

@@ -24,6 +24,7 @@ namespace game {
         EnemyGameObject::Update(delta_time);
 
         // Rotate the enemy
+        // Cycle between going counter-clockwise and clockwise
         if(!reverse_swing_) {
             swing_angle_ += delta_time;
         }
@@ -38,12 +39,27 @@ namespace game {
             reverse_swing_ = false;
         }
 
-        std::cout << swing_angle_ << std::endl;
+        // Get angle to player
+        float player_angle_ = 0;
+
+        if(target_ != nullptr) {
+            glm::vec3 diff = target_->GetPosition() - GetPosition();
+
+            if(glm::length(diff) != 0) {
+                diff = glm::normalize(diff);
+            }
+
+            player_angle_ = std::atan(diff.y / diff.x);
+
+            if(diff.x < 0) {
+                player_angle_ += 3.14f;
+            }
+        }
 
         glm::mat4 translate = glm::mat4(1);
         translate = glm::translate(translate, position_);
         glm::mat4 rotate = glm::mat4(1);
-        rotate = glm::rotate(rotate, swing_angle_ + 3.14f, glm::vec3(0, 0, 1));
+        rotate = glm::rotate(rotate, swing_angle_ + player_angle_ - (3.14f / 2), glm::vec3(0, 0, 1));
 
         glm::mat4 transformation = glm::mat4(1);
         transformation = translate * rotate;

@@ -61,7 +61,8 @@ namespace game {
                 tex_player_projectile = 10,
                 tex_water_projectile = 11,
                 tex_fairy_dust = 12,
-                tex_rainbow_fairy_dust = 13
+                tex_rainbow_fairy_dust = 13,
+                tex_dark_fairy_dust = 14
             };
 
         private:

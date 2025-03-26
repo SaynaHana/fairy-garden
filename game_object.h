@@ -29,7 +29,7 @@ namespace game {
         public:
             // Constructor
             // CHANGE: Added health and collision_on parameters
-            GameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, bool collision_on, float collider_radius = 0.5f);
+            GameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, bool collision_on, float collider_radius = 0.5f, float speed = 2);
             GameObject(const glm::vec3& position, GameObjectData& data, int health, bool collision_on);
 
             // Update the GameObject's state. Can be overriden in children
@@ -75,6 +75,7 @@ namespace game {
 
                 health_ = health;
             }
+            void SetColliderRadius(float size) { collider_radius_ = size; }
 
             // CHANGE: Added function that gets called when this game object collides with another
             virtual void OnCollision(GameObject& other);

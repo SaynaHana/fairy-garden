@@ -7,7 +7,7 @@
 
 namespace game {
 
-GameObject::GameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, bool collision_on, float collider_radius)
+GameObject::GameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, bool collision_on, float collider_radius, float speed)
 {
     // Initialize all attributes
     position_ = position;
@@ -23,7 +23,7 @@ GameObject::GameObject(const glm::vec3 &position, Geometry *geom, Shader *shader
     damage_ = 1;
     velocity_ = glm::vec3(0, 0, 0);
     acceleration_ = glm::vec3(0, 0, 0);
-    speed_ = 2;
+    speed_ = speed;
     collision_type_ = CollisionType::circle_;
     collider_radius_ = collider_radius;
     tags.insert("GameObject");
@@ -31,7 +31,6 @@ GameObject::GameObject(const glm::vec3 &position, Geometry *geom, Shader *shader
 
 GameObject::GameObject(const glm::vec3& position, GameObjectData &data, int health, bool collision_on)
 : GameObject(position, data.geom_, data.shader_, data.texture_, health, collision_on, data.collider_radius_) {
-    std::cout << data.collider_radius_ << std::endl;
 }
 
 glm::vec3 GameObject::GetBearing(void) const {

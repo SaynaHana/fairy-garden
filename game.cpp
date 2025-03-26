@@ -68,6 +68,8 @@ void Game::SetupGameWorld(void)
     textures.push_back("/textures/tex_water_projectile.png");
     textures.push_back("/textures/tex_fairy_dust.png");
     textures.push_back("/textures/tex_rainbow_fairy_dust.png");
+    textures.push_back("/textures/tex_dark_fairy_dust.png");
+
     // Load textures
     LoadTextures(textures);
 
@@ -83,7 +85,7 @@ void Game::SetupGameWorld(void)
     std::vector<Weapon*> weapons;
 
     // Default
-    WeaponData* primary_weapon_data = new WeaponData(nullptr, 10, 0.25f);
+    WeaponData* primary_weapon_data = new WeaponData(nullptr, 7, 0.5f);
     GameObjectData* primary_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_player_projectile]);
     auto* primary_player_weapon = new DefaultPlayerWeapon(*primary_weapon_data, *primary_projectile_data);
     weapons.push_back(primary_player_weapon);

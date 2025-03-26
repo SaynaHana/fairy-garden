@@ -14,7 +14,7 @@ namespace game {
 	PlayerGameObject::PlayerGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture,
                                        GLuint invincibleTexture, MoveData& move_data, std::vector<Weapon*> weapons,
                                        int health, bool collision_on, float collider_radius)
-		: GameObject(position, geom, shader, texture, health, collision_on, collider_radius) {
+		: GameObject(position, geom, shader, texture, health, collision_on, collider_radius, move_data.GetSpeed()) {
 		damage_ = 1;
 		invincible_ = false;
 		invincible_timer_ = nullptr;
@@ -29,6 +29,8 @@ namespace game {
 		SwitchWeapons(0);
         collectible_timer_ = new Timer();
         collectible_active_ = false;
+        init_speed_ = move_data.GetSpeed();
+        init_collider_radius_ = collider_radius;
 	}
 
     PlayerGameObject::PlayerGameObject(const glm::vec3 &position, GameObjectData &obj_data,
@@ -126,7 +128,8 @@ namespace game {
     void PlayerGameObject::ResetStats() {
         attack_speed_multiplier = 1;
         SetInvincible(false);
-        speed_ = 2;
+        speed_ = init_speed_;
+        collider_radius_ = init_collider_radius_;
     }
 
     bool PlayerGameObject::CanCollide(game::GameObject &other) {

@@ -3,6 +3,7 @@
 #include "../collectible_game_object.h"
 #include "../collectibles/fairy_dust_collectible.h"
 #include "../collectibles/rainbow_fairy_dust_collectible.h"
+#include "../collectibles/dark_fairy_dust_collectible.h"
 
 namespace game {
 	Spawner::Spawner(int initial_cost, int cost_increment, GameObject* player, GameObjectData* obj_data) {
@@ -16,7 +17,7 @@ namespace game {
 
         min_spawn_dist_ = 1;
 
-        spawn_interval_ = 1;
+        spawn_interval_ = 0.25f;
         can_spawn_ = false;
         spawn_timer_ = new Timer();
         spawn_timer_->Start(spawn_interval_);
@@ -139,7 +140,10 @@ namespace game {
         CollectibleGameObject* collectible = nullptr;
         Game* game = Game::GetInstance();
 
-        if(collectible_count % 3 == 0) {
+        if(collectible_count % 5 == 0) {
+            collectible = new DarkFairyDustCollectible(GetLocationAroundPlayer(), data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_dark_fairy_dust), 10.0f);
+        }
+        else if(collectible_count % 3 == 0) {
             collectible = new RainbowFairyDustCollectible(GetLocationAroundPlayer(), data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_rainbow_fairy_dust), 10.0f);
         }
         else {

@@ -12,8 +12,11 @@ namespace game {
             void Move(const glm::mat4& parent_transformation_);
 
             bool CanCollide(GameObject& other) override;
+            void OnCollision(GameObject& other) override;
 
             void Move(double delta_time) override {}
+
+            void DestroyChildren();
     };
 }
 

@@ -5,6 +5,7 @@
 namespace game {
     DyingEarthEnemyLink::DyingEarthEnemyLink(const glm::vec3& position, Geometry* geom, Shader *shader, GLuint texture, int health, MoveData& move_data, Weapon* weapon)
             : GameObject(position, geom, shader, texture, 1, true) {
+        tags.insert("CanDamagePlayer");
     }
 
     DyingEarthEnemyLink::DyingEarthEnemyLink(const glm::vec3 &position, GameObjectData &data, int health, MoveData &move_data, Weapon* weapon)
@@ -27,6 +28,20 @@ namespace game {
     }
 
     bool DyingEarthEnemyLink::CanCollide(game::GameObject &other) {
+        if(!GameObject::CanCollide(other)) return false;
+        if(other.HasTag("PlayerGameObject")) return true;
+
         return false;
+    }
+
+    void DyingEarthEnemyLink::OnCollision(game::GameObject &other) {
+    }
+
+    void DyingEarthEnemyLink::DestroyChildren() {
+        for(int i = 0; i < children_.size(); i++) {
+            ((DyingEarthEnemyLink*)children_[i])->DestroyChildren();
+        }
+
+        should_destroy_ = true;
     }
 }

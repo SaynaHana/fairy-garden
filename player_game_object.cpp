@@ -17,7 +17,8 @@ namespace game {
 		: GameObject(position, geom, shader, texture, health, collision_on, collider_radius, move_data.GetSpeed()) {
 		damage_ = 1;
 		invincible_ = false;
-		invincible_timer_ = nullptr;
+		invincible_timer_ = new Timer();
+        i_frame_duration_ = 1.0f;
 		normal_texture_ = texture;
 		invincible_texture_ = invincibleTexture;
 		projectile_timer_ = nullptr;
@@ -76,7 +77,6 @@ namespace game {
             health_++;
         }
 
-		GameObject::OnCollision(other);
 
         if(other.HasTag("Collectible")) {
             CollectibleGameObject* collectible = dynamic_cast<CollectibleGameObject*>(&other);
@@ -85,6 +85,15 @@ namespace game {
                 UseCollectible(collectible);
             }
         }
+        else {
+            if(!invincible_) {
+                SetInvincible(true);
+                invincible_timer_->Start(i_frame_duration_);
+            }
+        }
+
+        GameObject::OnCollision(other);
+
 	}
 
     void PlayerGameObject::Shoot(const glm::vec3& mouse_pos, double delta_time) {

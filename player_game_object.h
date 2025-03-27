@@ -48,6 +48,7 @@ namespace game {
             GLuint invincible_texture_;
             float init_speed_;
             float init_collider_radius_;
+            float i_frame_duration_;
 
             // CHANGE: Projectiles
             void SetCanShoot(bool can_shoot);

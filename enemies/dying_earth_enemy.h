@@ -11,11 +11,14 @@ namespace game {
 
             void Update(double delta_time) override;
 
+            void OnCollision(GameObject& other) override;
+
         private:
             void SetupLinks();
 
             float swing_angle_;
             bool reverse_swing_; // If enemy should swing in opposite direction
+            float swing_speed_ = 2.0f;
     };
 }
 

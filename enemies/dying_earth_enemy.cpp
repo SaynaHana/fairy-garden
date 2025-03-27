@@ -26,10 +26,10 @@ namespace game {
         // Rotate the enemy
         // Cycle between going counter-clockwise and clockwise
         if(!reverse_swing_) {
-            swing_angle_ += delta_time;
+            swing_angle_ += delta_time * swing_speed_;
         }
         else {
-            swing_angle_ -= delta_time;
+            swing_angle_ -= delta_time * swing_speed_;
         }
 
         if(swing_angle_ > 3.14f) {
@@ -70,6 +70,7 @@ namespace game {
         }
     }
 
+
     void DyingEarthEnemy::SetupLinks() {
         // First link setup
         GameObjectData* data = new GameObjectData(geometry_, shader_, Game::GetInstance()->getTexture(Game::tex_dark_fairy_dust));
@@ -84,5 +85,13 @@ namespace game {
         secondLink->SetParent(firstLink);
         firstLink->AddChild(secondLink);
         Game::GetInstance()->SpawnGameObject(secondLink);
+    }
+
+    void DyingEarthEnemy::OnCollision(game::GameObject &other) {
+        for(int i = 0; i < children_.size(); i++) {
+            ((DyingEarthEnemyLink*)children_[i])->DestroyChildren();
+        }
+
+        GameObject::OnCollision(other);
     }
 }

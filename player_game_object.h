@@ -49,6 +49,7 @@ namespace game {
             float init_speed_;
             float init_collider_radius_;
             float i_frame_duration_;
+            glm::vec2 map_boundaries_;
 
             // CHANGE: Projectiles
             void SetCanShoot(bool can_shoot);

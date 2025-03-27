@@ -32,6 +32,7 @@ namespace game {
         collectible_active_ = false;
         init_speed_ = move_data.GetSpeed();
         init_collider_radius_ = collider_radius;
+        map_boundaries_ = glm::vec2(47, 47);
 	}
 
     PlayerGameObject::PlayerGameObject(const glm::vec3 &position, GameObjectData &obj_data,
@@ -48,7 +49,9 @@ namespace game {
 		// Special player updates go here
 		if (invincible_timer_ != nullptr) {
 			if (invincible_timer_->Finished()) {
-				SetInvincible(false);
+                if(!collectible_active_) {
+                    SetInvincible(false);
+                }
 			}
 		}
 
@@ -69,7 +72,15 @@ namespace game {
 	}
 
     void PlayerGameObject::Move(double delta_time) {
-        SetPosition(velocity_ * speed_ * (float)delta_time + GetPosition());
+        glm::vec3 pos =  velocity_ * speed_ * (float)delta_time + GetPosition();
+
+        // Make sure the player doesn't go out of bounds
+        if(pos.x >= map_boundaries_.x) return;
+        if(pos.x <= -map_boundaries_.x) return;
+        if(pos.y >= map_boundaries_.y) return;
+        if(pos.y <= -map_boundaries_.y) return;
+
+        SetPosition(pos);
     }
 
 	void PlayerGameObject::OnCollision(GameObject &other) {

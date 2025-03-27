@@ -25,6 +25,7 @@ namespace game {
 
         enemy_costs_.insert({ 1, "MagicMissileEnemy" });
         enemy_costs_.insert({2, "WaterWaveEnemy"});
+        enemy_costs_.insert({10, "DyingEarthEnemy"});
 
         collectible_spawn_interval_ = 15.0f;
         collectible_spawn_timer_ = new Timer();
@@ -115,7 +116,6 @@ namespace game {
         GameObjectData* enemy_data = nullptr;
 
 
-        /*
         if(name == "MagicMissileEnemy") {
             weapon_data = new WeaponData(player_, 2, 3.0f);
             projectile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_enemy_projectile), 5);
@@ -128,12 +128,14 @@ namespace game {
             weapon = new WaterWaveWeapon(*weapon_data, *projectile_data);
             enemy_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_green_ship));
         }
-         */
-        enemy_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_green_ship));
+        else if(name == "DyingEarthEnemy") {
+            MoveData dying_earth_move_data = MoveData(1, player_);
+            enemy_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_green_ship));
+            enemy = new DyingEarthEnemy(GetLocationAroundPlayer(), *enemy_data, 2, dying_earth_move_data, weapon);
+        }
 
-        if(enemy_data) {
-            //enemy = new EnemyGameObject(GetLocationAroundPlayer(), *enemy_data, 2, move_data, weapon);
-            enemy = new DyingEarthEnemy(GetLocationAroundPlayer(), *enemy_data, 2, move_data, weapon);
+        if(enemy_data && !enemy) {
+            enemy = new EnemyGameObject(GetLocationAroundPlayer(), *enemy_data, 2, move_data, weapon);
         }
 
         if(enemy) {

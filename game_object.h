@@ -50,6 +50,7 @@ namespace game {
             inline int GetCollisionType(void) const { return collision_type_; }
             inline float GetColliderRadius(void) const { return collider_radius_; }
             int GetHealth() const { return health_; }
+            GameObject* GetParent() const { return parent_; }
 
             // Get bearing direction (direction in which the game object
             // is facing)

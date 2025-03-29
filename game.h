@@ -10,6 +10,7 @@
 #include "game_object.h"
 #include "Constants.h"
 #include "enemies/spawner.h"
+#include "ui/text_game_object.h"
 
 #define ENEMY_SPAWN_TIME 10
 #define GAME_OVER_TIME 5
@@ -130,7 +131,10 @@ namespace game {
             // disappear
             void DestroyObject(int index, bool shouldExplode);
 
+            // User interface
             void SetupUI();
+            void UpdateUI();
+            TextGameObject* health_text_;
     }; // class Game
 
 } // namespace game

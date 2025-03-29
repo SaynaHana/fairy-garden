@@ -89,7 +89,6 @@ namespace game {
             health_++;
         }
 
-
         if(other.HasTag("Collectible")) {
             CollectibleGameObject* collectible = dynamic_cast<CollectibleGameObject*>(&other);
 

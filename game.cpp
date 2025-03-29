@@ -271,6 +271,7 @@ void Game::Update(double delta_time)
     // CHANGE: Check if a new enemy should be spawned
     if(!game_ending_) {
         spawner_->Update(delta_time);
+        UpdateUI();
     }
 
     // CHANGE: Check if it is time for the game to end
@@ -606,11 +607,19 @@ void Game::DestroyObject(int index, bool shouldExplode) {
 }
 
 void Game::SetupUI() {
-    TextGameObject* text = new TextGameObject(glm::vec3(-3.5f, -3.25f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
-    text->SetScale(glm::vec2(2.0f, 0.25f));
-    text->SetText("Health: ");
-    text->SetParent(game_objects_[0]);
-    SpawnGameObject(text);
+    health_text_ = new TextGameObject(glm::vec3(-3.5f, -3.25f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
+    health_text_->SetParent(game_objects_[0]);
+    SpawnGameObject(health_text_);
+}
+
+void Game::UpdateUI() {
+    if(!health_text_->GetParent()) return;
+
+    PlayerGameObject* player = (PlayerGameObject*)health_text_->GetParent();
+
+    std::string strHealth = "Health: " + std::to_string(player->GetHealth());
+    health_text_->SetText(strHealth);
+    health_text_->SetScale(glm::vec2((float)strHealth.length() / 4.0f, 0.25f));
 }
 
 } // namespace game

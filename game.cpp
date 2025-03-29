@@ -610,6 +610,14 @@ void Game::SetupUI() {
     health_text_ = new TextGameObject(glm::vec3(-3.5f, -3.25f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
     health_text_->SetParent(game_objects_[0]);
     SpawnGameObject(health_text_);
+
+    wave_text_= new TextGameObject(glm::vec3(-3.8f, 3.25f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
+    wave_text_->SetParent(game_objects_[0]);
+    SpawnGameObject(wave_text_);
+
+    enemies_left_text_ = new TextGameObject(glm::vec3(-2.8f, 2.75f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
+    enemies_left_text_->SetParent(game_objects_[0]);
+    SpawnGameObject(enemies_left_text_);
 }
 
 void Game::UpdateUI() {
@@ -617,9 +625,19 @@ void Game::UpdateUI() {
 
     PlayerGameObject* player = (PlayerGameObject*)health_text_->GetParent();
 
-    std::string strHealth = "Health: " + std::to_string(player->GetHealth());
-    health_text_->SetText(strHealth);
-    health_text_->SetScale(glm::vec2((float)strHealth.length() / 4.0f, 0.25f));
+    std::string str_health = "Health: " + std::to_string(player->GetHealth());
+    health_text_->SetText(str_health);
+    health_text_->SetScale(glm::vec2((float)str_health.length() / 4.0f, 0.25f));
+
+    if(spawner_) {
+        std::string str_wave = "Wave: " + std::to_string(spawner_->GetWaveCount());
+        wave_text_->SetText(str_wave);
+        wave_text_->SetScale(glm::vec2((float)str_wave.length() / 4.0f, 0.25f));
+
+        std::string str_enemies_left = "Enemies Left: " + std::to_string(spawner_->GetRemainingEnemies());
+        enemies_left_text_->SetText(str_enemies_left);
+        enemies_left_text_->SetScale(glm::vec2((float)str_enemies_left.length() / 4.0f, 0.25f));
+    }
 }
 
 } // namespace game

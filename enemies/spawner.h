@@ -19,6 +19,10 @@ namespace game {
         void Update(double delta_time);
         void OnEnemyDeath();
 
+        // Getters
+        int GetWaveCount() const { return round_count_; }
+        int GetRemainingEnemies() const { return enemy_count_; }
+
 	private:
         // Enemies
 		std::unordered_map<int, std::string> enemy_costs_; // Stores how much each enemy costs to spawn

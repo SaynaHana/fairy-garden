@@ -135,6 +135,8 @@ namespace game {
             void SetupUI();
             void UpdateUI();
             TextGameObject* health_text_;
+            TextGameObject* wave_text_;
+            TextGameObject* enemies_left_text_;
     }; // class Game
 
 } // namespace game

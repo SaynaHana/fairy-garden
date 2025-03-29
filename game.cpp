@@ -24,6 +24,7 @@
 #include "weapons/default_player_weapon.h"
 #include "weapons/shotgun_player_weapon.h"
 #include "enemies/spawner.h"
+#include "ui/text_game_object.h"
 
 namespace game {
 
@@ -69,6 +70,7 @@ void Game::SetupGameWorld(void)
     textures.push_back("/textures/tex_fairy_dust.png");
     textures.push_back("/textures/tex_rainbow_fairy_dust.png");
     textures.push_back("/textures/tex_dark_fairy_dust.png");
+    textures.push_back("/textures/font.png");
 
     // Load textures
     LoadTextures(textures);
@@ -150,15 +152,15 @@ void Game::SetupGameWorld(void)
     background->SetScale(glm::vec2(12 * 9, 12 * 9));
     game_objects_.push_back(background);
 
-
     // CHANGE: Enemy spawn timer setup
     GameObjectData* enemy_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_blue_ship]);
     spawner_ = new Spawner(1, 3, game_objects_[0], enemy_data);
     spawner_->Start();
 
+    SetupUI();
+
     game_over_timer_ = nullptr;
     game_ending_ = false;
-
 }
 
 
@@ -497,6 +499,8 @@ void Game::Init(void)
     // CHANGE: Initialize ghost sprite shader
     ghost_sprite_shader_.Init((resources_directory_g+std::string("/ghost_vertex_shader.glsl")).c_str(), (resources_directory_g+std::string("/ghost_fragment_shader.glsl")).c_str());
 
+    text_shader_.Init((resources_directory_g+std::string("/ghost_vertex_shader.glsl")).c_str(), (resources_directory_g+std::string("/text_fragment_shader.glsl")).c_str());
+
     // Initialize time
     current_time_ = 0.0;
 }
@@ -599,6 +603,14 @@ void Game::DestroyObject(int index, bool shouldExplode) {
     // Destroy obj
     delete(obj);
 
+}
+
+void Game::SetupUI() {
+    TextGameObject* text = new TextGameObject(glm::vec3(-3.5f, -3.25f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
+    text->SetScale(glm::vec2(2.0f, 0.25f));
+    text->SetText("Health: ");
+    text->SetParent(game_objects_[0]);
+    SpawnGameObject(text);
 }
 
 } // namespace game

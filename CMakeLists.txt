@@ -31,6 +31,7 @@ set(HDRS
     data/move_data.h
     attack_data.h
     Constants.h
+    ui/text_game_object.h
     weapons/weapon.h
     data/weapon_data.h
     weapons/interval_weapon.h
@@ -67,6 +68,7 @@ set(SRCS
     attack_data.cpp
     sprite_vertex_shader.glsl
     sprite_fragment_shader.glsl
+    ui/text_game_object.cpp
     weapons/weapon.cpp
     weapons/interval_weapon.cpp
     weapons/magic_missile_weapon.cpp

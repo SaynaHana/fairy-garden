@@ -3,6 +3,7 @@
 
 #include "collectible_game_object.h"
 #include "projectile_game_object.h"
+#include "ui/text_game_object.h"
 #include "weapons/interval_weapon.h"
 
 namespace game {
@@ -171,6 +172,5 @@ namespace game {
 			projectile_timer_ = nullptr;
 		}
 	}
-
 
 } // namespace game

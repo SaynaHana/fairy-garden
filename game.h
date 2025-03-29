@@ -62,7 +62,8 @@ namespace game {
                 tex_water_projectile = 11,
                 tex_fairy_dust = 12,
                 tex_rainbow_fairy_dust = 13,
-                tex_dark_fairy_dust = 14
+                tex_dark_fairy_dust = 14,
+                tex_font = 15
             };
 
         private:
@@ -83,6 +84,8 @@ namespace game {
 
             // CHANGE: Sprite shader for player which has ghost mode
             Shader ghost_sprite_shader_;
+
+            Shader text_shader_;
 
             // References to textures
             // This needs to be a pointer
@@ -126,6 +129,8 @@ namespace game {
             // on top of the game object and the game object will disappear. If not, the game object will only
             // disappear
             void DestroyObject(int index, bool shouldExplode);
+
+            void SetupUI();
     }; // class Game
 
 } // namespace game

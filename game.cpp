@@ -52,6 +52,13 @@ void Game::SetupGameWorld(void)
     // Declare all the textures here
     std::vector<std::string> textures;
 
+    score = 0;
+    damage_taken_ = 0;
+    collectibles_collected_ = 0;
+    enemies_killed_ = 0;
+    waves_cleared_ = 0;
+    start_time_ = glfwGetTime();
+
     // CHANGE: Moved textures enum to header file so I can use it outside of this function
 
     // CHANGE: changed the textures of the destroyers to smiley, neutral and frowny
@@ -289,12 +296,16 @@ void Game::Update(double delta_time)
         }
     }
 
+    // Check if end of game
+    if(spawner_->GetWaveCount() == 21 && !game_ending_) {
+        GameOver(true);
+    }
+
     // CHANGE: Check if it is time for the game to end
     if (game_over_timer_ != nullptr && game_over_timer_->IsEnabled()) {
         if (game_over_timer_->Finished()) {
             delete(game_over_timer_);
             game_over_timer_ = nullptr;
-            std::cout << "Game over!" << std::endl;
             delete(game_objects_[0]);
             game_objects_.erase(game_objects_.begin());
             glfwSetWindowShouldClose(window_, true);
@@ -396,6 +407,24 @@ void Game::Update(double delta_time)
     }
 }
 
+void Game::AddObjective(Objective objective) {
+    switch(objective) {
+        case Objective::damage_taken:
+            damage_taken_++;
+            break;
+        case Objective::collectible_collected:
+            collectibles_collected_++;
+            break;
+        case Objective::enemies_killed:
+            enemies_killed_++;
+            break;
+        case Objective::waves_cleared:
+            waves_cleared_++;
+            break;
+        default:
+            break;
+    }
+}
 
 void Game::Render(void){
 
@@ -601,9 +630,7 @@ void Game::DestroyObject(int index, bool shouldExplode) {
     // Check if the object that is exploding is the player
     // If it is, then start a timer to end the game
     if (index == 0) {
-        game_over_timer_ = new Timer();
-        game_over_timer_->Start(GAME_OVER_TIME);
-        game_ending_ = true;
+        GameOver(false);
     }
 
     if (shouldExplode) {
@@ -660,6 +687,41 @@ void Game::UpdateUI() {
         enemies_left_text_->SetText(str_enemies_left);
         enemies_left_text_->SetScale(glm::vec2((float)str_enemies_left.length() / 4.0f, 0.25f));
     }
+}
+
+void Game::GameOver(bool won) {
+    // Calculate and output end score
+    game_over_timer_ = new Timer();
+    game_over_timer_->Start(GAME_OVER_TIME);
+    game_ending_ = true;
+
+    // If won, calculate time
+    if(won) {
+        std::cout << "Victory!" << std::endl;
+        int time_bonus = -(glfwGetTime() - start_time_) + 2000;
+
+        if(time_bonus < 0) time_bonus = 0;
+        score += time_bonus;
+
+        std::cout << "Time Bonus: " << time_bonus << std::endl;
+    }
+    else {
+        std::cout << "Game Over!" << std::endl;
+    }
+
+    std::cout << "Damage Taken (" << damage_taken_ << "x-100): " << damage_taken_ * -100 << std::endl;
+    score += damage_taken_ * -100;
+
+    std::cout << "Items Collected (" << collectibles_collected_ << "x100): " << collectibles_collected_ * 100 << std::endl;
+    score += collectibles_collected_ * 100;
+
+    std::cout << "Enemies Defeated (" << enemies_killed_ << "x10): " << enemies_killed_ * 10 << std::endl;
+    score += enemies_killed_ * 10;
+
+    std::cout << "Waves Cleared (" << waves_cleared_ << "x200): " << waves_cleared_ * 200 << std::endl;
+    score += waves_cleared_ * 200;
+
+    std::cout << "Total Score: " << score << std::endl;
 }
 
 } // namespace game

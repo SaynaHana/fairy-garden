@@ -67,6 +67,15 @@ namespace game {
                 tex_font = 15
             };
 
+            enum Objective {
+                damage_taken = 0,
+                collectible_collected = 1,
+                enemies_killed = 2,
+                waves_cleared = 3
+            };
+
+            void AddObjective(Objective obj);
+
         private:
             // Singleton from: https://www.geeksforgeeks.org/implementation-of-singleton-class-in-cpp/
             static Game* gamePtr;
@@ -92,6 +101,12 @@ namespace game {
             // This needs to be a pointer
             GLuint *tex_;
 
+            // Objectives and scoring
+            int damage_taken_;
+            int collectibles_collected_;
+            int enemies_killed_;
+            int waves_cleared_;
+            int score;
 
             // List of game objects
             std::vector<GameObject*> game_objects_;
@@ -105,6 +120,8 @@ namespace game {
             // CHANGE: Game over
             Timer* game_over_timer_;
             bool game_ending_;
+
+            double start_time_; // When the player started
 
             glm::mat4 view_matrix;
 
@@ -139,6 +156,8 @@ namespace game {
             TextGameObject* enemies_left_text_;
             TextGameObject* primary_weapon_text_;
             TextGameObject* secondary_weapon_text_;
+
+            void GameOver(bool won);
     }; // class Game
 
 } // namespace game

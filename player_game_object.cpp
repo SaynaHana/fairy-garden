@@ -5,6 +5,7 @@
 #include "projectile_game_object.h"
 #include "ui/text_game_object.h"
 #include "weapons/interval_weapon.h"
+#include "game.h"
 
 namespace game {
 	/*
@@ -50,7 +51,7 @@ namespace game {
 		// Special player updates go here
 		if (invincible_timer_ != nullptr) {
 			if (invincible_timer_->Finished()) {
-                if(!invincible_) {
+                if(invincible_) {
                     SetInvincible(false);
                 }
 			}
@@ -87,6 +88,9 @@ namespace game {
 	void PlayerGameObject::OnCollision(GameObject &other) {
         if(invincible_) {
             health_++;
+        }
+        else {
+            Game::GetInstance()->AddObjective(Game::Objective::damage_taken);
         }
 
         if(other.HasTag("Collectible")) {

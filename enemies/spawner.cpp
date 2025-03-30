@@ -81,11 +81,13 @@ namespace game {
 
     void Spawner::OnEnemyDeath() {
         enemy_count_--;
+        Game::GetInstance()->AddObjective(Game::Objective::enemies_killed);
     }
 
     void Spawner::NextRound() {
         std::cout << "Wave: " << round_count_ << std::endl;
         int counter = cost_ + cost_increment_;
+        Game::GetInstance()->AddObjective(Game::Objective::waves_cleared);
 
         if(round_count_ == 0) {
             counter -= cost_increment_;

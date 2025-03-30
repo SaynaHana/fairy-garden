@@ -1,5 +1,6 @@
 #include "collectible_game_object.h"
 #include "player_game_object.h"
+#include "game.h"
 
 namespace game {
     CollectibleGameObject::CollectibleGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, float duration)
@@ -40,6 +41,7 @@ namespace game {
         collision_on_ = false;
         should_destroy_ = true;
         collected = true;
+        Game::GetInstance()->AddObjective(Game::Objective::collectible_collected);
     }
 
 } // namespace game

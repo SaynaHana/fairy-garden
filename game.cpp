@@ -87,10 +87,7 @@ void Game::SetupGameWorld(void)
     std::vector<Weapon*> weapons;
 
     // Default
-    WeaponData* primary_weapon_data = new WeaponData(nullptr, 7, 0.5f);
-    GameObjectData* primary_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_player_projectile]);
-    auto* primary_player_weapon = new DefaultPlayerWeapon(*primary_weapon_data, *primary_projectile_data);
-    weapons.push_back(primary_player_weapon);
+    // weapons.push_back(primary_player_weapon);
 
 
     // Shotgun
@@ -272,6 +269,17 @@ void Game::Update(double delta_time)
     if(!game_ending_) {
         spawner_->Update(delta_time);
         UpdateUI();
+
+        PlayerGameObject* player = dynamic_cast<PlayerGameObject*>(game_objects_[0]);
+
+        if(player) {
+            if(player->GetWeaponCount() != 2 && spawner_->GetWaveCount() == 10) {
+                WeaponData* primary_weapon_data = new WeaponData(nullptr, 7, 0.5f);
+                GameObjectData* primary_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_player_projectile]);
+                auto* primary_player_weapon = new DefaultPlayerWeapon(*primary_weapon_data, *primary_projectile_data);
+                player->AddWeapon(primary_player_weapon);
+            }
+        }
     }
 
     // CHANGE: Check if it is time for the game to end

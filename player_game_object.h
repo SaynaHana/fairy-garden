@@ -34,11 +34,14 @@ namespace game {
 
             bool SwitchWeapons(int index);
 
+            int GetWeaponCount() const { return weapons_.size(); }
+
             void UseCollectible(CollectibleGameObject* collectible);
             void ResetStats();
             void SetAttackSpeedMultiplier(float multiplier) { attack_speed_multiplier = multiplier; }
             void SetInvincible(bool invincible);
             void SetMovementSpeed(int speed) { speed_ = speed; }
+            void AddWeapon(Weapon* weapon) { weapons_.push_back(weapon); }
 
         private:
             // CHANGE: Makes the player not take damage for 10 seconds

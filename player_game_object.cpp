@@ -50,7 +50,7 @@ namespace game {
 		// Special player updates go here
 		if (invincible_timer_ != nullptr) {
 			if (invincible_timer_->Finished()) {
-                if(!collectible_active_) {
+                if(!invincible_) {
                     SetInvincible(false);
                 }
 			}
@@ -150,6 +150,7 @@ namespace game {
         SetInvincible(false);
         speed_ = init_speed_;
         collider_radius_ = init_collider_radius_;
+        collectible_active_ = false;
     }
 
     bool PlayerGameObject::CanCollide(game::GameObject &other) {

@@ -137,6 +137,8 @@ namespace game {
             TextGameObject* health_text_;
             TextGameObject* wave_text_;
             TextGameObject* enemies_left_text_;
+            TextGameObject* primary_weapon_text_;
+            TextGameObject* secondary_weapon_text_;
     }; // class Game
 
 } // namespace game

@@ -278,6 +278,13 @@ void Game::Update(double delta_time)
                 GameObjectData* primary_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_player_projectile]);
                 auto* primary_player_weapon = new DefaultPlayerWeapon(*primary_weapon_data, *primary_projectile_data);
                 player->AddWeapon(primary_player_weapon);
+
+                secondary_weapon_text_ = new TextGameObject(glm::vec3(-2.9f, -2.25f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
+                secondary_weapon_text_->SetParent(game_objects_[0]);
+                SpawnGameObject(secondary_weapon_text_);
+                std::string str_secondary = "2: Long Ranged";
+                secondary_weapon_text_->SetText(str_secondary);
+                secondary_weapon_text_->SetScale(glm::vec2((float)str_secondary.length() / 4.0f, 0.25f));
             }
         }
     }
@@ -626,6 +633,13 @@ void Game::SetupUI() {
     enemies_left_text_ = new TextGameObject(glm::vec3(-2.8f, 2.75f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
     enemies_left_text_->SetParent(game_objects_[0]);
     SpawnGameObject(enemies_left_text_);
+
+    primary_weapon_text_ = new TextGameObject(glm::vec3(-3.4f, -2.75f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
+    primary_weapon_text_->SetParent(game_objects_[0]);
+    SpawnGameObject(primary_weapon_text_);
+    std::string str_primary = "1: Shotgun";
+    primary_weapon_text_->SetText(str_primary);
+    primary_weapon_text_->SetScale(glm::vec2((float)str_primary.length() / 4.0f, 0.25f));
 }
 
 void Game::UpdateUI() {

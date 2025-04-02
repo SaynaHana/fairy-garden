@@ -108,6 +108,8 @@ namespace game {
             int waves_cleared_;
             int score;
 
+            void CalculateScore(bool outputToConsole);
+
             // List of game objects
             std::vector<GameObject*> game_objects_;
 
@@ -156,6 +158,7 @@ namespace game {
             TextGameObject* enemies_left_text_;
             TextGameObject* primary_weapon_text_;
             TextGameObject* secondary_weapon_text_;
+            TextGameObject* score_text_;
 
             void GameOver(bool won);
     }; // class Game

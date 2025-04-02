@@ -424,6 +424,22 @@ void Game::AddObjective(Objective objective) {
         default:
             break;
     }
+
+    CalculateScore(false);
+}
+
+void Game::CalculateScore(bool outputToConsole) {
+    score = damage_taken_ * -100 +
+            collectibles_collected_ * 100 +
+            enemies_killed_ * 10 +
+            waves_cleared_ * 200;
+
+    if(outputToConsole) {
+        std::cout << "Damage Taken (" << damage_taken_ << "x-100): " << damage_taken_ * -100 << std::endl;
+        std::cout << "Items Collected (" << collectibles_collected_ << "x100): " << collectibles_collected_ * 100 << std::endl;
+        std::cout << "Enemies Defeated (" << enemies_killed_ << "x10): " << enemies_killed_ * 10 << std::endl;
+        std::cout << "Waves Cleared (" << waves_cleared_ << "x200): " << waves_cleared_ * 200 << std::endl;
+    }
 }
 
 void Game::Render(void){
@@ -667,6 +683,10 @@ void Game::SetupUI() {
     std::string str_primary = "1: Shotgun";
     primary_weapon_text_->SetText(str_primary);
     primary_weapon_text_->SetScale(glm::vec2((float)str_primary.length() / 4.0f, 0.25f));
+
+    score_text_ = new TextGameObject(glm::vec3(-3.45f, 2.25f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
+    score_text_->SetParent(game_objects_[0]);
+    SpawnGameObject(score_text_);
 }
 
 void Game::UpdateUI() {
@@ -687,6 +707,10 @@ void Game::UpdateUI() {
         enemies_left_text_->SetText(str_enemies_left);
         enemies_left_text_->SetScale(glm::vec2((float)str_enemies_left.length() / 4.0f, 0.25f));
     }
+
+    std::string str_score = "Score: " + std::to_string(score);
+    score_text_->SetText(str_score);
+    score_text_->SetScale(glm::vec2((float)str_score.length() / 4.0f, 0.25f));
 }
 
 void Game::GameOver(bool won) {
@@ -709,17 +733,7 @@ void Game::GameOver(bool won) {
         std::cout << "Game Over!" << std::endl;
     }
 
-    std::cout << "Damage Taken (" << damage_taken_ << "x-100): " << damage_taken_ * -100 << std::endl;
-    score += damage_taken_ * -100;
-
-    std::cout << "Items Collected (" << collectibles_collected_ << "x100): " << collectibles_collected_ * 100 << std::endl;
-    score += collectibles_collected_ * 100;
-
-    std::cout << "Enemies Defeated (" << enemies_killed_ << "x10): " << enemies_killed_ * 10 << std::endl;
-    score += enemies_killed_ * 10;
-
-    std::cout << "Waves Cleared (" << waves_cleared_ << "x200): " << waves_cleared_ * 200 << std::endl;
-    score += waves_cleared_ * 200;
+    CalculateScore(true);
 
     std::cout << "Total Score: " << score << std::endl;
 }

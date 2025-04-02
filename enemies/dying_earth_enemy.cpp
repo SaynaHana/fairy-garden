@@ -66,7 +66,7 @@ namespace game {
 
 
         for(int i = 0; i < children_.size(); i++) {
-            ((DyingEarthEnemyLink*)children_[i])->Move(transformation);
+            ((DyingEarthEnemyLink*)children_[i])->Move(transformation, delta_time);
         }
     }
 
@@ -74,17 +74,24 @@ namespace game {
     void DyingEarthEnemy::SetupLinks() {
         // First link setup
         GameObjectData* data = new GameObjectData(geometry_, shader_, Game::GetInstance()->getTexture(Game::tex_dark_fairy_dust));
-        MoveData* moveData = new MoveData(2, nullptr);
-        DyingEarthEnemyLink* firstLink = new DyingEarthEnemyLink(position_, *data, 1, *moveData, nullptr);
+        MoveData* link_one_move_data = new MoveData(2, nullptr);
+        DyingEarthEnemyLink* firstLink = new DyingEarthEnemyLink(position_, *data, 1, *link_one_move_data, nullptr);
         firstLink->SetParent(this);
         AddChild(firstLink);
         Game::GetInstance()->SpawnGameObject(firstLink);
 
         // Second link setup
-        DyingEarthEnemyLink* secondLink = new DyingEarthEnemyLink(position_, *data, 1, *moveData, nullptr);
+        MoveData* link_two_move_data = new MoveData(3, nullptr);
+        DyingEarthEnemyLink* secondLink = new DyingEarthEnemyLink(position_, *data, 1, *link_two_move_data, nullptr);
         secondLink->SetParent(firstLink);
         firstLink->AddChild(secondLink);
         Game::GetInstance()->SpawnGameObject(secondLink);
+
+        MoveData* link_three_move_data = new MoveData(4, nullptr);
+        DyingEarthEnemyLink* thirdLink = new DyingEarthEnemyLink(position_, *data, 1, *link_three_move_data, nullptr);
+        thirdLink->SetParent(secondLink);
+        secondLink->AddChild(thirdLink);
+        Game::GetInstance()->SpawnGameObject(thirdLink);
     }
 
     void DyingEarthEnemy::OnCollision(game::GameObject &other) {

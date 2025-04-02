@@ -9,7 +9,7 @@ namespace game {
             DyingEarthEnemyLink(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, MoveData& move_data, Weapon* weapon);
             DyingEarthEnemyLink(const glm::vec3& position, GameObjectData& data, int health, MoveData& move_data, Weapon* weapon);
 
-            void Move(const glm::mat4& parent_transformation_);
+            void Move(const glm::mat4& parent_transformation_, double delta_time);
 
             bool CanCollide(GameObject& other) override;
             void OnCollision(GameObject& other) override;
@@ -17,6 +17,11 @@ namespace game {
             void Move(double delta_time) override {}
 
             void DestroyChildren();
+
+        private:
+            bool reverse_swing_;
+            float swing_angle_;
+            float swing_speed_;
     };
 }
 

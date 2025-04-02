@@ -20,6 +20,7 @@ set(HDRS
     enemies/dying_earth_enemy_link.h
     enemies/spawner.h
     enemies/magic_missile_enemy.h
+    enemies/water_wave_enemy.h
     projectile_game_object.h
     projectiles/magic_missile_projectile.h
     projectiles/water_wave_projectile.h
@@ -58,6 +59,7 @@ set(SRCS
     enemies/dying_earth_enemy_link.cpp
     enemies/spawner.cpp
     enemies/magic_missile_enemy.cpp
+    enemies/water_wave_enemy.cpp
     projectiles/magic_missile_projectile.cpp
     projectiles/water_wave_projectile.cpp
     projectiles/player_projectile.cpp

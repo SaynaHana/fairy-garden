@@ -17,6 +17,7 @@ namespace game {
 	void MagicMissileEnemy::Move(double delta_time) {
 		glm::vec3 side_movement = glm::vec3(0);
 
+		// Move towards the player, but bob up and down as well
 		if (go_right_) {
 			t_ += delta_time;
 			side_movement = glm::vec3(0, 3 * sin(t_), 0);

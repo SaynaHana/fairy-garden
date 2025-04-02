@@ -6,6 +6,7 @@
 #include "../collectibles/dark_fairy_dust_collectible.h"
 #include "dying_earth_enemy.h"
 #include "magic_missile_enemy.h"
+#include "water_wave_enemy.h"
 
 namespace game {
 	Spawner::Spawner(int initial_cost, int cost_increment, GameObject* player, GameObjectData* obj_data) {
@@ -127,10 +128,12 @@ namespace game {
             enemy = new MagicMissileEnemy(GetLocationAroundPlayer(), *enemy_data, 2, move_data, weapon);
         }
         else if(name == "WaterWaveEnemy") {
+            MoveData water_wave_move_data = MoveData(2, player_);
             weapon_data = new WeaponData(player_, 2, 5.0f);
             projectile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_water_projectile), 5);
             weapon = new WaterWaveWeapon(*weapon_data, *projectile_data);
             enemy_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_green_ship));
+            enemy = new WaterWaveEnemy(GetLocationAroundPlayer(), *enemy_data, 2, water_wave_move_data, weapon);
         }
         else if(name == "DyingEarthEnemy") {
             MoveData dying_earth_move_data = MoveData(1, player_);

@@ -51,7 +51,7 @@ namespace game {
 		// Special player updates go here
 		if (invincible_timer_ != nullptr) {
 			if (invincible_timer_->Finished()) {
-                if(invincible_) {
+                if(invincible_ && !collectible_active_) {
                     SetInvincible(false);
                 }
 			}

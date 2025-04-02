@@ -12,6 +12,7 @@ namespace game {
         swing_angle_ = 0;
         reverse_swing_ = false;
         SetupLinks();
+        chase_range_ = 1;
     }
 
     DyingEarthEnemy::DyingEarthEnemy(const glm::vec3 &position, game::GameObjectData &data, int health,

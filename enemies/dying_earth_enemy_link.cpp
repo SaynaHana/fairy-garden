@@ -20,7 +20,7 @@ namespace game {
         glm::mat4 transformation = glm::mat4(1);
         transformation = parent_transformation * translate;
 
-        SetPosition(transformation[3]);
+        SetPosition(glm::vec3(transformation[3][0], transformation[3][1], transformation[3][2]));
 
         for(int i = 0; i < children_.size(); i++) {
             ((DyingEarthEnemyLink*)children_[i])->Move(transformation);

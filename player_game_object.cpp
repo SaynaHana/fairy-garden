@@ -98,7 +98,7 @@ namespace game {
                                                                      hit_particle_data_->shader_, hit_particle_data_->texture_,
                                                                      nullptr, glm::vec3(1, 0.2f, 0), 1.0f, true);
                 hit_particle_system->SetScale(glm::vec2(0.1));
-                Game::GetInstance()->SpawnGameObject(hit_particle_system, 0);
+                Game::GetInstance()->SpawnParticles(hit_particle_system);
             }
         }
 

@@ -155,7 +155,7 @@ void Game::SetupGameWorld(void)
     // In this specific implementation, the background is always the
     // last object
     // CHANGE: Change shader of background to make it repeat more
-    GameObject *background = new GameObject(glm::vec3(0.0f, 0.0f, 0.0f), sprite_, &background_sprite_shader_, tex_[tex_stars], 1, true);
+    background = new GameObject(glm::vec3(0.0f, 0.0f, 0.0f), sprite_, &background_sprite_shader_, tex_[tex_stars], 1, true);
     // CHANGE: Increase size of background
     background->SetScale(glm::vec2(12 * 9, 12 * 9));
     game_objects_.push_back(background);
@@ -411,6 +411,15 @@ void Game::Update(double delta_time)
             }
         }
     }
+
+    // Update all particles
+    for(int i = 0; i < particle_systems_.size(); i++) {
+        if(particle_systems_[i]->ShouldDestroy()) {
+            DestroyParticles(i);
+            continue;
+        }
+        particle_systems_[i]->Update(delta_time);
+    }
 }
 
 void Game::AddObjective(Objective objective) {
@@ -478,7 +487,19 @@ void Game::Render(void){
 
     // Render all game objects
     for (int i = 0; i < game_objects_.size(); i++) {
+        if(background && game_objects_[i] == background)
+        {
+            continue;
+        }
         game_objects_[i]->Render(view_matrix, current_time_);
+    }
+
+    if(background) {
+        background->Render(view_matrix, current_time_);
+    }
+
+    for(int i = 0; i < particle_systems_.size(); i++) {
+        particle_systems_[i]->Render(view_matrix, current_time_);
     }
 }
 
@@ -645,7 +666,14 @@ void Game::LoadTextures(std::vector<std::string> &textures)
 void Game::SpawnGameObject(GameObject* gameObject, int decrement) {
     // Insert game object right before the background
     if(gameObject != nullptr) {
-        game_objects_.insert(game_objects_.end() - decrement, gameObject);
+        game_objects_.insert(game_objects_.end() - 2, gameObject);
+    }
+}
+
+void Game::SpawnParticles(game::GameObject *gameObject, int decrement) {
+    // Insert game object right before the background
+    if(gameObject != nullptr) {
+        particle_systems_.push_back(gameObject);
     }
 }
 
@@ -675,6 +703,12 @@ void Game::DestroyObject(int index, bool shouldExplode) {
     // Destroy obj
     delete(obj);
 
+}
+
+void Game::DestroyParticles(int index) {
+    GameObject* obj = particle_systems_[index];
+    particle_systems_.erase(particle_systems_.begin() + index);
+    delete(obj);
 }
 
 void Game::SetupUI() {

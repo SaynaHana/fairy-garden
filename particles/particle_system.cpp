@@ -2,6 +2,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "particle_system.h"
+#include <iostream>
 
 
 namespace game {
@@ -20,6 +21,7 @@ ParticleSystem::ParticleSystem(const glm::vec3 &position, Geometry *geom, Shader
         lifetime_timer_->Start(lifetime_);
     }
 
+    tags.insert("ParticleSystem");
 }
 
 
@@ -30,6 +32,7 @@ void ParticleSystem::Update(double delta_time) {
 
     // If there is finite lifetime, then count down
     if(lifetime_timer_) {
+        std::cout << "hi" << std::endl;
         if(lifetime_timer_->Finished()) {
             should_destroy_ = true;
         }

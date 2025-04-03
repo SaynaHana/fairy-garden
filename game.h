@@ -41,6 +41,7 @@ namespace game {
 
             // Spawns a game object
             void SpawnGameObject(GameObject* gameObject, int decrement = 2);
+            void SpawnParticles(GameObject* gameObject, int decrement = 2);
 
             // Singleton from: https://www.geeksforgeeks.org/implementation-of-singleton-class-in-cpp/
             static Game* GetInstance();
@@ -113,6 +114,10 @@ namespace game {
 
             // List of game objects
             std::vector<GameObject*> game_objects_;
+            std::vector<GameObject*> particle_systems_;
+
+            // Store background to render it last
+            GameObject* background;
 
             // Keep track of time
             double current_time_;
@@ -155,6 +160,7 @@ namespace game {
             // on top of the game object and the game object will disappear. If not, the game object will only
             // disappear
             void DestroyObject(int index, bool shouldExplode);
+            void DestroyParticles(int index);
 
             // User interface
             void SetupUI();

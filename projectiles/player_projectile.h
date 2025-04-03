@@ -11,6 +11,7 @@ namespace game {
         void Move(double delta_time) override;
 
         bool CanCollide(GameObject& other) override;
+        void OnCollision(GameObject& other) override;
 
     private:
         glm::vec3 direction_;

@@ -94,14 +94,10 @@ void Game::SetupGameWorld(void)
     // Create player weapons
     std::vector<Weapon*> weapons;
 
-    // Default
-    // weapons.push_back(primary_player_weapon);
-
-
     // Shotgun
     WeaponData* secondary_weapon_data = new WeaponData(nullptr, 10, 1.0f);
     GameObjectData* secondary_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_player_projectile], 0.25f);
-    auto* secondary_player_weapon = new ShotgunWeapon(*secondary_weapon_data, *secondary_projectile_data);
+    Weapon* secondary_player_weapon = new ShotgunWeapon(*secondary_weapon_data, *secondary_projectile_data);
     weapons.push_back(secondary_player_weapon);
 
     GameObjectData* hit_particle_data = new GameObjectData(hit_particles_, &hit_particles_shader_, tex_[tex_orb]);
@@ -286,10 +282,11 @@ void Game::Update(double delta_time)
         PlayerGameObject* player = dynamic_cast<PlayerGameObject*>(game_objects_[0]);
 
         if(player) {
-            if(player->GetWeaponCount() != 2 && spawner_->GetWaveCount() == 10) {
+            if(player->GetWeaponCount() != 2 && spawner_->GetWaveCount() == 1) {
+                GameObjectData* primary_particle_data = new GameObjectData(player_projectile_particles_, &player_particles_shader_, tex_[tex_player_projectile]);
                 WeaponData* primary_weapon_data = new WeaponData(nullptr, 7, 0.5f);
                 GameObjectData* primary_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_player_projectile]);
-                auto* primary_player_weapon = new DefaultPlayerWeapon(*primary_weapon_data, *primary_projectile_data);
+                auto* primary_player_weapon = new DefaultPlayerWeapon(*primary_weapon_data, *primary_projectile_data, primary_particle_data);
                 player->AddWeapon(primary_player_weapon);
 
                 secondary_weapon_text_ = new TextGameObject(glm::vec3(-2.9f, -2.25f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
@@ -590,11 +587,19 @@ void Game::Init(void)
 
     // Initialize hit particle geometry
     Particles* hit_particles_temp = new Particles();
-    hit_particles_temp->CreateGeometry(4000);
+    hit_particles_temp->CreateGeometry(500, Particles::Shape::radial);
     hit_particles_ = hit_particles_temp;
 
     // Initialize hit particle shader
     hit_particles_shader_.Init((resources_directory_g+std::string("/particle_vertex_shader.glsl")).c_str(), (resources_directory_g+std::string("/particle_fragment_shader.glsl")).c_str());
+
+    // Initialize player projectile particle geometry
+    Particles* player_projectile_particles_temp = new Particles();
+    player_projectile_particles_temp->CreateGeometry(1000, Particles::Shape::directional);
+    player_projectile_particles_ = player_projectile_particles_temp;
+
+    // Initialize player projectile particle shader
+    player_particles_shader_.Init((resources_directory_g+std::string("/particle_vertex_shader.glsl")).c_str(), (resources_directory_g+std::string("/particle_fragment_shader.glsl")).c_str());
 
     // Initialize time
     current_time_ = 0.0;

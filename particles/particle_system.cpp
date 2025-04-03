@@ -32,7 +32,6 @@ void ParticleSystem::Update(double delta_time) {
 
     // If there is finite lifetime, then count down
     if(lifetime_timer_) {
-        std::cout << "hi" << std::endl;
         if(lifetime_timer_->Finished()) {
             should_destroy_ = true;
         }
@@ -55,8 +54,8 @@ void ParticleSystem::Render(glm::mat4 view_matrix, double current_time){
     // Setup the rotation matrix for the shader
     glm::mat4 rotation_matrix = glm::rotate(glm::mat4(1.0f), angle_, glm::vec3(0.0, 0.0, 1.0));
 
-    // Set up the translation matrix for the shader
-    glm::mat4 translation_matrix = glm::translate(glm::mat4(1.0f), position_);
+    //glm::mat4 translation_matrix = glm::mat4(1);
+    glm::mat4 translation_matrix = glm::translate(glm::mat4(1.0), position_);
 
     // Set up the parent transformation matrix
     glm::mat4 parent_rotation_matrix = glm::mat4(1);
@@ -66,6 +65,10 @@ void ParticleSystem::Render(glm::mat4 view_matrix, double current_time){
         parent_rotation_matrix = glm::rotate(glm::mat4(1.0f), parent_->GetRotation(), glm::vec3(0.0, 0.0, 1.0));
         parent_translation_matrix = glm::translate(glm::mat4(1.0f), parent_->GetPosition());
         parent_transformation_matrix = parent_translation_matrix * parent_rotation_matrix;
+    }
+    else {
+        // Set up the translation matrix for the shader
+        //translation_matrix = glm::translate(glm::mat4(1.0f), position_);
     }
 
     // Setup the transformation matrix for the shader

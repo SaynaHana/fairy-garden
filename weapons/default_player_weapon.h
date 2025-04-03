@@ -7,7 +7,7 @@
 namespace game {
     class DefaultPlayerWeapon : public IntervalWeapon {
     public:
-        DefaultPlayerWeapon(WeaponData& data, GameObjectData& projectile_data);
+        DefaultPlayerWeapon(WeaponData& data, GameObjectData& projectile_data, GameObjectData* particle_data);
         ~DefaultPlayerWeapon() override;
 
         void Attack(double delta_time) override;
@@ -15,6 +15,7 @@ namespace game {
     private:
         GameObjectData* projectile_data_;
         float speed_;
+        GameObjectData* particle_data_;
     };
 }
 

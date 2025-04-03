@@ -22,7 +22,7 @@ float rand_num(void)
 }
 
 
-void Particles::CreateGeometry(int num_particles)
+void Particles::CreateGeometry(int num_particles, Shape shape)
 {
 
     // Each particle is a square with four vertices and two triangles
@@ -63,7 +63,13 @@ void Particles::CreateGeometry(int num_particles)
             // Se above for definition of rand_num()
             //
             // Opening of the stream of particles
-            theta = (2*3.14f*rand_num());
+            if(shape == Shape::radial) {
+                theta = (2*3.14f*rand_num());
+            }
+            else if(shape == Shape::directional) {
+                theta = (2.0 * rand_num() - 1.0f) * 0.13f + pi;
+            }
+
             //theta = two_pi*rand_num();
             // Radius (length) of the stream
             r = 0.0f + 0.8*rand_num();

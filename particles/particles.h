@@ -11,8 +11,13 @@ namespace game {
         public:
             Particles(void);
 
+            enum Shape {
+                radial = 0,
+                directional = 1
+            };
+
             // Create the geometry (called once)
-            void CreateGeometry(int num_particles);
+            void CreateGeometry(int num_particles, Shape shape);
 
             // Use the geometry
             void SetGeometry(GLuint shader_program);

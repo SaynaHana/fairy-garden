@@ -8,7 +8,8 @@ namespace game {
     public:
         ShotgunWeapon(WeaponData& data, GameObjectData& projectile_data, float angle_increment = 5,
                       int half_num_projectiles = 2);
-        ~ShotgunWeapon() override;
+
+        ~ShotgunWeapon();
 
         void Attack(double delta_time) override;
 

@@ -1,6 +1,7 @@
 #include "shotgun_player_weapon.h"
 #include "../projectiles/player_projectile.h"
 #include "../game.h"
+#include "../particles/particle_system.h"
 
 namespace game {
     ShotgunWeapon::ShotgunWeapon(WeaponData &data, GameObjectData& projectile_data, float angle_increment, int half_num_projectiles)

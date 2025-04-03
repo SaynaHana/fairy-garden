@@ -19,4 +19,13 @@ namespace game {
 
         return false;
     }
+
+    void PlayerProjectile::OnCollision(game::GameObject &other) {
+        for(int i = 0; i < children_.size(); i++) {
+            children_[i]->SetShouldDestroy(true);
+            children_[i]->SetScale(glm::vec2(0));
+        }
+
+        Projectile::OnCollision(other);
+    }
 }

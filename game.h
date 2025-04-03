@@ -135,8 +135,10 @@ namespace game {
 
             // Particles
             Particles* hit_particles_;
-
             Shader hit_particles_shader_;
+
+            Particles* player_projectile_particles_;
+            Shader player_particles_shader_;
 
             // Handle user input
             void HandleControls(double delta_time);

@@ -40,7 +40,7 @@ namespace game {
             void MainLoop(void);
 
             // Spawns a game object
-            void SpawnGameObject(GameObject* gameObject);
+            void SpawnGameObject(GameObject* gameObject, int decrement = 2);
 
             // Singleton from: https://www.geeksforgeeks.org/implementation-of-singleton-class-in-cpp/
             static Game* GetInstance();

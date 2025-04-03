@@ -104,9 +104,11 @@ void Game::SetupGameWorld(void)
     auto* secondary_player_weapon = new ShotgunWeapon(*secondary_weapon_data, *secondary_projectile_data);
     weapons.push_back(secondary_player_weapon);
 
+    GameObjectData* hit_particle_data = new GameObjectData(hit_particles_, &hit_particles_shader_, tex_[tex_orb]);
+
     game_objects_.push_back(new PlayerGameObject(glm::vec3(0.0f, 0.0f, 0.0f), player_obj_data,
                                                  tex_[tex_invincible_ship], player_move_data,
-                                                 weapons, 3, true));
+                                                 weapons, 3, true, hit_particle_data));
     float pi_over_two = glm::pi<float>() / 2.0f;
     game_objects_[0]->SetRotation(pi_over_two);
 
@@ -157,12 +159,6 @@ void Game::SetupGameWorld(void)
     // CHANGE: Increase size of background
     background->SetScale(glm::vec2(12 * 9, 12 * 9));
     game_objects_.push_back(background);
-
-    GameObject* hit_particle_system = new ParticleSystem(glm::vec3(0, 0, 0), hit_particles_, &hit_particles_shader_, tex_[tex_orb], nullptr);
-    hit_particle_system->SetScale(glm::vec2(0.2));
-    hit_particle_system->SetRotation(-pi_over_two);
-    game_objects_.push_back(hit_particle_system);
-
 
     // CHANGE: Enemy spawn timer setup
     GameObjectData* enemy_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_blue_ship]);
@@ -646,10 +642,10 @@ void Game::LoadTextures(std::vector<std::string> &textures)
     glBindTexture(GL_TEXTURE_2D, tex_[0]);
 }
 
-void Game::SpawnGameObject(GameObject* gameObject) {
+void Game::SpawnGameObject(GameObject* gameObject, int decrement) {
     // Insert game object right before the background
     if(gameObject != nullptr) {
-        game_objects_.insert(game_objects_.end() - 2, gameObject);
+        game_objects_.insert(game_objects_.end() - decrement, gameObject);
     }
 }
 

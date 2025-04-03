@@ -6,6 +6,7 @@
 #include "ui/text_game_object.h"
 #include "weapons/interval_weapon.h"
 #include "game.h"
+#include "particles/particle_system.h"
 
 namespace game {
 	/*
@@ -15,7 +16,8 @@ namespace game {
 
 	PlayerGameObject::PlayerGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture,
                                        GLuint invincibleTexture, MoveData& move_data, std::vector<Weapon*> weapons,
-                                       int health, bool collision_on, float collider_radius)
+                                       int health, bool collision_on, float collider_radius,
+                                       GameObjectData* hit_particle_data)
 		: GameObject(position, geom, shader, texture, health, collision_on, collider_radius, move_data.GetSpeed()) {
 		damage_ = 1;
 		invincible_ = false;
@@ -35,13 +37,15 @@ namespace game {
         init_speed_ = move_data.GetSpeed();
         init_collider_radius_ = collider_radius;
         map_boundaries_ = glm::vec2(47, 47);
+        hit_particle_data_ = hit_particle_data;
 	}
 
     PlayerGameObject::PlayerGameObject(const glm::vec3 &position, GameObjectData &obj_data,
                                        GLuint invincible_texture, MoveData &move_data, std::vector<Weapon*> weapons, int health,
-                                       bool collision_on)
+                                       bool collision_on, GameObjectData* hit_particle_data)
                                        : PlayerGameObject(position, obj_data.geom_, obj_data.shader_, obj_data.texture_,
-                                                          invincible_texture, move_data, weapons, health, collision_on, obj_data.collider_radius_) {
+                                                          invincible_texture, move_data, weapons, health, collision_on, obj_data.collider_radius_,
+                                                          hit_particle_data) {
 
     }
 
@@ -86,6 +90,18 @@ namespace game {
     }
 
 	void PlayerGameObject::OnCollision(GameObject &other) {
+        // If the object can damage the player and the player is not invincible, show damage particle effect
+        if(!invincible_ && other.HasTag("CanDamagePlayer")) {
+            // Spawn particle effect
+            if(hit_particle_data_) {
+                GameObject* hit_particle_system = new ParticleSystem(GetPosition(), hit_particle_data_->geom_,
+                                                                     hit_particle_data_->shader_, hit_particle_data_->texture_,
+                                                                     nullptr, glm::vec3(1, 0.2f, 0), 1.0f, true);
+                hit_particle_system->SetScale(glm::vec2(0.1));
+                Game::GetInstance()->SpawnGameObject(hit_particle_system, 0);
+            }
+        }
+
         if(invincible_) {
             health_++;
         }
@@ -106,6 +122,7 @@ namespace game {
                 invincible_timer_->Start(i_frame_duration_);
             }
         }
+
 
         GameObject::OnCollision(other);
 

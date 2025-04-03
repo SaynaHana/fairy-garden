@@ -11,6 +11,7 @@
 #include "Constants.h"
 #include "enemies/spawner.h"
 #include "ui/text_game_object.h"
+#include "particles/particles.h"
 
 #define ENEMY_SPAWN_TIME 10
 #define GAME_OVER_TIME 5
@@ -126,6 +127,11 @@ namespace game {
             double start_time_; // When the player started
 
             glm::mat4 view_matrix;
+
+            // Particles
+            Particles* hit_particles_;
+
+            Shader hit_particles_shader_;
 
             // Handle user input
             void HandleControls(double delta_time);

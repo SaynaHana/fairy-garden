@@ -38,9 +38,14 @@ void ParticleSystem::Render(glm::mat4 view_matrix, double current_time){
     glm::mat4 translation_matrix = glm::translate(glm::mat4(1.0f), position_);
 
     // Set up the parent transformation matrix
-    glm::mat4 parent_rotation_matrix = glm::rotate(glm::mat4(1.0f), parent_->GetRotation(), glm::vec3(0.0, 0.0, 1.0));
-    glm::mat4 parent_translation_matrix = glm::translate(glm::mat4(1.0f), parent_->GetPosition());
-    glm::mat4 parent_transformation_matrix = parent_translation_matrix * parent_rotation_matrix;
+    glm::mat4 parent_rotation_matrix = glm::mat4(1);
+    glm::mat4 parent_translation_matrix = glm::mat4(1);
+    glm::mat4 parent_transformation_matrix = glm::mat4(1);
+    if(parent_) {
+        parent_rotation_matrix = glm::rotate(glm::mat4(1.0f), parent_->GetRotation(), glm::vec3(0.0, 0.0, 1.0));
+        parent_translation_matrix = glm::translate(glm::mat4(1.0f), parent_->GetPosition());
+        parent_transformation_matrix = parent_translation_matrix * parent_rotation_matrix;
+    }
 
     // Setup the transformation matrix for the shader
     glm::mat4 transformation_matrix = parent_transformation_matrix * translation_matrix * rotation_matrix * scaling_matrix;

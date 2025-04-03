@@ -25,6 +25,7 @@
 #include "weapons/shotgun_player_weapon.h"
 #include "enemies/spawner.h"
 #include "ui/text_game_object.h"
+#include "particles/particle_system.h"
 
 namespace game {
 
@@ -137,6 +138,7 @@ void Game::SetupGameWorld(void)
     scaled->SetScale(glm::vec2(3.0f, 1.0f));
     game_objects_.push_back(scaled);
 
+
     /*
     WeaponData* water_weapon_data = new WeaponData(game_objects_[0], 5.0f, 5);
     GameObjectData* water_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_water_projectile], 10);
@@ -155,6 +157,12 @@ void Game::SetupGameWorld(void)
     // CHANGE: Increase size of background
     background->SetScale(glm::vec2(12 * 9, 12 * 9));
     game_objects_.push_back(background);
+
+    GameObject* hit_particle_system = new ParticleSystem(glm::vec3(0, 0, 0), hit_particles_, &hit_particles_shader_, tex_[tex_orb], nullptr);
+    hit_particle_system->SetScale(glm::vec2(0.2));
+    hit_particle_system->SetRotation(-pi_over_two);
+    game_objects_.push_back(hit_particle_system);
+
 
     // CHANGE: Enemy spawn timer setup
     GameObjectData* enemy_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_blue_ship]);
@@ -272,6 +280,8 @@ void Game::HandleControls(double delta_time)
 
 void Game::Update(double delta_time)
 {
+    current_time_ += delta_time;
+
     // CHANGE: Check if a new enemy should be spawned
     if(!game_ending_) {
         spawner_->Update(delta_time);
@@ -443,7 +453,6 @@ void Game::CalculateScore(bool outputToConsole) {
 }
 
 void Game::Render(void){
-
     // Clear background
     glClearColor(viewport_background_color_g.r,
                  viewport_background_color_g.g,
@@ -561,6 +570,14 @@ void Game::Init(void)
     ghost_sprite_shader_.Init((resources_directory_g+std::string("/ghost_vertex_shader.glsl")).c_str(), (resources_directory_g+std::string("/ghost_fragment_shader.glsl")).c_str());
 
     text_shader_.Init((resources_directory_g+std::string("/ghost_vertex_shader.glsl")).c_str(), (resources_directory_g+std::string("/text_fragment_shader.glsl")).c_str());
+
+    // Initialize hit particle geometry
+    Particles* hit_particles_temp = new Particles();
+    hit_particles_temp->CreateGeometry(4000);
+    hit_particles_ = hit_particles_temp;
+
+    // Initialize hit particle shader
+    hit_particles_shader_.Init((resources_directory_g+std::string("/particle_vertex_shader.glsl")).c_str(), (resources_directory_g+std::string("/particle_fragment_shader.glsl")).c_str());
 
     // Initialize time
     current_time_ = 0.0;

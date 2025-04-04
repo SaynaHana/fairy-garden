@@ -42,6 +42,7 @@ set(HDRS
     weapons/water_wave_weapon.h
     weapons/default_player_weapon.h
     weapons/shotgun_player_weapon.h
+    obstacles/wall.h
     particles/particle_system.h
     particles/particles.h
 )
@@ -83,6 +84,7 @@ set(SRCS
     weapons/water_wave_weapon.cpp
     weapons/default_player_weapon.cpp
     weapons/shotgun_player_weapon.cpp
+    obstacles/wall.cpp
     particles/particle_system.cpp
     particles/particles.cpp
 )

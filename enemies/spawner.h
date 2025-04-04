@@ -40,6 +40,7 @@ namespace game {
         std::queue<std::string> spawn_queue_;
 
         void SpawnEnemy(const std::string& name);
+        void SpawnBoss();
 
         // Collectibles
         float collectible_spawn_interval_;

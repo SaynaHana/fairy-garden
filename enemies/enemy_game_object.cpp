@@ -71,12 +71,14 @@ namespace game {
 	}
 
     void EnemyGameObject::OnCollision(game::GameObject &other) {
-        if(is_invincible_) {
-            health_++;
-        }
-        else {
-            iframe_timer_->Start(iframe_duration_);
-            is_invincible_ = true;
+        if(other.HasTag("CanDamageEnemy")) {
+            if(is_invincible_) {
+                health_++;
+            }
+            else {
+                iframe_timer_->Start(iframe_duration_);
+                is_invincible_ = true;
+            }
         }
 
         GameObject::OnCollision(other);

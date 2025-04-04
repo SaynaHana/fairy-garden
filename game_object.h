@@ -80,6 +80,7 @@ namespace game {
             void SetParent(GameObject* parent) { parent_ = parent; }
             void AddChild(GameObject* child) { children_.push_back(child); }
             void SetShouldDestroy(bool should_destroy) { should_destroy_ = should_destroy; }
+            void SetCollisionOn(bool on) { collision_on_ = on; }
 
             // CHANGE: Added function that gets called when this game object collides with another
             virtual void OnCollision(GameObject& other);

@@ -21,6 +21,7 @@ set(HDRS
     enemies/spawner.h
     enemies/magic_missile_enemy.h
     enemies/water_wave_enemy.h
+    enemies/dark_fairy_queen.h
     projectile_game_object.h
     projectiles/magic_missile_projectile.h
     projectiles/water_wave_projectile.h
@@ -62,6 +63,7 @@ set(SRCS
     enemies/spawner.cpp
     enemies/magic_missile_enemy.cpp
     enemies/water_wave_enemy.cpp
+    enemies/dark_fairy_queen.cpp
     projectiles/magic_missile_projectile.cpp
     projectiles/water_wave_projectile.cpp
     projectiles/player_projectile.cpp

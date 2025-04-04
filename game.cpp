@@ -90,7 +90,7 @@ void Game::SetupGameWorld(void)
     // Setup the player object (position, texture, vertex count)
     // Note that, in this specific implementation, the player object should always be the first object in the game object vector
     MoveData player_move_data = MoveData(2, nullptr);
-    GameObjectData player_obj_data = GameObjectData(sprite_, &sprite_shader_, tex_[tex_red_ship], 2.0f, 0.1f);
+    GameObjectData player_obj_data = GameObjectData(sprite_, &sprite_shader_, tex_[tex_red_ship], 2.0f, 0.01f);
 
     // Create player weapons
     std::vector<Weapon*> weapons;
@@ -149,8 +149,10 @@ void Game::SetupGameWorld(void)
      */
 
     GameObjectData* enemy_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_blue_ship]);
+    GameObjectData* magic_missile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_enemy_projectile]);
     MoveData enemy_move_data = MoveData(0.5, game_objects_[0]);
-    EnemyGameObject* queen = new DarkFairyQueen(glm::vec3(0, 3.0f, 0), sprite_, &sprite_shader_, tex_[tex_blue_ship], 10, enemy_move_data);
+    EnemyGameObject* queen = new DarkFairyQueen(glm::vec3(0, 3.0f, 0), sprite_, &sprite_shader_, tex_[tex_blue_ship], 10, enemy_move_data,
+                                                magic_missile_data);
     queen->SetScale(glm::vec2(2, 2));
     game_objects_.push_back(queen);
 
@@ -693,6 +695,14 @@ void Game::DestroyObject(int index, bool shouldExplode) {
 
     if(obj->HasTag("EnemyGameObject")) {
         spawner_->OnEnemyDeath();
+    }
+
+    // Check if the parent is dark fairy queen
+    if(obj->GetParent()) {
+        GameObject* parent = obj->GetParent();
+        if(parent->HasTag("DarkFairyQueen")) {
+            ((DarkFairyQueen*)parent)->RemoveSpawnedObject(obj);
+        }
     }
 
     // Check if the object that is exploding is the player

@@ -6,6 +6,7 @@ namespace game {
 	: Projectile(position, geom, shader, texture, lifetime) {
 		tags.insert("CanDamagePlayer");
         tags.erase("CanDamageEnemy");
+        tags.insert("MagicMissileProjectile");
         collision_type_ = CollisionType::circle_;
         damage_ = 1;
 	}

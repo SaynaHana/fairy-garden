@@ -63,7 +63,7 @@ void Game::SetupGameWorld(void)
     // CHANGE: Moved textures enum to header file so I can use it outside of this function
 
     // CHANGE: changed the textures of the destroyers to smiley, neutral and frowny
-    textures.push_back("/textures/smiley.png"); 
+    textures.push_back("/textures/tex_player.png"); 
     textures.push_back("/textures/neutral.png"); 
     textures.push_back("/textures/frowny.png");
     textures.push_back("/textures/stars.png");
@@ -107,6 +107,7 @@ void Game::SetupGameWorld(void)
                                                  weapons, 3, true, hit_particle_data));
     float pi_over_two = glm::pi<float>() / 2.0f;
     game_objects_[0]->SetRotation(pi_over_two);
+    game_objects_[0]->SetScale(glm::vec2(2, 2));
 
     // CHANGE: Removed rotation from enemies
     // Setup other objects
@@ -641,7 +642,7 @@ void Game::SetTexture(GLuint w, const char *fname)
     if (!image){
         std::cout << "Cannot load texture " << fname << std::endl;
     }
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
     SOIL_free_image_data(image);
 
     // Texture Wrapping

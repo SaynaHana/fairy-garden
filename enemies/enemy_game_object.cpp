@@ -4,7 +4,7 @@
 
 namespace game {
 	EnemyGameObject::EnemyGameObject(const glm::vec3& position, Geometry* geom, Shader *shader, GLuint texture, int health, MoveData& move_data, Weapon* weapon)
-	: GameObject(position, geom, shader, texture, 1, true) {
+	: GameObject(position, geom, shader, texture, health, true) {
         weapon_ = weapon;
 
         if(weapon_) {
@@ -18,6 +18,10 @@ namespace game {
         speed_ = move_data.GetSpeed();
         tags.insert("EnemyGameObject");
         tags.insert("CanDamagePlayer");
+
+        iframe_timer_ = new Timer();
+        iframe_duration_ = 0.01f;
+        is_invincible_ = false;
 	}
 
     EnemyGameObject::EnemyGameObject(const glm::vec3 &position, GameObjectData &data, int health, MoveData &move_data, Weapon* weapon)
@@ -32,6 +36,7 @@ namespace game {
     }
 
 	void EnemyGameObject::Update(double delta_time) {
+        CheckIFrames();
 		Detect();
 
         if(state_ == EnemyMoveState::state_chase) {
@@ -49,6 +54,14 @@ namespace game {
 		GameObject::Update(delta_time);
 	}
 
+    void EnemyGameObject::CheckIFrames() {
+        if(is_invincible_) {
+            if(iframe_timer_->Finished()) {
+                is_invincible_ = false;
+            }
+        }
+    }
+
 	bool EnemyGameObject::CanCollide(GameObject& other) {
         if(!GameObject::CanCollide(other)) return false;
         if (other.HasTag("CanDamageEnemy")) return true;
@@ -56,6 +69,18 @@ namespace game {
 
         return false;
 	}
+
+    void EnemyGameObject::OnCollision(game::GameObject &other) {
+        if(is_invincible_) {
+            health_++;
+        }
+        else {
+            iframe_timer_->Start(iframe_duration_);
+            is_invincible_ = true;
+        }
+
+        GameObject::OnCollision(other);
+    }
 
 	void EnemyGameObject::Detect() {
         if(target_ == nullptr) return;

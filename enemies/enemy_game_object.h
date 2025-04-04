@@ -19,6 +19,7 @@ namespace game {
             void Update(double delta_time) override;
 
             bool CanCollide(GameObject& other) override;
+            void OnCollision(GameObject& other) override;
 
 		protected:
     		int state_;
@@ -38,6 +39,13 @@ namespace game {
 
 			// Flee
 			void Flee();
+
+            // Iframes
+            Timer* iframe_timer_;
+            float iframe_duration_;
+            bool is_invincible_;
+
+            void CheckIFrames();
     };
 }
 

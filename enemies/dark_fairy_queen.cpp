@@ -19,6 +19,7 @@ namespace game {
     }
 
     void DarkFairyQueen::Update(double delta_time) {
+        CheckIFrames();
         if(choose_new_attacks_) {
             curr_attacks_.clear();
             GetRandomAttacks(curr_attacks_);

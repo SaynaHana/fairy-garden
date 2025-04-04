@@ -26,6 +26,7 @@
 #include "enemies/spawner.h"
 #include "ui/text_game_object.h"
 #include "particles/particle_system.h"
+#include "enemies/dark_fairy_queen.h"
 
 namespace game {
 
@@ -137,6 +138,7 @@ void Game::SetupGameWorld(void)
     game_objects_.push_back(scaled);
 
 
+
     /*
     WeaponData* water_weapon_data = new WeaponData(game_objects_[0], 5.0f, 5);
     GameObjectData* water_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_water_projectile], 10);
@@ -146,6 +148,11 @@ void Game::SetupGameWorld(void)
     game_objects_.push_back(new EnemyGameObject(glm::vec3(-5.0f, 1.0f, 0.0f), water_enemy_data, 2, move_data, new WaterWaveWeapon(*water_weapon_data, *water_projectile_data)));
      */
 
+    GameObjectData* enemy_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_blue_ship]);
+    MoveData enemy_move_data = MoveData(0.5, game_objects_[0]);
+    EnemyGameObject* queen = new DarkFairyQueen(glm::vec3(0, 3.0f, 0), sprite_, &sprite_shader_, tex_[tex_blue_ship], 10, enemy_move_data);
+    queen->SetScale(glm::vec2(2, 2));
+    game_objects_.push_back(queen);
 
     // Setup background
     // In this specific implementation, the background is always the
@@ -157,7 +164,6 @@ void Game::SetupGameWorld(void)
     game_objects_.push_back(background);
 
     // CHANGE: Enemy spawn timer setup
-    GameObjectData* enemy_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_blue_ship]);
     spawner_ = new Spawner(1, 3, game_objects_[0], enemy_data);
     spawner_->Start();
 
@@ -276,7 +282,7 @@ void Game::Update(double delta_time)
 
     // CHANGE: Check if a new enemy should be spawned
     if(!game_ending_) {
-        spawner_->Update(delta_time);
+        //spawner_->Update(delta_time);
         UpdateUI();
 
         PlayerGameObject* player = dynamic_cast<PlayerGameObject*>(game_objects_[0]);

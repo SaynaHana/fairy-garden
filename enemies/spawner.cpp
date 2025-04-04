@@ -111,6 +111,7 @@ namespace game {
     }
 
     void Spawner::SpawnEnemy(const std::string &name) {
+        // Default enemy data
         MoveData move_data = MoveData(0.5, player_);
         Game* game = Game::GetInstance();
         EnemyGameObject* enemy = nullptr;
@@ -120,6 +121,7 @@ namespace game {
         GameObjectData* enemy_data = nullptr;
 
 
+        // Choose which enemy to spawn
         if(name == "MagicMissileEnemy") {
             weapon_data = new WeaponData(player_, 2, 3.0f);
             projectile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_enemy_projectile), 5);

@@ -13,16 +13,23 @@ namespace game {
 
             void Update(double delta_time) override;
 
+            void OnCollision(GameObject& other) override;
+
             // Required to remove object from spawned_objects
             void RemoveSpawnedObject(GameObject* spawned_object);
 
         private:
             std::vector<GameObject*> spawned_objects_; // The objects that this enemy spawned
             std::vector<int> curr_attacks_;
+            int max_health_;
 
             void GetRandomAttacks(std::vector<int>& attacks);
             void PerformAttacks();
             void Reset();
+            glm::vec3 GetRandomLocation();
+
+            float min_spawn_dist_;
+            float max_spawn_dist_;
 
             // Attack data
             GameObjectData* magic_missile_data_;
@@ -31,7 +38,7 @@ namespace game {
             // Magic missiles
             int magic_missiles_spawned_;
             int magic_missiles_to_spawn_;
-            int magic_missile_speed_;
+            float magic_missile_speed_;
 
             void MagicMissileAttack();
 
@@ -39,6 +46,8 @@ namespace game {
             float water_wave_spawn_interval_;
             Timer* water_wave_timer_;
             float water_wave_speed_;
+            bool performed_water_attack_;
+            int water_waves_;
 
             void WaterWaveAttack();
 

@@ -36,8 +36,6 @@ namespace game {
             choose_new_attacks_ = false;
         }
 
-        std::cout << spawned_objects_.size() << std::endl;
-
         if(new_attack_timer_) {
             if(new_attack_timer_->Finished()) {
                 choose_new_attacks_ = true;

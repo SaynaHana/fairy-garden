@@ -18,7 +18,7 @@ namespace game {
         round_count_ = 0;
         enemy_count_ = 0;
 
-        min_spawn_dist_ = 1;
+        min_spawn_dist_ = 2;
 
         spawn_interval_ = 0.25f;
         can_spawn_ = false;

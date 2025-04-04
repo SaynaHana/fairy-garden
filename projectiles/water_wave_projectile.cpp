@@ -10,6 +10,7 @@ namespace game {
         init_position_ = position;
         init_diff_set_ = false;
         diff_ = glm::vec3(0, 0, 0);
+        towards_player_speed_ = 1;
         tags.insert("CanDamagePlayer");
         tags.erase("CanDamageEnemy");
     }
@@ -29,7 +30,7 @@ namespace game {
         glm::vec3 pos = glm::vec3(std::cos(t_), std::sin(t_), 0);
         t_ += (float)delta_time * speed_;
 
-        SetPosition(position_ + diff_ * (float)delta_time + (pos * (float)delta_time * 3.0f));
+        SetPosition(position_ + diff_ * towards_player_speed_ * (float)delta_time + (pos * (float)delta_time * 3.0f));
     }
 
     bool WaterWaveProjectile::CanCollide(GameObject& other) {

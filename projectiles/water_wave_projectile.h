@@ -12,6 +12,7 @@ namespace game {
         void Move(double delta_time) override;
 
         void SetTarget(GameObject* target) { target_ = target; }
+        void SetTowardsPlayerSpeed(float speed) { towards_player_speed_ = speed; }
 
         bool CanCollide(GameObject& other) override;
 
@@ -22,6 +23,7 @@ namespace game {
         float t_;
         glm::vec3 init_position_; // Where does the projectile start?
         GameObject* target_;
+        float towards_player_speed_;
     };
 }
 

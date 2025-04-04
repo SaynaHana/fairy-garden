@@ -7,9 +7,9 @@ namespace game {
     class DarkFairyQueen : public EnemyGameObject {
         public:
             DarkFairyQueen(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, MoveData& move_data,
-                           GameObjectData* magic_missile_data);
+                           GameObjectData* magic_missile_data, GameObjectData* water_wave_data);
             DarkFairyQueen(const glm::vec3& position, GameObjectData& data, int health, MoveData& move_data,
-                           GameObjectData* magic_missile_data);
+                           GameObjectData* magic_missile_data, GameObjectData* water_wave_data);
 
             void Update(double delta_time) override;
 
@@ -22,20 +22,31 @@ namespace game {
 
             void GetRandomAttacks(std::vector<int>& attacks);
             void PerformAttacks();
-            void MagicMissileAttack();
             void Reset();
 
             // Attack data
             GameObjectData* magic_missile_data_;
+            GameObjectData* water_wave_data_;
+
+            // Magic missiles
+            int magic_missiles_spawned_;
+            int magic_missiles_to_spawn_;
+            int magic_missile_speed_;
+
+            void MagicMissileAttack();
+
+            // Water waves
+            float water_wave_spawn_interval_;
+            Timer* water_wave_timer_;
+            float water_wave_speed_;
+
+            void WaterWaveAttack();
 
             int phase_; // Determines how many attacks the enemy will use at once
             float attack_duration_; // How long each attack should last
             Timer* new_attack_timer_; // How long until the enemy should choose new attacks
             bool choose_new_attacks_;
             int num_attacks_;
-
-            int magic_missiles_spawned_;
-            int magic_missiles_to_spawn_;
     };
 }
 

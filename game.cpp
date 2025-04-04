@@ -150,9 +150,10 @@ void Game::SetupGameWorld(void)
 
     GameObjectData* enemy_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_blue_ship]);
     GameObjectData* magic_missile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_enemy_projectile]);
+    GameObjectData* water_wave_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_water_projectile]);
     MoveData enemy_move_data = MoveData(0.5, game_objects_[0]);
     EnemyGameObject* queen = new DarkFairyQueen(glm::vec3(0, 3.0f, 0), sprite_, &sprite_shader_, tex_[tex_blue_ship], 10, enemy_move_data,
-                                                magic_missile_data);
+                                                magic_missile_data, water_wave_data);
     queen->SetScale(glm::vec2(2, 2));
     game_objects_.push_back(queen);
 

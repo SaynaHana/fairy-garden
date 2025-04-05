@@ -36,6 +36,11 @@ namespace game {
         water_waves_ = 0;
 
         tags.insert("DarkFairyQueen");
+
+        // Setup health text
+        health_text_ = new TextGameObject(glm::vec3(-3.5f, -3.25f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
+        health_text_->SetParent(this);
+        SpawnGameObject(health_text_);
     }
 
     DarkFairyQueen::DarkFairyQueen(const glm::vec3 &position, game::GameObjectData &data, int health,

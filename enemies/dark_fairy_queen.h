@@ -2,12 +2,13 @@
 #define DARK_FAIRY_QUEEN_H
 
 #include "enemy_game_object.h"
+#include "../ui/text_game_object.h"
 
 namespace game {
     class DarkFairyQueen : public EnemyGameObject {
         public:
             DarkFairyQueen(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, MoveData& move_data,
-                           GameObjectData* magic_missile_data, GameObjectData* water_wave_data);
+                           GameObjectData* text_data, GameObjectData* magic_missile_data, GameObjectData* water_wave_data);
             DarkFairyQueen(const glm::vec3& position, GameObjectData& data, int health, MoveData& move_data,
                            GameObjectData* magic_missile_data, GameObjectData* water_wave_data);
 
@@ -56,6 +57,9 @@ namespace game {
             Timer* new_attack_timer_; // How long until the enemy should choose new attacks
             bool choose_new_attacks_;
             int num_attacks_;
+
+            // Text to display health
+            TextGameObject* health_text_;
     };
 }
 

@@ -134,7 +134,7 @@ namespace game {
             projectile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_enemy_projectile), 5);
             weapon = new MagicMissileWeapon(*weapon_data, *projectile_data);
             enemy_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_green_ship));
-            enemy = new MagicMissileEnemy(GetLocationAroundPlayer(), *enemy_data, 2, move_data, weapon);
+            enemy = new MagicMissileEnemy(GetLocationAroundPlayer(), *enemy_data, 1, move_data, weapon);
         }
         else if(name == "WaterWaveEnemy") {
             MoveData water_wave_move_data = MoveData(2, player_);
@@ -142,16 +142,16 @@ namespace game {
             projectile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_water_projectile), 5);
             weapon = new WaterWaveWeapon(*weapon_data, *projectile_data);
             enemy_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_blue_ship));
-            enemy = new WaterWaveEnemy(GetLocationAroundPlayer(), *enemy_data, 2, water_wave_move_data, weapon);
+            enemy = new WaterWaveEnemy(GetLocationAroundPlayer(), *enemy_data, 1, water_wave_move_data, weapon);
         }
         else if(name == "DyingEarthEnemy") {
             MoveData dying_earth_move_data = MoveData(1, player_);
             enemy_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_dying_earth_enemy));
-            enemy = new DyingEarthEnemy(GetLocationAroundPlayer(), *enemy_data, 2, dying_earth_move_data, weapon);
+            enemy = new DyingEarthEnemy(GetLocationAroundPlayer(), *enemy_data, 3, dying_earth_move_data, weapon);
         }
 
         if(enemy_data && !enemy) {
-            enemy = new EnemyGameObject(GetLocationAroundPlayer(), *enemy_data, 2, move_data, weapon);
+            enemy = new EnemyGameObject(GetLocationAroundPlayer(), *enemy_data, 1, move_data, weapon);
         }
 
         if(enemy) {

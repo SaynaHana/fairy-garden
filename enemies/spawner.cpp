@@ -141,7 +141,7 @@ namespace game {
             weapon_data = new WeaponData(player_, 2, 5.0f);
             projectile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_water_projectile), 5);
             weapon = new WaterWaveWeapon(*weapon_data, *projectile_data);
-            enemy_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_green_ship));
+            enemy_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_blue_ship));
             enemy = new WaterWaveEnemy(GetLocationAroundPlayer(), *enemy_data, 2, water_wave_move_data, weapon);
         }
         else if(name == "DyingEarthEnemy") {

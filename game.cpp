@@ -65,8 +65,8 @@ void Game::SetupGameWorld(void)
 
     // CHANGE: changed the textures of the destroyers to smiley, neutral and frowny
     textures.push_back("/textures/tex_player.png");
-    textures.push_back("/textures/neutral.png"); 
-    textures.push_back("/textures/frowny.png");
+    textures.push_back("/textures/tex_magic_missile_enemy.png"); 
+    textures.push_back("/textures/tex_magic_missile_enemy.png");
     textures.push_back("/textures/stars.png");
     textures.push_back("/textures/orb.png");
     textures.push_back("/textures/explosion.png");

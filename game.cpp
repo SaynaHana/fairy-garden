@@ -80,6 +80,7 @@ void Game::SetupGameWorld(void)
     textures.push_back("/textures/tex_rainbow_fairy_dust.png");
     textures.push_back("/textures/tex_dark_fairy_dust.png");
     textures.push_back("/textures/font.png");
+    textures.push_back("/textures/tex_dying_earth_enemy.png");
 
     // Load textures
     LoadTextures(textures);

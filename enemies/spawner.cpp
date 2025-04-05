@@ -146,7 +146,7 @@ namespace game {
         }
         else if(name == "DyingEarthEnemy") {
             MoveData dying_earth_move_data = MoveData(1, player_);
-            enemy_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_green_ship));
+            enemy_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_dying_earth_enemy));
             enemy = new DyingEarthEnemy(GetLocationAroundPlayer(), *enemy_data, 2, dying_earth_move_data, weapon);
         }
 

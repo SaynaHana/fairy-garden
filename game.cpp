@@ -64,7 +64,7 @@ void Game::SetupGameWorld(void)
     // CHANGE: Moved textures enum to header file so I can use it outside of this function
 
     // CHANGE: changed the textures of the destroyers to smiley, neutral and frowny
-    textures.push_back("/textures/destroyer_red.png");
+    textures.push_back("/textures/tex_player.png");
     textures.push_back("/textures/neutral.png"); 
     textures.push_back("/textures/frowny.png");
     textures.push_back("/textures/stars.png");
@@ -108,6 +108,7 @@ void Game::SetupGameWorld(void)
                                                  weapons, 3, true, hit_particle_data));
     float pi_over_two = glm::pi<float>() / 2.0f;
     game_objects_[0]->SetRotation(pi_over_two);
+    game_objects_[0]->SetScale(glm::vec2(1.5f, 1.5f));
 
     // CHANGE: Removed rotation from enemies
     // Setup other objects
@@ -651,8 +652,10 @@ void Game::SetTexture(GLuint w, const char *fname)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     // Texture Filtering
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 

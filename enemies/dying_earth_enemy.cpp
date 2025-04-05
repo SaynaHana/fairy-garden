@@ -14,6 +14,7 @@ namespace game {
         SetupLinks();
         chase_range_ = 1;
         tags.insert("DyingEarthEnemy");
+        flee_speed_ = 0.5f;
     }
 
     DyingEarthEnemy::DyingEarthEnemy(const glm::vec3 &position, game::GameObjectData &data, int health,
@@ -24,7 +25,11 @@ namespace game {
 
     void DyingEarthEnemy::Update(double delta_time) {
         if (should_destroy_) return;
-        EnemyGameObject::Update(delta_time);
+
+        Move(delta_time);
+
+        if (!HasChildren()) {
+        }
 
         // Rotate the enemy
         // Cycle between going counter-clockwise and clockwise
@@ -74,6 +79,34 @@ namespace game {
         }
     }
 
+    void DyingEarthEnemy::Move(double delta_time) {
+        if (target_ == nullptr) return;
+
+        // If the enemy still has links, move towards player,
+        // Otherwise flee and shoot magic missiles every few seconds
+        if (HasChildren()) {
+            glm::vec3 diff = target_->GetPosition() - GetPosition();
+
+            
+            if (glm::length(diff) > chase_range_) {
+                if (glm::length(diff) != 0) {
+                    diff = glm::normalize(diff);
+                }
+
+                SetPosition(GetPosition() + diff * speed_ * (float)delta_time);
+            }
+        }
+        else {
+            // Flee
+            glm::vec3 diff = GetPosition() - target_->GetPosition();
+
+            if (glm::length(diff) != 0) {
+                diff = glm::normalize(diff);
+            }
+
+            SetPosition(GetPosition() + diff * flee_speed_ * (float)delta_time);
+        }
+    }
 
     void DyingEarthEnemy::SetupLinks() {
         // First link setup
@@ -106,5 +139,13 @@ namespace game {
         }
 
         GameObject::OnCollision(other);
+    }
+
+    bool DyingEarthEnemy::HasChildren() {
+        for (int i = 0; i < children_.size(); i++) {
+            if (!children_[i]) return false;
+        }
+
+        return true;
     }
 }

@@ -39,7 +39,7 @@ namespace game {
         tags.insert("DarkFairyQueen");
 
         // Setup health text
-        health_text_ = new TextGameObject(glm::vec3(position.x, position.y - 1.5f, 0), text_data->geom_, text_data->shader_, text_data->texture_);
+        health_text_ = new TextGameObject(glm::vec3(position.x, position.y - 3.5f, 0), text_data->geom_, text_data->shader_, text_data->texture_);
         health_text_->SetParent(this);
         Game::GetInstance()->SpawnGameObject(health_text_);
     }

@@ -77,7 +77,7 @@ namespace game {
 
     void DyingEarthEnemy::SetupLinks() {
         // First link setup
-        GameObjectData* data = new GameObjectData(geometry_, shader_, Game::GetInstance()->getTexture(Game::tex_dark_fairy_dust));
+        GameObjectData* data = new GameObjectData(geometry_, shader_, Game::GetInstance()->getTexture(Game::tex_dying_earth_link));
         MoveData* link_one_move_data = new MoveData(2, nullptr);
         DyingEarthEnemyLink* firstLink = new DyingEarthEnemyLink(position_, *data, 1, *link_one_move_data, nullptr);
         firstLink->SetParent(this);

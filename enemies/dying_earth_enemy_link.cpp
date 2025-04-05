@@ -16,6 +16,7 @@ namespace game {
     }
 
     void DyingEarthEnemyLink::Move(const glm::mat4& parent_transformation, double delta_time) {
+        if (should_destroy_) return;
         if(!reverse_swing_) {
             swing_angle_ += delta_time * swing_speed_;
         }
@@ -40,6 +41,8 @@ namespace game {
         SetPosition(glm::vec3(transformation[3][0], transformation[3][1], transformation[3][2]));
 
         for(int i = 0; i < children_.size(); i++) {
+		    if (!children_[i]) continue;
+            if (children_[i]->ShouldDestroy()) continue;
             ((DyingEarthEnemyLink*)children_[i])->Move(transformation, delta_time);
         }
     }
@@ -55,10 +58,11 @@ namespace game {
     }
 
     void DyingEarthEnemyLink::DestroyChildren() {
+        should_destroy_ = true;
         for(int i = 0; i < children_.size(); i++) {
             ((DyingEarthEnemyLink*)children_[i])->DestroyChildren();
+            children_[i] = nullptr;
         }
 
-        should_destroy_ = true;
     }
 }

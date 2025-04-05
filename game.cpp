@@ -64,7 +64,7 @@ void Game::SetupGameWorld(void)
     // CHANGE: Moved textures enum to header file so I can use it outside of this function
 
     // CHANGE: changed the textures of the destroyers to smiley, neutral and frowny
-    textures.push_back("/textures/smiley.png");
+    textures.push_back("/textures/destroyer_red.png");
     textures.push_back("/textures/neutral.png"); 
     textures.push_back("/textures/frowny.png");
     textures.push_back("/textures/stars.png");
@@ -692,7 +692,7 @@ void Game::DestroyObject(int index, bool shouldExplode) {
     }
 
     // Check if the parent is dark fairy queen
-    if(obj->GetParent()) {
+    if(obj->GetParent() && !obj->GetParent()->ShouldDestroy()) {
         GameObject* parent = obj->GetParent();
         if(parent->HasTag("DarkFairyQueen")) {
             ((DarkFairyQueen*)parent)->RemoveSpawnedObject(obj);

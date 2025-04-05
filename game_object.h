@@ -60,6 +60,7 @@ namespace game {
             glm::vec3 GetRight(void) const;
 
             bool HasTag(const std::string& tag) const {
+                if (tags.size() == 0) return false;
                 return tags.find(tag) != tags.end();
             }
 

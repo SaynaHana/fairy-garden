@@ -13,6 +13,7 @@ namespace game {
         reverse_swing_ = false;
         SetupLinks();
         chase_range_ = 1;
+        tags.insert("DyingEarthEnemy");
     }
 
     DyingEarthEnemy::DyingEarthEnemy(const glm::vec3 &position, game::GameObjectData &data, int health,
@@ -22,6 +23,7 @@ namespace game {
     }
 
     void DyingEarthEnemy::Update(double delta_time) {
+        if (should_destroy_) return;
         EnemyGameObject::Update(delta_time);
 
         // Rotate the enemy
@@ -67,6 +69,7 @@ namespace game {
 
 
         for(int i = 0; i < children_.size(); i++) {
+            if (!children_[i]) continue;
             ((DyingEarthEnemyLink*)children_[i])->Move(transformation, delta_time);
         }
     }
@@ -97,7 +100,9 @@ namespace game {
 
     void DyingEarthEnemy::OnCollision(game::GameObject &other) {
         for(int i = 0; i < children_.size(); i++) {
+            if (!children_[i]) continue;
             ((DyingEarthEnemyLink*)children_[i])->DestroyChildren();
+            children_[i] = nullptr;
         }
 
         GameObject::OnCollision(other);

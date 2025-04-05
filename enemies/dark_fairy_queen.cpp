@@ -7,7 +7,8 @@
 namespace game {
     DarkFairyQueen::DarkFairyQueen(const glm::vec3 &position, game::Geometry *geom, game::Shader *shader,
                                      GLuint texture, int health, game::MoveData &move_data,
-                                     GameObjectData* magic_missile_data, GameObjectData* water_wave_data)
+                                     GameObjectData* text_data, GameObjectData* magic_missile_data, 
+                                     GameObjectData* water_wave_data)
             : EnemyGameObject(position, geom, shader, texture, health, move_data, nullptr) {
         phase_ = 1;
         attack_duration_ = 10.0f;
@@ -38,20 +39,28 @@ namespace game {
         tags.insert("DarkFairyQueen");
 
         // Setup health text
-        health_text_ = new TextGameObject(glm::vec3(-3.5f, -3.25f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
+        health_text_ = new TextGameObject(glm::vec3(position.x, position.y - 1.5f, 0), text_data->geom_, text_data->shader_, text_data->texture_);
         health_text_->SetParent(this);
-        SpawnGameObject(health_text_);
+        Game::GetInstance()->SpawnGameObject(health_text_);
     }
 
-    DarkFairyQueen::DarkFairyQueen(const glm::vec3 &position, game::GameObjectData &data, int health,
-                                     game::MoveData &move_data, GameObjectData* magic_missile_data,
+    DarkFairyQueen::DarkFairyQueen(const glm::vec3 &position, GameObjectData &data, int health,
+                                     MoveData &move_data, GameObjectData* text_data, GameObjectData* magic_missile_data,
                                      GameObjectData* water_wave_data)
-            : DarkFairyQueen(position, data.geom_, data.shader_, data.texture_, health, move_data, magic_missile_data,
-                             water_wave_data) {
+            : DarkFairyQueen(position, data.geom_, data.shader_, data.texture_, health, move_data, text_data,
+							magic_missile_data, water_wave_data) {
     }
 
     void DarkFairyQueen::Update(double delta_time) {
+        // Update text
+        if (health_text_) {
+			std::string str_health = "HP: " + std::to_string(health_);
+			health_text_->SetText(str_health);
+			health_text_->SetScale(glm::vec2((float)str_health.length() / 4.0f, 0.25f));
+        }
+
         CheckIFrames();
+
         if(choose_new_attacks_) {
             Reset();
             GetRandomAttacks(curr_attacks_);

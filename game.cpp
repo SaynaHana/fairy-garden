@@ -163,7 +163,8 @@ void Game::SetupGameWorld(void)
     game_objects_.push_back(background);
 
     // CHANGE: Enemy spawn timer setup
-    spawner_ = new Spawner(1, 3, game_objects_[0], enemy_data);
+    GameObjectData* text_data = new GameObjectData(sprite_, &text_shader_, tex_[tex_font]);
+    spawner_ = new Spawner(1, 3, game_objects_[0], enemy_data, text_data);
     spawner_->Start();
 
     SetupUI();

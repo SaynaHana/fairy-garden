@@ -13,7 +13,8 @@
 namespace game {
 	class Spawner {
 	public:
-		Spawner(int initial_cost = 1, int cost_increment_ = 3, GameObject* player = nullptr, GameObjectData* data = nullptr);
+		Spawner(int initial_cost = 1, int cost_increment_ = 3, GameObject* player = nullptr, GameObjectData* data = nullptr,
+                GameObjectData* text_data = nullptr);
 
         bool Start();
         void Update(double delta_time);
@@ -38,6 +39,7 @@ namespace game {
         bool can_spawn_;
         Timer* spawn_timer_;
         std::queue<std::string> spawn_queue_;
+        GameObjectData* text_data_;
 
         void SpawnEnemy(const std::string& name);
         void SpawnBoss();

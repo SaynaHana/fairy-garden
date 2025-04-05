@@ -10,7 +10,7 @@ namespace game {
             DarkFairyQueen(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, int health, MoveData& move_data,
                            GameObjectData* text_data, GameObjectData* magic_missile_data, GameObjectData* water_wave_data);
             DarkFairyQueen(const glm::vec3& position, GameObjectData& data, int health, MoveData& move_data,
-                           GameObjectData* magic_missile_data, GameObjectData* water_wave_data);
+                           GameObjectData* text_data, GameObjectData* magic_missile_data, GameObjectData* water_wave_data);
 
             void Update(double delta_time) override;
 

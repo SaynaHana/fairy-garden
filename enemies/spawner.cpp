@@ -10,7 +10,7 @@
 #include "dark_fairy_queen.h"
 
 namespace game {
-	Spawner::Spawner(int initial_cost, int cost_increment, GameObject* player, GameObjectData* obj_data) {
+	Spawner::Spawner(int initial_cost, int cost_increment, GameObject* player, GameObjectData* obj_data, GameObjectData* text_data) {
         data_ = obj_data;
         player_ = player;
 		cost_ = initial_cost;
@@ -18,6 +18,7 @@ namespace game {
         started_ = false;
         round_count_ = 0;
         enemy_count_ = 0;
+        text_data_ = text_data;
 
         min_spawn_dist_ = 2;
 
@@ -168,7 +169,7 @@ namespace game {
         GameObjectData* water_wave_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_water_projectile));
         MoveData enemy_move_data = MoveData(0.5, player_);
         EnemyGameObject* queen = new DarkFairyQueen(glm::vec3(0, 3.0f, 0), data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_blue_ship), 10, enemy_move_data,
-                                                    magic_missile_data, water_wave_data);
+                                                    text_data_, magic_missile_data, water_wave_data);
         queen->SetScale(glm::vec2(2, 2));
         Game::GetInstance()->SpawnGameObject(queen);
     }

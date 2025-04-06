@@ -68,7 +68,8 @@ namespace game {
                 tex_dark_fairy_dust = 14,
                 tex_font = 15,
                 tex_dying_earth_enemy = 16,
-                tex_dying_earth_link = 17
+                tex_dying_earth_link = 17,
+                tex_dark_fairy_queen = 18
             };
 
             enum Objective {

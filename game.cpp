@@ -82,6 +82,7 @@ void Game::SetupGameWorld(void)
     textures.push_back("/textures/font.png");
     textures.push_back("/textures/tex_dying_earth_enemy.png");
     textures.push_back("/textures/tex_dying_earth_link.png");
+    textures.push_back("/textures/tex_dark_fairy_queen.png");
 
     // Load textures
     LoadTextures(textures);

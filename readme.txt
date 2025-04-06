@@ -1,50 +1,62 @@
+Game Title: Fairy Garden
 Name and Student ID: Aria Wong 101300465
 Operating Systems Used: Linux (Ubuntu on my desktop at home) and Windows 11 (on my laptop)
 
 Texture Sources:
-I created the smiley, invincible smiley, neutral and frowny textures myself.
-I got the explosion texture from https://opengameart.org/content/explosion-3 under CC0 license.
-I got the coin texture from https://opengameart.org/content/gold-cointoken under CC0 license.
+TBA
 
-Part 1: Player physical movement
-- Changed the behaviour that happens when a WASD and QE key is pressed around line 148 of game.cpp
-- Added SetAcceleration function around line 57 of game_object.h
-- Added an invincible texture for the player
-- Added acceleration, velocity and position math to the Update function of game_object.cpp to allow for physically based motion
+How to Play:
+You're a fairy defending your village from invading evil fairies. First, you must defeat several waves of evil fairies. When you defeat all fairies in one wave, the next one will start. Once you pass wave 10, the fairy queen becomes frustrated with her incompetent minions and fights you herself. You will be teleported to the center of the map for this fight. Once you defeat the fairy queen, you have successfully defended your village against the evil fairies and you win.
 
-Part 2: Projectiles
-- Added spacebar key press behaviour around line 175 of game.cpp
-- Added projectile_game_object.cpp and projectile_game_object.h files that contain the behaviour of the projectile's collision and destroy timer
-- Added Shoot function to player_game_object.cpp which spawns a projectile and adds acceleration to it
-- The player_game_object also has a timer which is checked in its Update function and also set in the SetCanShoot function which creates a cooldown for when the player can shoot next
+Controls:
+Move - WASD
+Shoot - Left click and move cursor to the direction that you want to aim
 
-Part 3: Projectile lifespan
-- Used Timer object in Projectile's Update function to check if the projectile should be destroyed
-- The lifetime of the projectile is specified in its constructor
+Note: The player hitbox is much smaller than the sprite which will allow you to move more precisely through the projectiles.
 
-Part 4: Enemy spawning
-- Reused enemy spawning from assignment 2, but increased the radius by 3 times around line 206
+Requirements
+- The game is a top-view aircraft game taking place in the sky above your village and the "aircrafts" are fairies
 
-Part 5: Projectile and enemy collision using ray-to-circle collision
-- Created header file called Constants.h which contains enums that can be used in multiple classes
-- Added CollisionType enum to Constants.h which can be used to say if a gameobject uses a circle or ray collider
-- Added CollisionType property to GameObject which is set in the constructor
-- The default CollisionType is circle, but it is changed in the projectile_game_object.cpp constructor so that the projectile uses a ray collider
-- Added check in game.cpp around line 259 to see if the collision between two objects is circle-circle or ray-circle
-- Added ray-circle collision behaviour in game.cpp starting around line 280
+Game mechanics: There are waves of fairies to clear and also a boss (i.e fairy queen) at the end to defeat.
 
-Part 6: Continuous scrolling
-- Added a matrix called transl_matrix around line 349 of game.cpp that gets multiplied to the view matrix to keep the camera centered on the player
-- Created a background_fragment_shader.glsl which just increases the uv coordinates of the background which will make it repeat more
-- Changed the texture wrapping behaviour around line 482 in game.cpp to repeat instead of clamp
-- Initialized background_sprite_shader around line 435 in game.cpp which uses the new background fragment shader and applied it to the background object
+Enemies
+1. Magic Missile Fairy: Moves towards player and additional up and down movement. Shoots projectiles that home towards the player. The code is in magic_missile_enemy, magic_missile_projectile and magic_missile_weapon files.
+2. Water Wave Fairy: Moves towards the player and flees if the player is too close, it also "hops". Shoots two projectiles that move in a circle in the direction of the player. The code is in water_wave_enemy, water_wave_projectile and water_wave_weapon files.
+3. Dying Earth Fairy: Move towards the player while swinging arm which uses hierarchical transformations. If this fairy loses its arm, but is still alive (i.e from using the long ranged weapon), then it will become scared and flees from the player while shooting a slow moving homing missile every few seconds (so the player can know the location of it) This enemy also has 3 HP while the rest have 1. The code is in dying_earth_enemy and dying_earth_enemy_link files. The dying_earth_enemy_link file has the children code and the dying_earth_enemy is the parent.
+4. Dark Fairy Queen (Boss): Stays in one place. Chooses between a magic missile and a water wave attack randomly. At 2/3 and 1/3 health, the number of attacks that the dark fairy queen will perform at once increases. The code is in the dark_fairy_queen files.
 
-Part 7: Scale
-- Changed scale_ property in game_object.h around line 69 to use glm::vec2 instead of float
-- Created new gameobject around line 93 that sets the scale of a gameobject to a non-uniform scale to demonstrate (it appears as a big blue smiley face in the game)
+Weapons
+1. Shotgun: Allows the player to shoot multiple projectiles in an arc. It has a slower fire rate than the other weapon and its range is not very far. The code is in shotgun_player_weapon files.
+2. Long Ranged: Allows the player to shoot one projectile at a time. It has a faster fire rate and can go much further than the shotgun. The code is in default_player_weapon files.
 
-Part 8: Ghost
-- Created ghost_fragment_shader.glsl which uses a uniform to check if the object is in ghost mode and changes the colour based on that
-- Create ghost_sprite_shader_ around line 438 of game.cpp which uses the new ghost_fragment_shader and applied it to all of the collectible objects
-- Added collected flag to collectible_game_object which gets set to true in its OnCollision function
-- Overrided the CollectibleGameObject Render function to set the uniform if the object is in ghost mode
+Collectibles
+1. Fairy Dust: Spawns on a cooldown at a random location around the player. It makes the player shoot faster for a short period of time and gives them one additional health point. The code is in fairy_dust_collectible files.
+2. Rainbow Fairy Dust: Spawns on a cooldown at a random location around the player, but less often than the fairy dust. It gives the player an additional health point, make the player invincible, shoot faster and move faster for a short period of time. The code is in rainbow_fairy_dust files.
+3. Dark Fairy Dust: Spawns on a cooldown at a random location around the player, but less often than the previous two items. It gives the player an additional health point, makes the player invincible, makes the player move very fast and increases the player's hitbox allowing you to devour any enemies near you for a short period of time. The code is in dark_fairy_dust files.
+
+Movement and Transformations
+- The movement is handled in game through transformations in the game objects' render functions.
+- An example of physically-based movement in this game is in dying_earth_enemy.cpp Move function where it chases and flees from the player.
+- An example of parametric-based movement in this game is in the water_wave_projectile.cpp move function where it uses a parametric circle function to move in a circle.
+
+Collision Detection
+- There is collision detection between player, enemies and collectibles
+
+Game World
+- The game world is bigger than the view which the player can move around in
+- The game world uses texture tiling to make not stretch the texture too large, this can be seen around line 160 of game.cpp as well as in background_fragment_shader.glsl
+
+Particle Systems
+- The player's long ranged weapon projectiles has a trail particle system.
+- When the player gets hit, there is a short explosion particle system.
+- I allowed for changing of particle system shapes in particles.cpp file around line 68.
+
+Hierarchical Transformations
+- The dying earth enemy uses three links of hierarchical transformations using it's arm.
+- The links can be seen to move independently of each other because of how it swings
+
+UI
+- The HUD shows score, wave, enemies left, health and weapons
+
+Advanced Method
+- The dying earth enemy has a more tactical AI in that it goes towards the player when it has its arm and runs away when it doesn't

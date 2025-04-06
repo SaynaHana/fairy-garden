@@ -15,6 +15,10 @@ namespace game {
         chase_range_ = 1;
         tags.insert("DyingEarthEnemy");
         flee_speed_ = 0.5f;
+        missile_interval_ = 10.0f;
+        missile_timer_ = new Timer();
+        missile_timer_->Start(missile_interval_);
+        missile_speed_ = 1.0f;
     }
 
     DyingEarthEnemy::DyingEarthEnemy(const glm::vec3 &position, game::GameObjectData &data, int health,
@@ -28,7 +32,21 @@ namespace game {
 
         Move(delta_time);
 
+        // If no children, then send missile every few seconds so the player cannot lose it
         if (!HasChildren()) {
+            if (missile_timer_ && target_) {
+				if (missile_timer_->Finished()) {
+                    missile_timer_->Start(missile_interval_);
+                    
+                    // Spawn a missile
+					glm::vec3 spawnPosition = GetBearing() * 1.5f + GetPosition();
+                    MagicMissileProjectile* projectile = new MagicMissileProjectile(spawnPosition, geometry_, shader_, Game::GetInstance()->getTexture(Game::tex_dying_earth_link), 20.0f);
+                    projectile->SetTarget(target_);
+                    projectile->SetSpeed(missile_speed_);
+
+                    Game::GetInstance()->SpawnGameObject(projectile);
+				}
+            }
         }
 
         // Rotate the enemy

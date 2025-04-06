@@ -28,6 +28,7 @@ namespace game {
             // Magic missiles
             float missile_interval_;
             Timer* missile_timer_;
+            float missile_speed_;
     };
 }
 

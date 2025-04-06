@@ -67,7 +67,7 @@ void Game::SetupGameWorld(void)
     textures.push_back("/textures/tex_player.png");
     textures.push_back("/textures/tex_magic_missile_enemy.png"); 
     textures.push_back("/textures/tex_water_wave_enemy.png");
-    textures.push_back("/textures/stars.png");
+    textures.push_back("/textures/tex-background-tiled.png");
     textures.push_back("/textures/orb.png");
     textures.push_back("/textures/explosion.png");
     textures.push_back("/textures/coin.png");
@@ -160,7 +160,7 @@ void Game::SetupGameWorld(void)
     // CHANGE: Change shader of background to make it repeat more
     background = new GameObject(glm::vec3(0.0f, 0.0f, 0.0f), sprite_, &background_sprite_shader_, tex_[tex_stars], 1, true);
     // CHANGE: Increase size of background
-    background->SetScale(glm::vec2(12 * 9, 12 * 9));
+    background->SetScale(glm::vec2(108, 108));
     game_objects_.push_back(background);
 
     // CHANGE: Enemy spawn timer setup

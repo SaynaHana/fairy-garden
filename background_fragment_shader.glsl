@@ -13,7 +13,7 @@ void main()
     // Sample texture
     // CHANGE: This uses uv coordinates which are much larger which makes the texture
     // Repeat a lot more
-    vec4 color = texture2D(onetex, uv_interp * 9.0);
+    vec4 color = texture2D(onetex, uv_interp * 16);
 
     // Assign color to fragment
     gl_FragColor = vec4(color.r, color.g, color.b, color.a);

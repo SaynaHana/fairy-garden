@@ -87,8 +87,6 @@ namespace game {
     void DarkFairyQueen::OnCollision(game::GameObject &other) {
         EnemyGameObject::OnCollision(other);
 
-        std::cout << health_ << std::endl;
-
         // If health is at 2/3, then go to next phase
         if((float)health_ <= 2.0f / 3.0f * (float)max_health_ && phase_ == 1) {
             phase_++;

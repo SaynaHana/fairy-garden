@@ -60,6 +60,8 @@ namespace game {
 
             // Text to display health
             TextGameObject* health_text_;
+
+            glm::vec3 GetLocationAroundBoss();
     };
 }
 

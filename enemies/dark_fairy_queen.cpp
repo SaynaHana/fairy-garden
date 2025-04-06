@@ -152,7 +152,7 @@ namespace game {
             if(water_wave_data_ == nullptr || target_ == nullptr) return;
 
             // Spawn projectile
-            glm::vec3 spawnPosition = GetRandomLocation();
+            glm::vec3 spawnPosition = GetLocationAroundBoss();
             WaterWaveProjectile* projectile1 = new WaterWaveProjectile(spawnPosition, *water_wave_data_, attack_duration_, GetBearing());
             projectile1->SetTarget(target_);
             projectile1->SetSpeed(water_wave_speed_);
@@ -203,5 +203,19 @@ namespace game {
         if(iter == spawned_objects_.end()) return;
 
         spawned_objects_.erase(iter);
+    }
+
+    glm::vec3 DarkFairyQueen::GetLocationAroundBoss() {
+        glm::vec3 pos = GetPosition();
+
+        while(glm::length(pos - GetPosition()) < 5) {
+            // Get random location around player
+            float randX = ((float)rand() / RAND_MAX) * 20 - 10;
+            float randY = ((float)rand() / RAND_MAX) * 20 - 10;
+
+            pos = glm::vec3(randX, randY, 0) + GetPosition();
+        }
+
+        return pos;
     }
 }

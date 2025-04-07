@@ -30,6 +30,8 @@ namespace game {
             // Spawn particle system
             glm::vec3 particle_spawn = glm::vec3(0);
 
+            // For some reason, the particle system spawns further from the projectile,
+            // When parent_bearing_.x is < 0
             if(parent_bearing_.x < 0) {
                 particle_spawn = -(0.3f * parent_bearing_);
             }
@@ -39,7 +41,7 @@ namespace game {
 
             GameObject* particle_system = new ParticleSystem(particle_spawn, particle_data_->geom_,
                                                                  particle_data_->shader_, particle_data_->texture_,
-                                                                 projectile, glm::vec3(0, 1.0f, 0),
+                                                                 projectile, glm::vec3(0.7f, 0.0f, 0.2f),
                                                                  projectile_data_->lifetime_, true);
 
             // Calculate particle system rotation

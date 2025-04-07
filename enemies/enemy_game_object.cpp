@@ -20,7 +20,7 @@ namespace game {
         tags.insert("CanDamagePlayer");
 
         iframe_timer_ = new Timer();
-        iframe_duration_ = 0.01f;
+        iframe_duration_ = 0.25f;
         is_invincible_ = false;
 	}
 

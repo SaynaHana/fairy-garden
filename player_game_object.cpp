@@ -29,6 +29,7 @@ namespace game {
 		can_shoot_ = true;
         speed_ = move_data.GetSpeed();
         tags.insert("PlayerGameObject");
+        tags.insert("CanDamageEnemy");
 		weapons_ = weapons;
 		weapon_ = nullptr;
 		SwitchWeapons(0);

@@ -40,6 +40,7 @@ namespace game {
         Timer* spawn_timer_;
         std::queue<std::string> spawn_queue_;
         GameObjectData* text_data_;
+        bool game_over_;
 
         void SpawnEnemy(const std::string& name);
         void SpawnBoss();

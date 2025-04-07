@@ -19,6 +19,7 @@ namespace game {
         round_count_ = 0;
         enemy_count_ = 0;
         text_data_ = text_data;
+        game_over_ = false;
 
         min_spawn_dist_ = 2;
 
@@ -46,6 +47,7 @@ namespace game {
 
     void Spawner::Update(double delta_time) {
         if(!started_) return;
+        if (game_over_) return;
 
         // Check if there are any enemies left
         if(enemy_count_ == 0) {
@@ -90,15 +92,22 @@ namespace game {
 
     void Spawner::NextRound() {
         int counter = cost_ + cost_increment_;
+
+        // Add to score for clearing a wave
         Game::GetInstance()->AddObjective(Game::Objective::waves_cleared);
 
         if(round_count_ == 0) {
             counter -= cost_increment_;
         }
 
-        if(round_count_ >= 11) {
+        // Check if it is boss wave or game over
+        if(round_count_ == 11) {
             SpawnBoss();
             enemy_count_++;
+            return;
+        }
+        else if (round_count_ > 11) {
+            game_over_ = true;
             return;
         }
 
@@ -118,6 +127,7 @@ namespace game {
     }
 
     void Spawner::SpawnEnemy(const std::string &name) {
+
         // Default enemy data
         MoveData move_data = MoveData(0.5, player_);
         Game* game = Game::GetInstance();
@@ -167,7 +177,7 @@ namespace game {
         GameObjectData* magic_missile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_enemy_projectile));
         GameObjectData* water_wave_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_water_projectile));
         MoveData enemy_move_data = MoveData(0.5, player_);
-        EnemyGameObject* queen = new DarkFairyQueen(glm::vec3(0, 3.0f, 0), data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_dark_fairy_queen), 100, enemy_move_data,
+        EnemyGameObject* queen = new DarkFairyQueen(glm::vec3(0, 3.0f, 0), data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_dark_fairy_queen), 75, enemy_move_data,
                                                     text_data_, magic_missile_data, water_wave_data);
         queen->SetScale(glm::vec2(2, 2));
         Game::GetInstance()->SpawnGameObject(queen);
@@ -177,6 +187,7 @@ namespace game {
         CollectibleGameObject* collectible = nullptr;
         Game* game = Game::GetInstance();
 
+        // Spawn collectible based on what collectible count is divisible by
         if(collectible_count % 5 == 0) {
             collectible = new DarkFairyDustCollectible(GetLocationAroundPlayer(), data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_dark_fairy_dust), 10.0f);
         }

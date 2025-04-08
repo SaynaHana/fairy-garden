@@ -46,6 +46,10 @@ namespace game {
             bool is_invincible_;
 
             void CheckIFrames();
+
+            // Collectibles
+            void DropCollectible();
+            float collectible_drop_chance_;
     };
 }
 

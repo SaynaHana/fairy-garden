@@ -195,10 +195,7 @@ namespace game {
         Game* game = Game::GetInstance();
 
         // Spawn collectible based on what collectible count is divisible by
-        if(collectible_count % 5 == 0) {
-            collectible = new DarkFairyDustCollectible(GetLocationAroundPlayer(), data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_dark_fairy_dust), 10.0f);
-        }
-        else if(collectible_count % 3 == 0) {
+        if(collectible_count % 3 == 0) {
             collectible = new RainbowFairyDustCollectible(GetLocationAroundPlayer(), data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_rainbow_fairy_dust), 10.0f);
         }
         else {

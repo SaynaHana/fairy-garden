@@ -1,6 +1,8 @@
 #include "enemy_game_object.h"
 #include "../player_game_object.h"
 #include "../projectile_game_object.h"
+#include "../game.h"
+#include "../collectibles/dark_fairy_dust_collectible.h"
 
 namespace game {
 	EnemyGameObject::EnemyGameObject(const glm::vec3& position, Geometry* geom, Shader *shader, GLuint texture, int health, MoveData& move_data, Weapon* weapon)
@@ -22,6 +24,8 @@ namespace game {
         iframe_timer_ = new Timer();
         iframe_duration_ = 0.25f;
         is_invincible_ = false;
+
+        collectible_drop_chance_ = 5;
 	}
 
     EnemyGameObject::EnemyGameObject(const glm::vec3 &position, GameObjectData &data, int health, MoveData &move_data, Weapon* weapon)
@@ -82,6 +86,22 @@ namespace game {
         }
 
         GameObject::OnCollision(other);
+
+        // Check if should spawn collectible
+        if (should_destroy_) {
+            DropCollectible();
+        }
+    }
+
+    void EnemyGameObject::DropCollectible() {
+        // Check if enemy should drop collectible
+        int num = rand() % 100 + 1;
+
+        // If num <= collectible_drop_chance_, then drop collectible
+        if (num <= collectible_drop_chance_) {
+            CollectibleGameObject* collectible = new DarkFairyDustCollectible(position_, geometry_, shader_, Game::GetInstance()->getTexture(Game::tex_dark_fairy_dust), 10.0f);
+            Game::GetInstance()->SpawnGameObject(collectible);
+        }
     }
 
 	void EnemyGameObject::Detect() {

@@ -81,6 +81,10 @@ namespace game {
 
             void AddObjective(Objective obj);
 
+            // Shows text in the center of the screen
+            // Has top and bottom text where top text is bigger
+            void ShowCenterText(const std::string& top, const std::string& bottom, float duration);
+
         private:
             // Singleton from: https://www.geeksforgeeks.org/implementation-of-singleton-class-in-cpp/
             static Game* gamePtr;
@@ -176,6 +180,11 @@ namespace game {
             TextGameObject* primary_weapon_text_;
             TextGameObject* secondary_weapon_text_;
             TextGameObject* score_text_;
+
+            TextGameObject* top_text_;
+            TextGameObject* bottom_text_;
+            bool show_center_text_;
+            Timer* center_text_timer_;
 
             void GameOver(bool won);
     }; // class Game

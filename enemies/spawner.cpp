@@ -28,9 +28,10 @@ namespace game {
         spawn_timer_ = new Timer();
         spawn_timer_->Start(spawn_interval_);
 
+        // Insert costs for each enemyt
         enemy_costs_.insert({ 1, "MagicMissileEnemy" });
-        enemy_costs_.insert({2, "WaterWaveEnemy"});
-        enemy_costs_.insert({10, "DyingEarthEnemy"});
+        enemy_costs_.insert({ 2, "WaterWaveEnemy" });
+        enemy_costs_.insert({ 10, "DyingEarthEnemy" });
 
         collectible_spawn_interval_ = 15.0f;
         collectible_spawn_timer_ = new Timer();
@@ -100,6 +101,11 @@ namespace game {
             counter -= cost_increment_;
         }
 
+        // Show text for getting weapon
+        if (round_count_ == 5) {
+            Game::GetInstance()->ShowCenterText("Long Ranged Weapon Unlocked!", "Press 2 to use", 5);
+        }
+
         // Check if it is boss wave or game over
         if(round_count_ == 11) {
             SpawnBoss();
@@ -107,6 +113,7 @@ namespace game {
             return;
         }
         else if (round_count_ > 11) {
+            Game::GetInstance()->ShowCenterText("Victory!", "Check the console for final score", 10);
             game_over_ = true;
             return;
         }

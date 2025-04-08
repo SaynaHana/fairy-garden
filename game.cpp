@@ -113,44 +113,13 @@ void Game::SetupGameWorld(void)
     float pi_over_two = glm::pi<float>() / 2.0f;
     game_objects_[0]->SetRotation(pi_over_two);
 
-    // CHANGE: Removed rotation from enemies
-    // Setup other objects
-    // game_objects_.push_back(new GameObject(glm::vec3(-1.0f, 1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_green_ship], 1, true));
-    // game_objects_.push_back(new GameObject(glm::vec3(1.0f, -0.5f, 0.0f), sprite_, &sprite_shader_, tex_[tex_blue_ship], 1, true));
-
     MoveData move_data = MoveData(0.5, game_objects_[0]);
     PatrolData patrol_data = PatrolData(1, 2, glm::vec3(-3.0f, 0.5f, 0.0f));
-
-
-    //game_objects_.push_back(new EnemyGameObject(glm::vec3(-3.0f, -0.5f, 0.0f), sprite_, &sprite_shader_, tex_[tex_blue_ship], 1, move_data, patrol_data));
-
-    // CHANGE: Setup collectible items
-    /*
-		game_objects_.push_back(new CollectibleGameObject(glm::vec3(2.0f, 2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
-		game_objects_.push_back(new CollectibleGameObject(glm::vec3(3.0f, 1.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
-		game_objects_.push_back(new CollectibleGameObject(glm::vec3(-2.0f, -2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
-		game_objects_.push_back(new CollectibleGameObject(glm::vec3(1.0f, -3.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
-		game_objects_.push_back(new CollectibleGameObject(glm::vec3(-3.0f, 2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
-		game_objects_.push_back(new CollectibleGameObject(glm::vec3(3.0f, -2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
-		game_objects_.push_back(new CollectibleGameObject(glm::vec3(-3.0f, -2.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
-		game_objects_.push_back(new CollectibleGameObject(glm::vec3(3.0f, 1.0f, 0.0f), sprite_, &ghost_sprite_shader_, tex_[tex_coin]));
-    */
 
     // Gameobject to show the vec2 scale
     GameObject *scaled = new GameObject(glm::vec3(2.0f, -1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_invincible_ship], 10, false);
     scaled->SetScale(glm::vec2(0.0f, 1.0f));
     game_objects_.push_back(scaled);
-
-
-
-    /*
-    WeaponData* water_weapon_data = new WeaponData(game_objects_[0], 5.0f, 5);
-    GameObjectData* water_projectile_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_water_projectile], 10);
-    WaterWaveWeapon* water_wave_weapon = new WaterWaveWeapon(*water_weapon_data, *water_projectile_data);
-    GameObjectData water_enemy_data = GameObjectData(sprite_, &sprite_shader_, tex_[tex_blue_ship]);
-    game_objects_.push_back(new EnemyGameObject(glm::vec3(-2.0f, 1.0f, 0.0f), water_enemy_data, 2, move_data, water_wave_weapon));
-    game_objects_.push_back(new EnemyGameObject(glm::vec3(-5.0f, 1.0f, 0.0f), water_enemy_data, 2, move_data, new WaterWaveWeapon(*water_weapon_data, *water_projectile_data)));
-     */
 
     GameObjectData* enemy_data = new GameObjectData(sprite_, &sprite_shader_, tex_[tex_blue_ship]);
 
@@ -158,20 +127,26 @@ void Game::SetupGameWorld(void)
     // In this specific implementation, the background is always the
     // last object
     // CHANGE: Change shader of background to make it repeat more
+    // CHANGE: Also made a variable for the background so I can render it separately and
+    // removed constraint of the background having to be last in the vector
     background = new GameObject(glm::vec3(0.0f, 0.0f, 0.0f), sprite_, &background_sprite_shader_, tex_[tex_stars], 1, true);
     // CHANGE: Increase size of background
     background->SetScale(glm::vec2(108, 108));
     game_objects_.push_back(background);
 
-    // CHANGE: Enemy spawn timer setup
+    // Setup spawner for enemies and collectibles
     GameObjectData* text_data = new GameObjectData(sprite_, &text_shader_, tex_[tex_font]);
     spawner_ = new Spawner(1, 3, game_objects_[0], enemy_data, text_data);
     spawner_->Start();
 
+    // Sets up the HUD
     SetupUI();
 
     game_over_timer_ = nullptr;
     game_ending_ = false;
+
+    center_text_timer_ = new Timer();
+    show_center_text_ = false;
 }
 
 
@@ -319,6 +294,15 @@ void Game::Update(double delta_time)
             delete(game_objects_[0]);
             game_objects_.erase(game_objects_.begin());
             glfwSetWindowShouldClose(window_, true);
+        }
+    }
+
+    // Check if center text is supposed to be hidden
+    if(center_text_timer_ && show_center_text_) {
+        if (center_text_timer_->Finished()) {
+            show_center_text_ = false;
+            top_text_->SetScale(glm::vec2(0));
+            bottom_text_->SetScale(glm::vec2(0));
         }
     }
 
@@ -757,6 +741,19 @@ void Game::SetupUI() {
     score_text_ = new TextGameObject(glm::vec3(-3.45f, 2.25f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
     score_text_->SetParent(game_objects_[0]);
     SpawnGameObject(score_text_);
+
+    // Setup center text for things like game over, or victory screen
+    top_text_ = new TextGameObject(glm::vec3(0.0f, 1.5f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
+    top_text_->SetParent(game_objects_[0]);
+    // Don't show text initially
+    top_text_->SetScale(glm::vec2(0));
+    SpawnGameObject(top_text_);
+
+    bottom_text_ = new TextGameObject(glm::vec3(0.0f, 1.0f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
+    bottom_text_->SetParent(game_objects_[0]);
+    // Don't show text initially
+    bottom_text_->SetScale(glm::vec2(0));
+    SpawnGameObject(bottom_text_);
 }
 
 void Game::UpdateUI() {
@@ -781,6 +778,18 @@ void Game::UpdateUI() {
     std::string str_score = "Score: " + std::to_string(score);
     score_text_->SetText(str_score);
     score_text_->SetScale(glm::vec2((float)str_score.length() / 4.0f, 0.25f));
+}
+
+void Game::ShowCenterText(const std::string& top, const std::string& bottom, float duration) {
+    if (!top_text_ || !bottom_text_ || !center_text_timer_) return;
+    top_text_->SetText(top);
+    top_text_->SetScale(glm::vec2((float)top.length() / 4.0f, 0.25f));
+    
+    bottom_text_->SetText(bottom);
+    bottom_text_->SetScale(glm::vec2((float)bottom.length() / 4.0f, 0.25f));
+
+    center_text_timer_->Start(duration);
+    show_center_text_ = true;
 }
 
 void Game::GameOver(bool won) {

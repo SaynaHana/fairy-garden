@@ -146,6 +146,9 @@ namespace game {
 
 
         // Choose which enemy to spawn
+        // Every round, there is a number that gets incremented and based on that number
+        // It determines the most "expensive" enemy it can spawned based on 
+        // pre-assigned weights in the constructor of this class
         if(name == "MagicMissileEnemy") {
             weapon_data = new WeaponData(player_, 2, 3.0f);
             projectile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_enemy_projectile), 5);

@@ -6,13 +6,18 @@ Texture Sources:
 TBA
 
 How to Play:
-You're a fairy defending your village from invading evil fairies. First, you must defeat several waves of evil fairies. When you defeat all fairies in one wave, the next one will start. Once you pass wave 10, the fairy queen becomes frustrated with her incompetent minions and fights you herself. You will be teleported to the center of the map for this fight. Once you defeat the fairy queen, you have successfully defended your village against the evil fairies and you win.
+You're a fairy defending your garden from invading evil fairies. First, you must defeat several waves of evil fairies. When you defeat all fairies in one wave, the next one will start. Once you pass wave 10, the fairy queen becomes frustrated with her incompetent minions and fights you herself. You will be teleported to the center of the map for this fight. Once you defeat the fairy queen, you have successfully defended your garden against the evil fairies and you win.
 
 Controls:
 Move - WASD
 Shoot - Left click and move cursor to the direction that you want to aim
+1-2 - Select 1 or 2 to change weapons (you unlock the second weapon at wave 5)
 
 Note: The player hitbox is much smaller than the sprite which will allow you to move more precisely through the projectiles.
+
+Known Bugs
+- Health is supposed to be capped at 5, but sometimes the dark fairy dust can mess this up and temporarily cap your health at 4 or 6.
+- If you wait too long after a dying earth enemy loses its arm, it could leave the map (although very slowly). In which case, you would might have to restart the game.
 
 Requirements
 - The game is a top-view aircraft game taking place in the sky above your village and the "aircrafts" are fairies
@@ -32,7 +37,7 @@ Weapons
 Collectibles
 1. Fairy Dust: Spawns on a cooldown at a random location around the player. It makes the player shoot faster for a short period of time and gives them one additional health point. The code is in fairy_dust_collectible files.
 2. Rainbow Fairy Dust: Spawns on a cooldown at a random location around the player, but less often than the fairy dust. It gives the player an additional health point, make the player invincible, shoot faster and move faster for a short period of time. The code is in rainbow_fairy_dust files.
-3. Dark Fairy Dust: Spawns on a cooldown at a random location around the player, but less often than the previous two items. It gives the player an additional health point, makes the player invincible, makes the player move very fast and increases the player's hitbox allowing you to devour any enemies near you for a short period of time. The code is in dark_fairy_dust files.
+3. Dark Fairy Dust: Spawns as a 5% drop chance from enemies. It gives the player an additional health point, makes the player invincible, makes the player move very fast and increases the player's hitbox allowing you to devour any enemies near you for a short period of time. The code is in dark_fairy_dust files.
 
 Movement and Transformations
 - The movement is handled in game through transformations in the game objects' render functions.

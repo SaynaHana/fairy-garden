@@ -40,6 +40,7 @@ namespace game {
     }
 
 	void EnemyGameObject::Update(double delta_time) {
+        ChangeEnemyRotation();
         CheckIFrames();
 		Detect();
 
@@ -57,6 +58,19 @@ namespace game {
 
 		GameObject::Update(delta_time);
 	}
+
+    void EnemyGameObject::ChangeEnemyRotation() {
+        if (!target_) return;
+        // Get direction to player
+        glm::vec3 diff = target_->GetPosition() - position_;
+
+        if (diff.x != 0) {
+            float angle = std::atan(diff.y / diff.x);
+
+            SetRotation(angle + 3.14f/2);
+
+        }
+    }
 
     void EnemyGameObject::CheckIFrames() {
         if(is_invincible_) {

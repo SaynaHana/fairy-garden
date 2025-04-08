@@ -3,7 +3,8 @@ Name and Student ID: Aria Wong 101300465
 Operating Systems Used: Linux (Ubuntu on my desktop at home) and Windows 11 (on my laptop)
 
 Texture Sources:
-TBA
+I made all of the textures except for the explosion one which was licensed under CC0 at https://opengameart.org/content/explosion-3
+
 
 How to Play:
 You're a fairy defending your garden from invading evil fairies. First, you must defeat several waves of evil fairies. When you defeat all fairies in one wave, the next one will start. Once you pass wave 10, the fairy queen becomes frustrated with her incompetent minions and fights you herself. You will be teleported to the center of the map for this fight. Once you defeat the fairy queen, you have successfully defended your garden against the evil fairies and you win.
@@ -18,6 +19,7 @@ Note: The player hitbox is much smaller than the sprite which will allow you to 
 Known Bugs
 - Health is supposed to be capped at 5, but sometimes the dark fairy dust can mess this up and temporarily cap your health at 4 or 6.
 - If you wait too long after a dying earth enemy loses its arm, it could leave the map (although very slowly). In which case, you would might have to restart the game.
+- The same as above, but for the dark fairy queen
 
 Requirements
 - The game is a top-view aircraft game taking place in the sky above your village and the "aircrafts" are fairies
@@ -64,4 +66,4 @@ UI
 - The HUD shows score, wave, enemies left, health and weapons
 
 Advanced Method
-- The dying earth enemy has a more tactical AI in that it goes towards the player when it has its arm and runs away when it doesn't
+- The dark fairy queen moves using the wandering behaviour. The code can be found in dark_fairy_queen.cpp in the Move function.

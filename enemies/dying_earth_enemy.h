@@ -22,6 +22,7 @@ namespace game {
             bool reverse_swing_; // If enemy should swing in opposite direction
             float swing_speed_ = 2.0f;
             float flee_speed_;
+            float max_dist_from_player_; // How far can this enemy be from the player when fleeing?
 
             bool HasChildren();
 

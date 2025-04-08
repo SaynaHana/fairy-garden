@@ -3,6 +3,7 @@
 #include "../game.h"
 #include <GLFW/glfw3.h>
 #include <algorithm>
+#include <glm/gtx/string_cast.hpp>
 
 namespace game {
     DarkFairyQueen::DarkFairyQueen(const glm::vec3 &position, game::Geometry *geom, game::Shader *shader,
@@ -42,6 +43,12 @@ namespace game {
         health_text_ = new TextGameObject(glm::vec3(position.x, position.y - 3.5f, 0), text_data->geom_, text_data->shader_, text_data->texture_);
         health_text_->SetParent(this);
         Game::GetInstance()->SpawnGameObject(health_text_);
+
+        // Wandering
+        wander_duration_ = 1;
+        wandering_timer_ = new Timer();
+        wandering_timer_->Start(wander_duration_);
+        wander_angle_ = 240;
     }
 
     DarkFairyQueen::DarkFairyQueen(const glm::vec3 &position, GameObjectData &data, int health,
@@ -52,6 +59,8 @@ namespace game {
     }
 
     void DarkFairyQueen::Update(double delta_time) {
+        ChangeEnemyRotation();
+
         // Update text
         if (health_text_) {
 			std::string str_health = "HP: " + std::to_string(health_);
@@ -82,6 +91,9 @@ namespace game {
         }
 
         PerformAttacks();
+
+        // Wander movement
+		Move(delta_time);
     }
 
     void DarkFairyQueen::OnCollision(game::GameObject &other) {
@@ -95,6 +107,35 @@ namespace game {
         else if((float)health_ <= 1.0f / 3.0f * (float)max_health_ && phase_ == 2) {
             phase_++;
         }
+    }
+
+    void DarkFairyQueen::Move(double delta_time) {
+        if (wandering_timer_ && wandering_timer_->Finished()) {
+			// Do wandering behaviour
+			// Get random point in angle opening
+			// Most of this is taken from the Topic 3 - Steering slides
+			float r_num = ((float)rand()) / ((float)RAND_MAX);
+            float opening = wander_angle_;
+			float r_angle = r_num * opening + angle_ - opening;
+			float r = 0.25;
+			glm::vec3 target(r * cos(r_angle), r * sin(r_angle), 0.0);
+
+			// Steering to target
+			glm::vec3 desired = target;
+			glm::vec3 steering = desired + velocity_;
+			steering /= glm::length(steering);
+			velocity_ += steering;
+
+			wandering_timer_->Start(wander_duration_);
+        }
+
+        // Set velocity_ magnitude to speed if needed
+        if (glm::length(velocity_) > speed_) {
+            velocity_ = glm::normalize(velocity_) * speed_;
+        }
+
+        // Set position
+        SetPosition(position_ + velocity_ * (float)delta_time);
 
     }
 
@@ -207,7 +248,7 @@ namespace game {
         glm::vec3 pos = GetPosition();
 
         while(glm::length(pos - GetPosition()) < 5) {
-            // Get random location around player
+            // Get random location around boss 
             float randX = ((float)rand() / RAND_MAX) * 20 - 10;
             float randY = ((float)rand() / RAND_MAX) * 20 - 10;
 

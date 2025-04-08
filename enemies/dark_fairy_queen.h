@@ -16,6 +16,8 @@ namespace game {
 
             void OnCollision(GameObject& other) override;
 
+            void Move(double delta_time) override;
+
             // Required to remove object from spawned_objects
             void RemoveSpawnedObject(GameObject* spawned_object);
 
@@ -62,6 +64,11 @@ namespace game {
             TextGameObject* health_text_;
 
             glm::vec3 GetLocationAroundBoss();
+
+            // Wandering
+            Timer* wandering_timer_;
+            float wander_duration_; // How long the boss wanders in a certain direction
+            float wander_angle_; // In which angle can the boss change directions in
     };
 }
 

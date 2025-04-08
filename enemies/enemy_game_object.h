@@ -40,6 +40,9 @@ namespace game {
 			// Flee
 			void Flee();
 
+            // Make the enemy face the player
+            void ChangeEnemyRotation();
+
             // Iframes
             Timer* iframe_timer_;
             float iframe_duration_;

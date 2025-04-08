@@ -19,6 +19,7 @@ namespace game {
         missile_timer_ = new Timer();
         missile_timer_->Start(missile_interval_);
         missile_speed_ = 1.0f;
+        max_dist_from_player_ = 5;
     }
 
     DyingEarthEnemy::DyingEarthEnemy(const glm::vec3 &position, game::GameObjectData &data, int health,
@@ -30,6 +31,7 @@ namespace game {
     void DyingEarthEnemy::Update(double delta_time) {
         if (should_destroy_) return;
 
+        ChangeEnemyRotation();
         Move(delta_time);
 
         // If no children, then send missile every few seconds so the player cannot lose it
@@ -105,24 +107,25 @@ namespace game {
         if (HasChildren()) {
             glm::vec3 diff = target_->GetPosition() - GetPosition();
 
-            
-            if (glm::length(diff) > chase_range_) {
-                if (glm::length(diff) != 0) {
-                    diff = glm::normalize(diff);
-                }
+            // Check if too far from player
+			if (glm::length(diff) > chase_range_) {
+				if (glm::length(diff) != 0) {
+					diff = glm::normalize(diff);
+				}
 
-                SetPosition(GetPosition() + diff * speed_ * (float)delta_time);
-            }
+				SetPosition(GetPosition() + diff * speed_ * (float)delta_time);
+			}
         }
         else {
             // Flee
             glm::vec3 diff = GetPosition() - target_->GetPosition();
+            if (glm::length(diff) <= max_dist_from_player_) {
+				if (glm::length(diff) != 0) {
+					diff = glm::normalize(diff);
+				}
 
-            if (glm::length(diff) != 0) {
-                diff = glm::normalize(diff);
+				SetPosition(GetPosition() + diff * flee_speed_ * (float)delta_time);
             }
-
-            SetPosition(GetPosition() + diff * flee_speed_ * (float)delta_time);
         }
     }
 

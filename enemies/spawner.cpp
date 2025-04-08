@@ -186,7 +186,7 @@ namespace game {
         // Spawn boss
         GameObjectData* magic_missile_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_enemy_projectile));
         GameObjectData* water_wave_data = new GameObjectData(data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_water_projectile));
-        MoveData enemy_move_data = MoveData(0.5, player_);
+        MoveData enemy_move_data = MoveData(0.5f, player_);
         EnemyGameObject* queen = new DarkFairyQueen(glm::vec3(0, 3.0f, 0), data_->geom_, data_->shader_, Game::GetInstance()->getTexture(Game::tex_dark_fairy_queen), 75, enemy_move_data,
                                                     text_data_, magic_missile_data, water_wave_data);
         queen->SetScale(glm::vec2(2, 2));

@@ -54,16 +54,17 @@ void Game::SetupGameWorld(void)
     // Declare all the textures here
     std::vector<std::string> textures;
 
+    // Set all objective counts
     score = 0;
     damage_taken_ = 0;
     collectibles_collected_ = 0;
     enemies_killed_ = 0;
     waves_cleared_ = 0;
+
     start_time_ = glfwGetTime();
 
     // CHANGE: Moved textures enum to header file so I can use it outside of this function
 
-    // CHANGE: changed the textures of the destroyers to smiley, neutral and frowny
     textures.push_back("/textures/tex_player.png");
     textures.push_back("/textures/tex_magic_missile_enemy.png"); 
     textures.push_back("/textures/tex_water_wave_enemy.png");
@@ -111,7 +112,6 @@ void Game::SetupGameWorld(void)
                                                  weapons, 3, true, hit_particle_data));
     float pi_over_two = glm::pi<float>() / 2.0f;
     game_objects_[0]->SetRotation(pi_over_two);
-    game_objects_[0]->SetScale(glm::vec2(1.5f, 1.5f));
 
     // CHANGE: Removed rotation from enemies
     // Setup other objects
@@ -656,7 +656,8 @@ void Game::SetTexture(GLuint w, const char *fname)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     // Texture Filtering
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+    // CHANGE: Added mipmaps because parts of textures were missing without mipmaps
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     glGenerateMipmap(GL_TEXTURE_2D);
